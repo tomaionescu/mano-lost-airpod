@@ -74,6 +74,7 @@ var _bark_a := 0.0
 func build_ui(parent: Control) -> void:
 	UITheme.init()
 	_hud = parent.get_parent() as HUD
+	GameState.settings_changed.connect(_on_settings_changed)
 	for k in 3:
 		_arrows.append(arrow_texture(k))
 	# both option styles share margins, so the circled one does not change size
@@ -250,7 +251,7 @@ func pause_for(seconds: float) -> void:
 	_text = ""
 	_pause_id += 1
 	var id := _pause_id
-	get_tree().create_timer(maxf(seconds, 0.0)).timeout.connect(func():
+	get_tree().create_timer(maxf(seconds, 0.0), false).timeout.connect(func():
 		if running and id == _pause_id and not _waiting and _choices.is_empty():
 			_next())
 
@@ -313,6 +314,7 @@ func _show(who: String, text: String, expr: String) -> void:
 	var info: Dictionary = speaker_info.call(who) if speaker_info.is_valid() else {"name": who, "color": UITheme.FILM_WHITE}
 	# the name only when the speaker changes (XAG 104 allows it)
 	var who_name := String(info.get("name", "")) if who != _last_who and who != "nar" and who != "think" else ""
+	_card = [who, who_name, info.color, text]
 	var lead := fill_line(sub, who, who_name, info.color, text, subtitle_size(), _arrows[0])
 	_arrow_frame = -1
 	_checked = false
@@ -328,6 +330,19 @@ func _show(who: String, text: String, expr: String) -> void:
 		_complete_line()
 	_play_voice(who, text)
 	line_shown.emit(who, text, expr)
+
+
+var _card: Array = []   # the card showing, as fill_line takes it: [who, name, colour, text]
+
+
+## A setting changed under a card (the pause page's settings, mid-conversation): the card takes the subtitle size
+## at once, written as far as it was.
+func _on_settings_changed() -> void:
+	if not running or _text == "" or _card.is_empty():
+		return
+	fill_line(sub, _card[0], _card[1], _card[2], _card[3], subtitle_size(), _arrows[0])
+	_arrow_frame = -1
+	sub.visible_characters = -1 if _shown >= _total else int(_shown)
 
 
 ## The card's recording, when it has one; without one the card is silent.

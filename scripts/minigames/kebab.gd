@@ -266,7 +266,8 @@ func _next_ticket() -> void:
 		_rb_cook = String(_round().get("cook", {}).get(id, o.get("sauce", "")))
 		_rb_answer = -1
 		phase = "readback"
-		_t_lines.text = "%s\n%s\n%s" % [o.get("base", ""), _rb_cook, o.get("extra", "")]
+		# the sauce line stays blank: ink on the ticket is the true order, and the cook's sauce is only his claim
+		_t_lines.text = "%s\n..........\n%s" % [o.get("base", ""), o.get("extra", "")]
 		_t_lines.add_theme_color_override("font_color", UITheme.INK_BLUE)
 		_menu_head.text = "The cook says %s. Right?" % _rb_cook
 		var hint := -1

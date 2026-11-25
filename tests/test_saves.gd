@@ -73,6 +73,23 @@ func run(t) -> void:
 	DirAccess.remove_absolute(ProjectSettings.globalize_path(GameState.SAVE_PATH))
 	d = GameState.read_save()
 	t.ok(d is Dictionary, "a missing save file falls back to its .bak")
+	# a .tmp that cannot be written (here a folder is in its place): the save and its .bak stay as they were
+	GameState.flags["coins"] = 2
+	GameState.write_save(xf)
+	GameState.flags["coins"] = 5
+	GameState.write_save(xf)
+	var tmp_dir := ProjectSettings.globalize_path(GameState.SAVE_PATH + ".tmp")
+	DirAccess.make_dir_absolute(tmp_dir)
+	GameState.flags["coins"] = 9
+	GameState.write_save(xf)
+	DirAccess.remove_absolute(tmp_dir)
+	d = GameState.read_save()
+	var bak = Support.read_json(GameState.SAVE_PATH + ".bak")
+	t.ok(d is Dictionary and int(d.flags.coins) == 5, "a save that cannot write its .tmp leaves the save in place (coins %s)" % (d.flags.coins if d is Dictionary else "-"))
+	t.ok(bak is Dictionary and int(bak.flags.coins) == 2, "and does not move it over the .bak (coins %s)" % (bak.flags.coins if bak is Dictionary else "-"))
+	GameState.write_save(xf)
+	d = GameState.read_save()
+	t.ok(d is Dictionary and int(d.flags.coins) == 9 and not FileAccess.file_exists(GameState.SAVE_PATH + ".tmp"), "the next save goes through and leaves no .tmp")
 	GameState.clear_save()
 	t.ok(not FileAccess.file_exists(GameState.SAVE_PATH + ".bak") and not GameState.has_save(), "clear_save removes the save and its .bak")
 	# a version 1 save

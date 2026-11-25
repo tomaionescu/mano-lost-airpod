@@ -6,6 +6,11 @@ extends Node3D
 ## Radians of turn per screen point at sensitivity 1: 0.0024 per stretched pixel in a maximized 1920-point window,
 ## where the canvas stretch is 1.2.
 const MOUSE_RAD_PER_POINT := 0.002
+## The lens main.gd films a conversation single on. A shot on it is a face: the camera aims EYE_LINE of its distance
+## under the look point, which puts the eyes near the upper third of the letterboxed picture instead of its middle
+## (more would crop the hair in a tight single).
+const FACE_FOV := 30.0
+const EYE_LINE := 0.045
 
 var target: Node3D            # the player
 var world_env: WorldEnv
@@ -28,7 +33,7 @@ var _t := 0.0
 var _trauma := 0.0
 
 # scripted shot state
-var _shot = null              # {from, look, fov, focus}
+var _shot = null              # {from, look, aim, fov, focus}: aim is what the camera points at (look, or under it)
 var _blend := 0.0             # 0 = follow camera, 1 = shot
 var _blend_speed := 1.6
 const BLEND := 1.6            # the gameplay blend in and out of a shot (1 / seconds)
@@ -103,8 +108,9 @@ func set_shot(from: Vector3, look: Vector3, fov := 40.0, focus := -1.0, cut := f
 		_from_fov = cam.fov
 	# a slow blend from one shot to another (a sit-down's medium to its wide) moves the camera and its aim point
 	# together, so it keeps looking at what it frames on the way (a turned basis looked at the wall half-way)
-	_from_look = _shot.look if _shot != null and not cut and blend_speed < BLEND else null
-	_shot = {"from": from, "look": look, "fov": fov, "focus": focus}
+	_from_look = _shot.aim if _shot != null and not cut and blend_speed < BLEND else null
+	var face := is_equal_approx(fov, FACE_FOV) and focus > 0.0 and dof == ""
+	_shot = {"from": from, "look": look, "aim": look + Vector3.DOWN * (from.distance_to(look) * EYE_LINE if face else 0.0), "fov": fov, "focus": focus}
 	_shot_cut = cut
 	_blend_speed = blend_speed
 	_drift = Vector3.ZERO
@@ -182,12 +188,12 @@ func _process(dt: float) -> void:
 		if _orbit != 0.0:
 			var arm: Vector3 = _shot.from - _orbit_center
 			_shot.from = _orbit_center + arm.rotated(Vector3.UP, _orbit * dt)
-		var shot_xf := Transform3D(Basis.looking_at(_shot.look - _shot.from, Vector3.UP), _shot.from)
+		var shot_xf := Transform3D(Basis.looking_at(_shot.aim - _shot.from, Vector3.UP), _shot.from)
 		_blend = minf(_blend + dt * _blend_speed, 1.0)
 		var k := _ease(_blend)
 		if _from_look != null and _blend < 1.0:
 			var pos := _from_xform.origin.lerp(_shot.from, k)
-			var aim: Vector3 = (_from_look as Vector3).lerp(_shot.look, k)
+			var aim: Vector3 = (_from_look as Vector3).lerp(_shot.aim, k)
 			cam.global_transform = Transform3D(Basis.looking_at(aim - pos, Vector3.UP), pos)
 		else:
 			cam.global_transform = _from_xform.interpolate_with(shot_xf, k)
@@ -200,6 +206,8 @@ func _process(dt: float) -> void:
 	else:
 		cam.global_transform = follow
 		cam.fov = follow_fov
+	if world_env:
+		world_env.set_place(cam.global_position, dt)
 	_apply_sway(dt)
 
 

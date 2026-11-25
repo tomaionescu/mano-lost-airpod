@@ -3,7 +3,8 @@ extends Node3D
 ## Lighting rig: the time-of-day sky (two HDRIs blended into a procedural twilight and city-night sky,
 ## scripts/fx/sky_blend.gdshader), the real sun of Thursday 15 October 2026, AgX tonemapping, GI, AO, fog,
 ## bloom and a colour grade per time of day. apply_time() moves between the TIMES presets and dims the lamp
-## groups and lit windows LevelBinder found (bind_level()); set_interior() multiplies on top.
+## groups and lit windows LevelBinder found (bind_level()); set_interior() multiplies on top, and set_place() adds
+## what the place being filmed changes (PLACES: exposure and the conversation fill per zone).
 ## The lens (docs/DESIGN.md §4.6): bloom through a lens-dirt glow map, depth of field per kind of shot
 ## (set_focus_preset()) with circle bokeh, and the values post_layer.gd reads (halation, grain, sun flare).
 ## Quality presets come from GameState.settings.quality (low / medium / high / ultra).
@@ -49,15 +50,15 @@ const AMBIENT_REF := 0.75
 ## Change presets only under a card, a fade or a cut.
 const TIMES := {
 	"golden": {"clock": "17:42"},
-	"late_gold": {"clock": "18:15", "convo_fill": 0.08, "sun": [248.9, 6.6], "sun_color": Color(1.0, 0.63, 0.40), "sun_energy": 1.9, "sun_size": 1.0,
+	"late_gold": {"clock": "18:15", "convo_fill": 0.13, "sun": [248.9, 6.6], "sun_color": Color(1.0, 0.63, 0.40), "sun_energy": 1.9, "sun_size": 1.0,
 		"sun_fog": 1.2, "pano_t": 0.5, "sky_energy": 0.9, "ambient": 0.62, "fog_color": Color(0.90, 0.64, 0.50), "fog_scatter": 0.5,
 		"lamps": {"string_lights": 0.6}, "windows": 0.3,
 		"grade": {"lift": 0.036, "high_tint": Vector3(0.042, 0.012, -0.042)}},
-	"last_light": {"clock": "18:50", "convo_fill": 0.3, "sun": [255.6, 1.3], "sun_color": Color(1.0, 0.50, 0.32), "sun_energy": 0.9, "sun_size": 1.4,
+	"last_light": {"clock": "18:50", "convo_fill": 0.5, "sun": [255.6, 1.3], "sun_color": Color(1.0, 0.50, 0.32), "sun_energy": 0.9, "sun_size": 1.4,
 		"sun_fog": 1.4, "pano_t": 1.0, "sky_energy": 0.75, "ambient": 0.5, "fog_color": Color(0.84, 0.56, 0.52), "fog_scatter": 0.6,
 		"lamps": {"street_lamps": 1.0, "string_lights": 1.0}, "windows": 0.8, "exposure": 1.05, "saturation": 1.0,
 		"grade": {"lift": 0.035, "shadow_tint": Vector3(-0.008, -0.012, 0.045), "high_tint": Vector3(0.045, 0.0, -0.012)}},
-	"blue": {"clock": "19:25", "convo_fill": 1.5, "convo_fill_color": Color(0.86, 0.9, 1.0), "sun": [262.1, -4.6], "sun_energy": 0.0, "sun_disk": 0.0, "moon": [205.6, 8.9], "moon_glow": 1.4,
+	"blue": {"clock": "19:25", "convo_fill": 2.4, "convo_fill_color": Color(0.86, 0.9, 1.0), "sun": [262.1, -4.6], "sun_energy": 0.0, "sun_disk": 0.0, "moon": [205.6, 8.9], "moon_glow": 1.4,
 		"pano_t": 1.0, "sky_energy": 0.2, "sky_tint": Color(0.85, 0.92, 1.15), "night": 0.3,
 		"zenith": Color(0.010, 0.018, 0.045), "horizon": Color(0.05, 0.045, 0.06), "glow": 1.0, "city": 0.5, "stars": 0.15,
 		"ambient": 0.6, "ambient_tint": Color(0.5, 0.62, 1.0), "ambient_fill": Color(0.025, 0.04, 0.085),
@@ -65,14 +66,14 @@ const TIMES := {
 		"lamps": {"street_lamps": 1.0, "string_lights": 1.0}, "windows": 1.5, "exposure": 1.4, "saturation": 1.04,
 		"halation": 0.045, "grain": 0.025,
 		"grade": {"lift": 0.03, "shadow_tint": Vector3(-0.03, 0.0, 0.07), "high_tint": Vector3(0.02, 0.008, -0.01), "curve": 0.15}},
-	"night": {"clock": "21:30", "convo_fill": 1.1, "convo_fill_color": Color(1.0, 0.86, 0.72), "sun": [286.3, -25.1], "sun_energy": 0.0, "sun_disk": 0.0,
+	"night": {"clock": "21:30", "convo_fill": 1.8, "convo_fill_color": Color(1.0, 0.86, 0.72), "sun": [286.3, -25.1], "sun_energy": 0.0, "sun_disk": 0.0,
 		"night": 1.0, "zenith": Color(0.003, 0.004, 0.008), "horizon": Color(0.02, 0.017, 0.016), "city": 1.0, "stars": 0.6,
 		"ambient": 0.2, "ambient_fill": Color(0.018, 0.026, 0.058),
 		"fog_color": Color(0.25, 0.28, 0.40), "fog_energy": 0.3, "fog_scatter": 0.0, "vol_density": 0.005,
 		"lamps": {"street_lamps": 1.0, "string_lights": 1.0}, "windows": 1.5, "exposure": 1.45, "saturation": 0.98,
 		"halation": 0.04, "grain": 0.028,
 		"grade": {"lift": 0.025, "shadow_tint": Vector3(-0.022, -0.004, 0.05), "high_tint": Vector3(0.03, 0.01, -0.025), "curve": 0.2}},
-	"late": {"clock": "23:45", "convo_fill": 1.1, "convo_fill_color": Color(1.0, 0.86, 0.72), "sun": [320.4, -43.7], "sun_energy": 0.0, "sun_disk": 0.0,
+	"late": {"clock": "23:45", "convo_fill": 1.8, "convo_fill_color": Color(1.0, 0.86, 0.72), "sun": [320.4, -43.7], "sun_energy": 0.0, "sun_disk": 0.0,
 		"night": 1.0, "zenith": Color(0.003, 0.004, 0.008), "horizon": Color(0.018, 0.015, 0.014), "city": 0.9, "stars": 0.7,
 		"ambient": 0.18, "ambient_fill": Color(0.017, 0.024, 0.054),
 		"fog_color": Color(0.25, 0.28, 0.40), "fog_energy": 0.3, "fog_scatter": 0.0, "vol_density": 0.005,
@@ -80,6 +81,30 @@ const TIMES := {
 		"halation": 0.04, "grain": 0.028,
 		"grade": {"lift": 0.025, "shadow_tint": Vector3(-0.02, -0.004, 0.046), "high_tint": Vector3(0.045, 0.016, -0.032), "curve": 0.2}},
 }
+
+## Light by place: what the zone the camera is in (LevelBinder.zone_at) changes on top of the time preset.
+## keep: the share of the preset's exposure above 1 that the place keeps (a room's lamps do not follow the clock, so
+## the night exposure tuned for the street over-exposes a lamp-lit room); gain: exposure on top of that; fill: the
+## share of the conversation fill a face gets there. PLACE_IN is every other indoor zone, PLACE_OUT the open air.
+## The Under is a dark-walled basement lit by a few coloured lamps, so it is exposed for. Voltaire's corridors and
+## stairwell are white walls under ceiling panels.
+const PLACE_OUT := {"keep": 1.0, "gain": 1.0, "fill": 1.0}
+const PLACE_IN := {"keep": 1.0, "gain": 1.0, "fill": 0.4}
+const PLACES := {
+	"under": {"keep": 1.0, "gain": 1.5, "fill": 0.45},
+	"volt_gf": {"keep": 0.0, "gain": 0.9, "fill": 0.4},
+	"volt_f1": {"keep": 0.0, "gain": 0.9, "fill": 0.4},
+}
+## Seconds the exposure and the fill take to follow the camera into another place; a cut changes them at once.
+const PLACE_EASE := 0.6
+## The conversation fill is a key light: this many degrees round the face from the lens (to the camera's left,
+## little enough to light a face turned either way) and above it, as far from the face as the lens (FILL_DIST: metres
+## at least and at most), reaching FILL_REACH times that distance, so the wall behind the face stays in the scene's
+## own light.
+const FILL_SIDE := 18.0
+const FILL_UP := 30.0
+const FILL_DIST := [1.2, 3.0]
+const FILL_REACH := 1.9
 
 ## Lens dirt (docs/DESIGN.md §4.6): the bloom is multiplied by this smudge map, at strength 0.25 outdoors and 0.1
 ## indoors. The map is procedural (tools/py/fx_textures.py), standing in for a photographed smudged phone lens.
@@ -116,6 +141,10 @@ var _sky_mat: ShaderMaterial
 var _cur: Dictionary = {}
 var _tween: Tween
 var _interior := 0.0
+var _binder: LevelBinder         # for zone_at(): the place the camera is in
+var _place := PLACE_OUT          # the PLACES entry in force, eased toward in _place_now
+var _place_now := PLACE_OUT.duplicate()
+var _place_cam := Vector3.INF    # where the camera was at the last set_place()
 var _luts: Dictionary = {}       # preset -> ImageTexture3D
 var _lut_key := ""
 var _lamps: Dictionary = {}      # from LevelBinder
@@ -124,9 +153,9 @@ var _windows: Array = []
 var _sun_fx: Array = []          # LevelBinder.sun_fx: fog volumes and dust that show only while the sun is up
 var _sun_fx_lit := -1
 var view: WorldView   # set by use_camera()
-## The conversation fill: one unshadowed spot from just above the lens onto the face being
-## filmed, faded in with the conversation; its energy is the preset's convo_fill (0 at golden), so faces stay
-## readable at blue hour and at night. No GI, no shadows.
+## The conversation fill: one unshadowed spot from beside and above the lens onto the face being filmed, faded in
+## with the conversation; its energy is the preset's convo_fill (0 at golden) times the place's share, so faces
+## stay readable at blue hour and at night. No GI, no shadows.
 var fill: SpotLight3D
 var _fill_a := 0.0
 
@@ -428,9 +457,9 @@ func apply_time(time_name: String, seconds := 0.0) -> void:
 	time_changed.emit(time_name)
 
 
-## Every frame from main.gd: `on` while a conversation is filmed. The light sits 25 cm above and 20 cm to the right
-## of the lens and points at what the shot looks at; it fades in and out over 0.4 s. Indoors (set_interior) the
-## rooms are lit after dark, so it runs at 40 %.
+## Every frame from main.gd: `on` while a conversation is filmed. The light stands off the lens axis (FILL_SIDE,
+## FILL_UP), so it models the face instead of flattening it, and points at what the shot looks at; it fades in and
+## out over 0.4 s. The place sets its share (PLACES: 40 % in a lamp-lit room).
 func set_convo_fill(on: bool, cam: Camera3D, dt: float, look = null) -> void:
 	var energy := float(_cur.get("convo_fill", 0.0)) if not _cur.is_empty() else 0.0
 	_fill_a = move_toward(_fill_a, 1.0 if on and energy > 0.0 else 0.0, dt / 0.4)
@@ -439,11 +468,36 @@ func set_convo_fill(on: bool, cam: Camera3D, dt: float, look = null) -> void:
 		return
 	var xf := cam.global_transform
 	var at: Vector3 = look if look is Vector3 else xf.origin - xf.basis.z * 1.5
-	var from := xf.origin + xf.basis.y * 0.25 + xf.basis.x * 0.2
-	if from.distance_to(at) > 0.05:
-		fill.look_at_from_position(from, at, Vector3.UP)
-	fill.light_energy = energy * _fill_a * (1.0 - 0.6 * _interior)
+	var arm := xf.origin - at
+	var d := clampf(arm.length(), FILL_DIST[0], FILL_DIST[1])
+	var flat := Vector3(arm.x, 0.0, arm.z)
+	flat = flat.normalized() if flat.length() > 0.01 else xf.basis.z
+	var up := deg_to_rad(FILL_UP)
+	fill.look_at_from_position(at + (flat.rotated(Vector3.UP, deg_to_rad(-FILL_SIDE)) * cos(up) + Vector3.UP * sin(up)) * d, at, Vector3.UP)
+	fill.spot_range = d * FILL_REACH
+	fill.light_energy = energy * _fill_a * float(_place_now.fill)
 	fill.light_color = _cur.get("convo_fill_color", Color(1.0, 0.9, 0.8))
+
+
+## Every frame from CameraRig: where the camera is. The zone it is in picks the PLACES entry; between zones (a
+## stairwell, a crane shot over the roofs) the last indoor place holds while Mano is indoors. Exposure and fill
+## ease to the new place over PLACE_EASE seconds, or change at once when the camera jumped (a cut, a teleport).
+func set_place(cam_pos: Vector3, dt: float) -> void:
+	var id := String(_binder.zone_at(cam_pos).get("id", "")) if _binder else ""
+	if id != "":
+		_place = PLACES.get(id, PLACE_IN if LevelBinder.INTERIORS.has(id) else PLACE_OUT)
+	elif _interior < 0.5:
+		_place = PLACE_OUT
+	var k := 1.0 if cam_pos.distance_to(_place_cam) > 2.0 else 1.0 - exp(-dt / PLACE_EASE)
+	_place_cam = cam_pos
+	for key in _place:
+		_place_now[key] = lerpf(_place_now[key], _place[key], k)
+	_apply_exposure()
+
+
+func _apply_exposure() -> void:
+	if not _cur.is_empty():
+		env.tonemap_exposure = lerpf(1.0, _cur.exposure, _place_now.keep) * float(_place_now.gain)
 
 
 func _end_tween() -> void:
@@ -453,6 +507,7 @@ func _end_tween() -> void:
 
 ## Takes the lamp groups and lit-window materials LevelBinder found and sets them to the current time.
 func bind_level(b: LevelBinder) -> void:
+	_binder = b
 	_lamps = b.lamps
 	_lamp_mats = b.lamp_materials
 	_windows = b.window_materials
@@ -575,7 +630,7 @@ func _apply_state(s: Dictionary) -> void:
 	env.fog_light_color = s.fog_color
 	env.fog_light_energy = s.fog_energy
 	env.fog_sun_scatter = s.fog_scatter
-	env.tonemap_exposure = s.exposure
+	_apply_exposure()
 	env.adjustment_contrast = s.contrast
 	env.adjustment_saturation = s.saturation
 	if _lut_key != s.name:

@@ -5,8 +5,10 @@
 #    Anisha's submission, Cristina's proof, the babyfoot partner, Chloé's sheet, the ducks);
 #  - Toma's toast to the new ones [slot];
 #  - the group photo, the last exposure on Ishita's camera (`$ photo group`, saved to user://film/);
-#  - then play: the optional last sit-down on the steps (world.json sit_final), and "Want one?" to any of the seven
-#    (talk.<friend> in chapter 5: c5.offer_<friend>); each friend's reply is [slot]; flags.given_to;
+#  - then play: Mano walks among the friends; a friend's first talk is their exchange (talk.<friend> in
+#    people.dlg, counted by c5.heard); the optional last sit-down on the steps (world.json sit_final); after three
+#    exchanges, "Want one?" to a friend he has talked with (c5.offer_<friend>, chosen on the cold open's palm
+#    shot); each friend's reply is [slot]; flags.given_to;
 #  - c5.share: the playlist song (`$ score @playlist`), "Music in one ear. Them in the other.", the credits
 #    (`$ credits`), then the post-credits at 00:25 (post.credits) and the recap.
 # [slot]: a line written in a friend's own voice, which the friend reviewed.
@@ -92,85 +94,116 @@ $ set ishita_beat
 $ set group_photo
 $ clock 23:52
 $ clue "The group photo: the last one on Ishita's camera. All eight of us."
-think: Two AirPods in the case. Seven friends. One song for the end.
-$ toast "Who gets the other one?" airpod
+think: Toma's speaker died one song early. The last one. Mine.
+think: "The one we all hear." Two of us will have to do.
+think: Later. First: everyone's here. I should go and say hi.
 
-# "Want one?" (talk.<friend> in chapter 5 once the photo is taken): one AirPod for one friend, the playlist song
-# shared. Choice 0 gives it; each reply is that friend's to write.
+# A first talk with a friend on the steps is over (talk.<friend>): at the third, the offer opens
+~ c5.heard
+$ add steps_talks 1
+if steps_talks == 3
+	think: Two AirPods in the case. Seven friends. One song for the end.
+	$ toast "Who gets the other one?" airpod
+
+# "Want one?" (talk.<friend> in chapter 5 after three exchanges, to a friend Mano has talked with): one AirPod for
+# one friend, the playlist song shared. Choice 0 gives it; each reply is that friend's to write.
+# The choice is made on the cold open's palm shot (c0.open): his open hand, one AirPod in it. A thought holds a
+# framed shot in a conversation; Mano's spoken "Want one?" then cuts to his face, as the cold open does.
 ~ c5.offer_toma
+$ shot cold_hand
 think: The case. Two AirPods. One for Toma?
 - Want one?
 	mano: [#smile] Want one?
+	$ shot clear
 	toma: [#smile] Stereo, together. That was the whole plan, you know. [slot]
 	$ set given_to = "toma"
 	=> c5.share
 - Not yet
+	$ shot clear
 	toma: [#smirk] The song can wait. I can't, but the song can. [slot]
 
 ~ c5.offer_anisha
+$ shot cold_hand
 think: The case. Two AirPods. One for Anisha?
 - Want one?
 	mano: [#smile] Want one?
+	$ shot clear
 	anisha: [#smirk] Only if it's not the chewed one. [slot]
 	anisha: [#grin] ...It's the chewed one. Fine. Give it. [slot]
 	$ set given_to = "anisha"
 	=> c5.share
 - Not yet
+	$ shot clear
 	anisha: [#smile] I just stopped staring at a screen. Take your time. [slot]
 
 ~ c5.offer_ian
+$ shot cold_hand
 think: The case. Two AirPods. One for Ian?
 - Want one?
 	mano: [#smile] Want one?
+	$ shot clear
 	ian: [#shock] Left or right? I need to know if this is political. [slot]
 	ian: [#grin] Right. Good. Correct. Give it. [slot]
 	$ set given_to = "ian"
 	=> c5.share
 - Not yet
+	$ shot clear
 	ian: [#smirk] I'll be here. Eating my ketchup kebab. Or not. [slot]
 
 ~ c5.offer_silvia
+$ shot cold_hand
 think: The case. Two AirPods. One for Silvia?
 - Want one?
 	mano: [#smile] Want one?
+	$ shot clear
 	silvia: [#grin] Yes. Ian, don't say anything. [slot]
 	silvia: [#smile] It's the same song. In two ears. Like the pastry. [slot]
 	$ set given_to = "silvia"
 	=> c5.share
 - Not yet
+	$ shot clear
 	silvia: [#smile] Okay. I'll pretend I wasn't hoping. [slot]
 
 ~ c5.offer_ishita
+$ shot cold_hand
 think: The case. Two AirPods. One for Ishita?
 - Want one?
 	mano: [#smile] Want one?
+	$ shot clear
 	ishita: [#smirk] My first night with you lot and I get the AirPod? [slot]
 	ishita: [#smile] I'm keeping the memory. Not the AirPod. Give it. [slot]
 	$ set given_to = "ishita"
 	=> c5.share
 - Not yet
+	$ shot clear
 	ishita: [#smirk] I'm out of film. I'll remember it anyway. [slot]
 
 ~ c5.offer_cristina
+$ shot cold_hand
 think: The case. Two AirPods. One for Cristina?
 - Want one?
 	mano: [#smile] Want one?
+	$ shot clear
 	cristina: [#shock] Me? I only carried it around all night. [slot]
 	cristina: [#smile] ...I think I've earned one song, actually. [slot]
 	$ set given_to = "cristina"
 	=> c5.share
 - Not yet
+	$ shot clear
 	cristina: [#grin] I'm not chasing it again. Just so you know. [slot]
 
 ~ c5.offer_joaquin
+$ shot cold_hand
 think: The case. Two AirPods. One for Joaquin?
 - Want one?
 	mano: [#smile] Want one?
+	$ shot clear
 	joaquin: [#shock] ...Me? [slot]
 	joaquin: [#smile] Okay. One song. For the data. [slot]
 	$ set given_to = "joaquin"
 	=> c5.share
 - Not yet
+	$ shot clear
 	joaquin: [#neutral] Noted. Waiting is also data. [slot]
 
 # The song shared (the friend Mano gave it to beside him), then the credits

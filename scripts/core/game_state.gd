@@ -435,16 +435,21 @@ func _read_save_file(path: String):
 	return null
 
 
-## .tmp first, then the current file becomes .bak and the .tmp takes its place: a crash at any point leaves either
-## the old save, or the .bak, readable.
+## .tmp first, checked for its full length, then the current file becomes .bak and the .tmp takes its place: a crash
+## or a failed write at any point leaves either the old save, or the .bak, readable.
 func _write_atomic(path: String, data) -> bool:
 	var tmp := path + ".tmp"
 	var f := FileAccess.open(tmp, FileAccess.WRITE)
 	if f == null:
 		push_warning("GameState: cannot write %s (%s)" % [tmp, error_string(FileAccess.get_open_error())])
 		return false
-	f.store_string(JSON.stringify(data, "\t"))
+	var text := JSON.stringify(data, "\t")
+	var stored := f.store_string(text)
 	f.close()
+	# a full disk leaves a short or empty .tmp: the save in place stays where it is
+	if not stored or FileAccess.get_file_as_bytes(tmp).size() != text.to_utf8_buffer().size():
+		push_warning("GameState: %s was not written in full, %s is kept" % [tmp, path])
+		return false
 	var abs_path := ProjectSettings.globalize_path(path)
 	if FileAccess.file_exists(path):
 		var bak := abs_path + ".bak"

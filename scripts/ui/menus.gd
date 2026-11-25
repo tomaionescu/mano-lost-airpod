@@ -440,7 +440,8 @@ func _last_time() -> String:
 # ------------------------------------------------------------------ pause
 ## The closed notebook at an angle on the left of the screen, over a warmer and lighter blur (docs/DESIGN.md §5.5):
 ## the menu is written on its étiquette's blank lines, and a sticky note beside the L/R AirPod doodle says how
-## the night is going. `fresh` plays the notebook sliding in (not when coming back from the settings).
+## the night is going. `fresh` plays the notebook sliding in (not when coming back from the settings). Over a
+## conversation, a cutscene or a minigame (Main.pause) the menu is Resume and Settings only.
 func show_pause(fresh := true) -> void:
 	game.enter_menu("pause")
 	get_tree().paused = true
@@ -456,6 +457,8 @@ func show_pause(fresh := true) -> void:
 			get_tree().paused = false
 			game.show_title()],
 	]
+	if not game.paused_from.is_empty():
+		items = [items[0], items[2]]   # in the middle of a scene: nothing to save, and the journal would let it run on
 	var cs := Vector2(500, 650)
 	var cover := _cover(items.size(), cs)
 	_pin(cover, Vector2(0, 0.5), Vector2(150, -cs.y * 0.5), cs)
@@ -1336,7 +1339,7 @@ func show_ending() -> void:
 		note.land(Vector2.ZERO)
 	else:
 		# the sticker lands while the list is being written, so the page never waits on it
-		get_tree().create_timer(minf(t, 2.6)).timeout.connect(func():
+		get_tree().create_timer(minf(t, 2.6), false).timeout.connect(func():
 			if is_instance_valid(note):
 				note.land(Vector2(0, -24)))
 		note.modulate.a = 0.0

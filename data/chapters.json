@@ -922,11 +922,24 @@
    "triggers": [],
    "todos": [
     {
+     "id": "steps_talk",
+     "main": true,
+     "kind": "talk",
+     "text": "Everyone's on the steps. Talk to them. {{steps_talks}} of 3.",
+     "when": "group_photo and given_to == \"\"",
+     "done": "steps_talks >= 3",
+     "targets": [
+      {"ref": "npc:toma", "unless": "steps_toma", "label": "Toma"},
+      {"ref": "npc:anisha", "unless": "steps_anisha", "label": "Anisha"},
+      {"ref": "npc:ishita", "unless": "steps_ishita", "label": "Ishita"}
+     ]
+    },
+    {
      "id": "give_one",
      "main": true,
      "kind": "talk",
      "text": "Two AirPods. Seven friends. Who gets the other one?",
-     "when": "group_photo and given_to == \"\"",
+     "when": "group_photo and steps_talks >= 3 and given_to == \"\"",
      "done": "given_to != \"\"",
      "target": "npc:toma",
      "label": "The steps"

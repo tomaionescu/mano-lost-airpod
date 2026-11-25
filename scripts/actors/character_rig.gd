@@ -1,11 +1,13 @@
 class_name CharacterRig
 extends Node3D
 ## Wraps an imported character (.glb from tools/blender/build_human.py): locomotion blend space,
-## sit / talk states, one-shot gestures, head look-at, blinking, procedural lip flap and facial expressions.
+## sit / talk states, one-shot gestures, head and eye look-at, blinking, procedural lip flap and facial expressions.
 
 signal footstep(foot: String)
 
 const LOCO_POINTS := {"idle": 0.0, "walk": 1.33, "jog": 3.07, "run": 4.5}
+## How far the eyes turn in the head, in radians (yaw, pitch): the eye-look shapes at full weight.
+const EYE_RANGE := Vector2(0.56, 0.35)
 
 var skeleton: Skeleton3D
 var anim_player: AnimationPlayer
@@ -29,6 +31,13 @@ var lid_rest := 0.0      # the lids' resting drop (CharacterMaterials.FINISH "ri
 var _expr_now := {}
 var _blink_t := 2.0
 var _blink := 0.0
+var _head := -1                 # the head bone, its rest basis inverted, and its basis as last posed with the
+var _head_rest_inv := Basis()   # look-at applied (the eyes aim in the head's frame)
+var _head_pose := Basis()
+var _eye := Vector2.ZERO        # where the eyes point in the head: x toward the character's left, y up (radians)
+var _eye_sent := Vector2.INF
+var _dart := Vector2.ZERO       # a small glance aside, picked again every one to three seconds
+var _dart_t := 1.0
 var _talk_phase := 0.0
 var _syllable := 0.0
 var _syllable_target := 0.0
@@ -162,8 +171,14 @@ func _build_look_at() -> void:
 	look_target.top_level = true
 	if skeleton.find_bone("neck_01") != -1:
 		neck_mod = _make_look("neck_01", 35.0, 25.0)
-	if skeleton.find_bone("head") != -1:
+	_head = skeleton.find_bone("head")
+	if _head != -1:
 		look_mod = _make_look("head", 55.0, 30.0)
+		_head_rest_inv = skeleton.get_bone_global_rest(_head).basis.orthonormalized().inverse()
+		_head_pose = _head_rest_inv.inverse()
+		# the modifiers' result is only on the bones during the skeleton's update: afterwards they hold the
+		# animation's pose again
+		skeleton.skeleton_updated.connect(func() -> void: _head_pose = skeleton.get_bone_global_pose(_head).basis)
 
 
 func _make_look(bone: String, yaw_limit: float, pitch_limit: float) -> LookAtModifier3D:
@@ -254,6 +269,7 @@ func _process(dt: float) -> void:
 		tree.set("parameters/loco/blend_position", speed)
 		set_state("sit" if sitting else ("talk" if conversing and speed < 0.2 else "loco"))
 	_update_look(dt)
+	_update_eyes(dt)
 	_update_face(dt)
 
 
@@ -270,6 +286,43 @@ func _update_look(dt: float) -> void:
 		look_mod.influence = w * 0.75
 	if neck_mod:
 		neck_mod.influence = w * 0.35
+
+
+## The eyes take the part of the look angle the head turn leaves over, measured against the head as it is posed
+## now, plus small darts (smaller while looking at someone). A far jump of the gaze comes with a blink.
+func _update_eyes(dt: float) -> void:
+	if _head == -1 or face_meshes.is_empty():
+		return
+	var want := Vector2.ZERO
+	if eyes_closed < 0.5:
+		var aimed: bool = look_at_point != null
+		_dart_t -= dt
+		if _dart_t <= 0.0:
+			_dart_t = randf_range(1.0, 3.0)
+			var k := 0.4 if aimed else 1.0
+			_dart = Vector2(randf_range(-0.16, 0.16), randf_range(-0.07, 0.07)) * k if randf() < (0.5 if aimed else 0.8) else Vector2.ZERO
+		if aimed:
+			# the head's frame: +Z out of the face, +X toward the character's left, as the model stands at rest
+			var head := (skeleton.global_transform.basis * _head_pose * _head_rest_inv).orthonormalized()
+			var d: Vector3 = (((look_at_point as Vector3) - head_position()) * head).normalized()
+			# a point behind the face is out of sight: the eyes ease back to the front instead of staying in a corner
+			want = Vector2(asin(d.x), asin(d.y)) * smoothstep(-0.3, 0.1, d.z)
+		want = (want + _dart).clamp(-EYE_RANGE, EYE_RANGE)
+	if _blink <= 0.0 and want.distance_to(_eye) > 0.3:
+		_blink = 1.0
+	_eye = _eye.lerp(want, 1.0 - exp(-dt * 25.0))
+	if _eye.distance_squared_to(_eye_sent) < 1e-6:
+		return
+	_eye_sent = _eye
+	var e := _eye / EYE_RANGE
+	# "In" is toward the nose, so a look to the character's left is Out on the left eye and In on the right
+	_set_shape("eyeLookOutLeft", maxf(e.x, 0.0))
+	_set_shape("eyeLookInRight", maxf(e.x, 0.0))
+	_set_shape("eyeLookInLeft", maxf(-e.x, 0.0))
+	_set_shape("eyeLookOutRight", maxf(-e.x, 0.0))
+	for side in ["Left", "Right"]:
+		_set_shape("eyeLookUp" + side, maxf(e.y, 0.0))
+		_set_shape("eyeLookDown" + side, maxf(-e.y, 0.0) * 0.7)   # at full weight the lid it brings down reads as shut
 
 
 # ------------------------------------------------------------------ face

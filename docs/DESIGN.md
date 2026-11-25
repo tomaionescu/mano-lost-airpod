@@ -226,8 +226,11 @@ Chapter 5, "Stereo" (23:41 to 00:10).
    the babyfoot partner, Chloé's list, the ducks, the survivor.
 2. Toma's toast to the three new ones.
 3. The group photo: the last exposure on Ishita's camera, framed by the game, followed by Ishita's sincere moment.
-4. Free play on the steps: an optional last sit-down, then "Want one?" to any of the seven. Each friend has their
-   own reply. The playlist song plays.
+4. Free play on the steps: Toma's speaker died one song early, so the song for the end waits in the AirPod case.
+   Mano walks among the friends; a first talk with each plays that friend's exchange, and the to-do counts them.
+   After three, "Want one?" opens on any friend he has talked with (and an optional last sit-down stays open).
+   The choice is made on the cold open's shot of his open palm. Each friend has their own reply. The playlist
+   song plays.
 5. Credits: the camera rises from the steps over the courtyard toward rue Pasteur and KB1's lit windows, the names
    go up the right of the screen and the night's film prints up the left, for 46 seconds.
 6. Post-credits, 00:25. Mano alone on rue Pasteur puts both AirPods back in. *plink*, a drain grate, "Where is my
@@ -315,11 +318,11 @@ All minigames implement `setup(game, opts, done)` and are started from dialogue 
 | Minigame | Ch. | Play | Help when it goes wrong | File |
 |---|---|---|---|---|
 | Moulinette, day | 1 | Three rounds of 30 s. A short C function is shown in a tiled terminal; point at the buggy line. A miss costs 6 s. | A failed run ends on "-42" and a retry. | `scripts/minigames/moulinette.gd` |
-| Babyfoot | 2 | First to three goals against Karim. In 2v2 Mano works the attack rod and the partner the goal. | Karim is 12 % slower for every game lost, never below 60 %. After two losses the partner says "Switch", takes the attack and scores. | `babyfoot.gd` |
+| Babyfoot | 2 | First to three goals against Karim, or ahead after 90 s; level then, the next goal wins. In 2v2 Mano works the attack rod and the partner the goal. The level table's own figures are hidden for the match; Mano's side is blue, Karim's yellow. | Karim's rods and shots are 12 % slower for every game lost, never below 60 %, and he misses more kicks. After two losses the attack rod kicks on every touch and its shots go to the open side of Karim's goal: a partner says "Switch" and takes that rod, alone Mano keeps it. | `babyfoot.gd` |
 | Coffee machine | 2 | The machine ate the coins: mash E or Space for six seconds to shake it loose. | With Joaquin's tip every shake counts for more. A failed try keeps the coins in the machine. | `coffee.gd` |
 | Lost & found | 2 | Inspect five joke AirPods and an empty slot with a note. | There is no right pod by design. After three wrong picks Mme Dupont points at the empty slot. | `lostfound.gd` |
-| Kebab orders | 4 | Three rounds from `data/kebab.json`. A ticket shows a friend's name and order (base, sauce, extra) for about 2.5 s; Mano rebuilds it from the menu. In the last round the cook reads all eight orders back and Mano says right or wrong. | Nothing fails. After two wrong tickets Cristina pencils a line under the right word. Wrong orders become jokes in chapter 5. | `kebab.gd` |
-| Sound search | 4 | Walk the Under with the finder open. Each ring is a 3D chirp from the AirPod, with a 4 s cooldown and five rings of battery. A ring timed between the sound check's thumps is clear; one under a thump is drowned out. | A five-step signal bar gives the distance without sound. Cristina's phone takes over when the battery is gone, Cristina hints at the sofa after 40 s, and the AirPod catches the light after 70 s. | `findmy.gd` |
+| Kebab orders | 4 | Three rounds from `data/kebab.json`. A ticket shows a friend's name and order (base, sauce, extra) for about 2.5 s; Mano rebuilds it from the menu. In the last round the cook reads all eight orders back with a sauce each and Mano says right or wrong; the ticket's sauce line stays blank until he answers. | Nothing fails. After two wrong tickets Cristina pencils a line under the right word. Wrong orders become jokes in chapter 5. | `kebab.gd` |
+| Sound search | 4 | Walk the Under with the finder open. Each ring is a 3D chirp from the AirPod, with a 4 s cooldown and five rings of battery. A ring timed between the sound check's thumps is clear; one under a thump is drowned out. He can dig in the cushions only after a clear ring from within 4 m, or after a hint. | A five-step signal bar gives the distance without sound. Cristina's phone takes over when the battery is gone, Cristina hints at the sofa after three rings or 40 s, and the AirPod catches the light after 70 s. | `findmy.gd` |
 | "1, 2, 3, ACU!" | 4 | The playground game "1, 2, 3, soleil" in SM14. Hold forward to sneak round the desks while Léo's back is turned; let go when his footsteps stop and he says "hm?". | Being caught costs a few metres. After three catches Léo gives up and stays at the board. | `soleil.gd` |
 | Moulinette, night | 4 | The same game with a coding-style round in the middle (a cast on `malloc`, a `goto`, a fifth argument). A miss costs 4 s. | Anisha gives a hint after 12 s on a round, and takes the keyboard after two failed runs. The night always ends on OK. | `moulinette.gd` |
 

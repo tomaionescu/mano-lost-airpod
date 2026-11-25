@@ -64,7 +64,9 @@ street lamps (about 3000 K), the courtyard's string lights (about 2200 K) and cl
 4500 K). Each preset sets a level per group. The colours are chosen so that at 17:42 it is warm outside and
 cool inside, and after sunset the reverse. Lights that belong to no group, such as signs and the lights of
 the amphitheatre, the cafeteria and the Under, stay as exported all evening. `set_lamps()` changes one
-group on its own; the chapter 2 script uses it to bring the street lamps on over four seconds.
+group on its own; the chapter 2 script uses it to bring the street lamps on over four seconds. The Under also
+has three warm wash lights of its own, over the sofa, the babyfoot table and the bar (`data/world.json`
+"lights"): short-range, unshadowed, on all evening.
 
 #### Windows
 
@@ -76,9 +78,13 @@ each window carries its own chance of being lit. The preset's "lit windows" valu
 
 #### Faces after dark
 
-During a filmed conversation one unshadowed spot light sits just above the lens and
-points at the face in shot (`set_convo_fill()`). Its energy is zero at `golden` and rises to 1.5 at `blue`,
-with a cool tint at blue hour and a warm one at night. Indoors it runs at 40 %.
+During a filmed conversation one unshadowed spot light points at the face in shot (`set_convo_fill()`). It is
+a key light, not a flash: it stands 18° round the face from the lens, to the camera's left, and 30° above it,
+as far from the face as the lens is, and it reaches 1.9 times that distance, so the wall behind the face keeps
+the scene's own light. Its energy is zero at `golden`, 2.4 at `blue` and 1.8 at `night` and `late`, with a cool
+tint at blue hour and a warm one at night. The place sets its share: 40 % in a lamp-lit room, 45 % in the
+Under. A conversation single aims a little under the face, which puts the eyes near the upper third of the
+letterboxed picture (`CameraRig.EYE_LINE`).
 
 #### Changing preset
 
@@ -93,11 +99,20 @@ change. The preset's name is stored in the save.
 In an indoor zone `set_interior()` cuts the sky's ambient light to 60 %, thins the fog and
 lowers the lens dirt and halation.
 
+#### Light by place
+
+Exposure and the conversation fill also follow the zone the camera is in (`WorldEnv.PLACES`, `set_place()`).
+A place states how much of the preset's exposure above 1 it keeps, an exposure gain on top, and its share of
+the fill. The Under, a dark-walled basement, is exposed 1.5 times up at every hour. Voltaire's corridors and
+stairwell, white walls under ceiling panels that do not follow the clock, drop the night exposure and run at
+0.9. Other rooms and the open air keep the preset's exposure. The values ease over 0.6 s as the camera walks
+from one place to the next and change at once on a cut.
+
 ### 1.3 Tonemapping and grade
 
 The tonemapper is AgX (white 6.0, contrast 1.25). It desaturates very bright highlights toward white instead
-of clipping them to a saturated colour, which suits a low orange sun. Exposure is per preset: 1.0 in
-daylight, up to 1.45 at night.
+of clipping them to a saturated colour, which suits a low orange sun. Exposure is per preset, 1.0 in
+daylight and up to 1.45 at night, then corrected per place (§1.2, Light by place).
 
 After tonemapping, each preset applies a 17³ colour lookup table that `_make_lut()` generates in code from
 five numbers. The grade desaturates yellow-green hues by up to 18 % so that foliage reads olive, tints

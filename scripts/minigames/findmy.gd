@@ -4,8 +4,9 @@ extends Node
 ## about freely (the follow camera, his own feet) with the finder open on his phone: Q (the phone key) or the
 ## d-pad makes the AirPod ring, a 3D chirp from where it is, with a 4 s cooldown; his phone is at 10 %, five rings.
 ## A ring timed between two thumps is clear, and the phone's five-step signal bar says how close he is (for
-## players who cannot hear it); a ring under a thump is drowned out. E digs in the cushions once he is close. If the
-## battery runs out, Cristina's phone takes over; Cristina says "Shh. Near the sofa." after a few rings or 40 s,
+## players who cannot hear it); a ring under a thump is drowned out. E digs in the cushions once he is close, but
+## only after a clear ring from within DIG_SIGNAL bars of it or one of the hints: the ringing is what finds it. If
+## the battery runs out, Cristina's phone takes over; Cristina says "Shh. Near the sofa." after a few rings or 40 s,
 ## and the AirPod catches the light after 70 s: nobody is stuck. Ends with _done.call(true) when it is found
 ## (the story autotest calls that too).
 
@@ -16,6 +17,8 @@ const RINGS := 5               # 10 % battery, 2 % a ring
 const THUMP_EVERY := 1.7       # the sound check's kick
 const MASK := 0.42             # a ring that starts this close to a thump is drowned out
 const FIND_R := 1.7            # metres from the AirPod (flat) where E digs in the cushions
+const DIG_SIGNAL := 4          # a clear ring reading this or more (within 4 m) lets him dig
+const SOFA_CLUE := "The Under's old sofa. It's not lost. It's in a sofa."
 const HINT_AFTER_RINGS := 3
 const HINT_AFTER := 40.0
 const GLINT_AFTER := 70.0
@@ -29,6 +32,7 @@ var rings := 0                 # rings played, clear or drowned (autotests read 
 var clear_rings := 0
 var signal_now := 0            # 0..5, the last clear ring's reading
 var found := false
+var can_dig := false           # a clear ring nearby or a hint has pointed at the cushions
 var borrowed := false          # Cristina's phone after the battery ran out
 var _t := 0.0
 var _cool := 0.0
@@ -219,6 +223,7 @@ func ring() -> void:
 	else:
 		clear_rings += 1
 		signal_now = signal_for(d)
+		can_dig = can_dig or signal_now >= DIG_SIGNAL
 		_sig_show = 3.0
 		_status.text = ["", "Far. Somewhere in the room.", "Getting warmer.", "Close. This side of the room.", "Very close.", "Right here. In the cushions?"][signal_now]
 	_bars.queue_redraw()
@@ -228,15 +233,19 @@ func ring() -> void:
 		_hint()
 
 
+## Cristina names the sofa: from here on he may dig, and the notebook says where it is.
 func _hint() -> void:
 	_hinted = true
+	can_dig = true
+	game.story.clue(SOFA_CLUE)
 	game.dialogue.bark("cristina", "Shh. Near the sofa.")
 
 
 func dig() -> void:
-	if found or _dist() > FIND_R:
+	if found or not can_dig or _dist() > FIND_R:
 		return
 	found = true
+	game.story.clue(SOFA_CLUE)
 	_dig.modulate.a = 0.0
 	Sfx.play("pickup")
 	_status.text = "Found."
@@ -263,7 +272,7 @@ func _process(dt: float) -> void:
 		game.camera_rig.add_trauma(0.02)
 	if _sig_show > 0.0 or _masked_show > 0.0:
 		_bars.queue_redraw()
-	var near := _dist() <= FIND_R
+	var near := can_dig and _dist() <= FIND_R
 	_dig.modulate.a = move_toward(_dig.modulate.a, 1.0 if near else 0.0, dt * 4.0)
 	if not _hinted and _t > HINT_AFTER:
 		_hint()
@@ -275,6 +284,7 @@ func _process(dt: float) -> void:
 		_glint.omni_range = 0.9
 		_glint.shadow_enabled = false
 		add_child(_glint)
+		can_dig = true
 		_glint.global_position = pod_pos + Vector3.UP * 0.15
 		game.dialogue.bark("cristina", "There. In the cushions. Something white.")
 	if _glint:

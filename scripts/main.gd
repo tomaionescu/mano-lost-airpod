@@ -80,6 +80,9 @@ var idle_beats: Array = []   # what the idle life did, for the autotests: [{kind
 var _photo_poll := 0.0
 ## When the last sit-down ended and how long after its input (autotest=sit reads it: within 0.5 s, docs/DESIGN.md §4.1).
 var sit_stood := {}
+## What pause() interrupted when it was not free walking ({mode, frozen, cam, hud, mouse, focus}; empty in play and
+## when nothing is paused): resume() puts the scene back exactly so.
+var paused_from := {}
 
 
 func _ready() -> void:
@@ -625,7 +628,7 @@ func _opening(dream := true) -> void:
 	_show_card(ch)
 	_chapter_t = 0.0
 	_wake_pose()
-	await get_tree().create_timer(3.2).timeout
+	await get_tree().create_timer(3.2, false).timeout
 	var shots := wake_shots()
 	var desk: Array = shots[0]
 	var close: Array = shots[1]
@@ -642,8 +645,7 @@ func _opening(dream := true) -> void:
 	# between the two: a camera move from one to the other would pass through him)
 	var t := 0.0
 	while t < WAKE_HOLD:
-		await get_tree().process_frame
-		t += get_process_delta_time()
+		t += await _frame()
 		var d := smoothstep(0.0, WAKE_HOLD, t) * WAKE_DRIFT
 		camera_rig.set_shot(desk[0].move_toward(desk[1], d), desk[1], desk[2], -1.0, true)
 		world_env.set_wake_blur(WAKE_DESK_BLUR, desk[3] - d)
@@ -652,8 +654,7 @@ func _opening(dream := true) -> void:
 	world_env.set_wake_blur(1.0, close[3])
 	t = 0.0
 	while t < 3.0:
-		await get_tree().process_frame
-		t += get_process_delta_time()
+		t += await _frame()
 		var k := clampf(t / 3.0, 0.0, 1.0)
 		world_env.set_wake_blur(1.0 - k * k, close[3])
 		player.rig.eyes_closed = clampf(1.0 - k * 1.4 + (0.35 if (t > 1.2 and t < 1.45) else 0.0), 0.0, 1.0)
@@ -706,7 +707,7 @@ func _cold_open() -> void:
 	Sfx.music("ending", -20.0, 3.0)   # tiny, from an AirPod held out at arm's length
 	print("[chapter] 0 cold open: time %s, clock %s, Mano at %s" % [world_env.time_of_day, Chapters.clock_text(), player.global_position.snapped(Vector3.ONE * 0.01)])
 	_show_card(ch)
-	await get_tree().create_timer(3.4).timeout
+	await get_tree().create_timer(3.4, false).timeout
 	if mode != "cutscene":
 		return
 	camera_shot("cold_wide")
@@ -816,7 +817,7 @@ func begin_chapter(n: int, replay := false) -> void:
 	# the save follows the chapter at once, under the card: a quit before the next autosave (30 s of play) or the
 	# next conversation's end must not bring the night back in the last chapter's light and clock
 	save()
-	await get_tree().create_timer(3.2).timeout
+	await get_tree().create_timer(3.2, false).timeout
 	await hud.fade_to(0.0, 1.0).finished
 	opening_phase = ""
 	Sfx.duck_music(false)
@@ -1002,29 +1003,14 @@ func _set_reach(on: bool, bud_at := Vector3(-0.01, 0.035, 0.09)) -> void:
 	var att := BoneAttachment3D.new()
 	att.bone_name = "hand_r"
 	sk.add_child(att)
-	var white := StandardMaterial3D.new()
-	white.albedo_color = Color(0.97, 0.97, 0.96)
-	white.roughness = 0.18
-	white.clearcoat_enabled = true
-	# the AirPod: a bud and its stem on a pivot that rides the hand bone
+	# the AirPod (the right one, a little larger than life for the close shot) on a pivot that rides the hand bone:
+	# on its side in the palm, its plain outer side up toward the camera (the dark speaker mesh, face up, reads as
+	# the pupil of an eye) and the stem toward his thumb
 	var pod := Node3D.new()
 	att.add_child(pod)
-	var bud := MeshInstance3D.new()
-	var sm := SphereMesh.new()
-	sm.radius = 0.0105
-	sm.height = 0.021
-	bud.mesh = sm
-	bud.material_override = white
+	var bud := Player.make_airpod(true)
+	bud.basis = Basis(Vector3.UP, yaw - deg_to_rad(35.0)) * Basis(Vector3.BACK, deg_to_rad(-100.0)) * bud.basis * 1.1
 	pod.add_child(bud)
-	var stem := MeshInstance3D.new()
-	var cm := CapsuleMesh.new()
-	cm.radius = 0.0034
-	cm.height = 0.034
-	stem.mesh = cm
-	stem.material_override = white
-	stem.position = Vector3(0.012, -0.004, 0.0)
-	stem.rotation.z = 1.2
-	pod.add_child(stem)
 	_reach.append(att)
 	_seat_pod(att, pod, right * bud_at.x + Vector3.UP * bud_at.y + fwd * bud_at.z)
 
@@ -1107,7 +1093,7 @@ func _on_phone_closed() -> void:
 ## `$ song stem [seconds]`: a track previewed from the phone (the playlist pick), then the place's music again.
 func preview_song(stem: String, seconds := 10.0) -> void:
 	Sfx.song(stem, -8.0, 0.8, 1.0)
-	get_tree().create_timer(seconds).timeout.connect(func():
+	get_tree().create_timer(seconds, false).timeout.connect(func():
 		if Sfx.music_now() == stem and mode != "sit":
 			var m: Array = place_music()
 			Sfx.music(m[0], m[1], 2.0, 1.5))
@@ -1241,15 +1227,16 @@ func continue_game() -> void:
 		camera_rig.snap_behind(player.facing_yaw())
 		world_env.apply_time(GameState.flags.get("time", WorldEnv.DEFAULT_TIME))
 		camera_rig.clear_shot(true)
-		hud.fade_to(0.0, 0.8)
 		resume()
 		# saved between a chapter's last beat and its card (a sit-down at the sunset, a quit under it): the card
 		# plays now, or the night would wait in a finished chapter with nothing left to do
 		var ends := String(Chapters.info().get("ends_with", ""))
-		if ends != "" and bool(GameState.flags.get(ends, false)):
-			if Chapters.has(Chapters.current() + 1):
-				begin_chapter(Chapters.current() + 1)
-				return
+		var ended := ends != "" and bool(GameState.flags.get(ends, false))
+		if ended and Chapters.has(Chapters.current() + 1):
+			begin_chapter(Chapters.current() + 1)   # from the black the screen is already at: its card comes up over it
+			return
+		hud.fade_to(0.0, 0.8)
+		if ended:
 			if not bool(GameState.flags.get("credits_done", false)):
 				# saved after the last chapter's last beat, before the credits had played (a quit during them)
 				roll_credits()
@@ -1272,7 +1259,7 @@ func _replay_start_cue() -> void:
 	print("[chapter] Continue in chapter %d before its start cue ended: %s again" % [Chapters.current(), cue])
 	mode = "cutscene"
 	player.frozen = true
-	await get_tree().create_timer(0.9).timeout
+	await get_tree().create_timer(0.9, false).timeout
 	if mode != "cutscene":
 		return
 	if story.has_cue(cue):
@@ -1282,6 +1269,20 @@ func _replay_start_cue() -> void:
 
 
 func resume() -> void:
+	if not paused_from.is_empty():
+		# out of a pause in the middle of a scene: the scene goes on from where it stopped
+		var was := paused_from
+		paused_from = {}
+		mode = was.mode
+		get_tree().paused = false
+		menus.close()
+		player.frozen = was.frozen
+		camera_rig.input_enabled = was.cam
+		hud.set_hud_visible(was.hud)
+		Input.mouse_mode = was.mouse
+		if is_instance_valid(was.focus):
+			was.focus.grab_focus()
+		return
 	mode = "play"
 	get_tree().paused = false
 	_title_pose(false)   # straight from the title (dev plans do): Mano gets up where he stood
@@ -1647,6 +1648,9 @@ func _unhandled_input(event: InputEvent) -> void:
 			end_sit()
 		return
 	if mode != "play":
+		if event.is_action_pressed("pause") and mode in PAUSABLE:
+			get_viewport().set_input_as_handled()
+			pause()
 		return
 	if event.is_action_pressed("phone"):
 		get_viewport().set_input_as_handled()
@@ -1660,7 +1664,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			interact(target)
 	elif event.is_action_pressed("pause"):
 		get_viewport().set_input_as_handled()
-		menus.show_pause()
+		pause()
 	elif event.is_action_pressed("journal"):
 		get_viewport().set_input_as_handled()
 		_journal_hold = 0.0   # _update_journal_key decides: a tap or a hold
@@ -1675,6 +1679,31 @@ func _unhandled_input(event: InputEvent) -> void:
 		menus.show_photo()
 	elif event is InputEventMouseButton and event.pressed and Input.mouse_mode != Input.MOUSE_MODE_CAPTURED:
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+
+
+## The modes that can be paused: free walking, and a conversation, a cutscene or chapter card, a minigame, the
+## phone and a sit-down, each of which stops as it is and goes on afterwards (resume()). A sit-down has no pause
+## key (any key stands Mano up); it pauses when the window loses focus.
+const PAUSABLE := ["play", "dialogue", "cutscene", "minigame", "phone", "sit"]
+
+
+## The pause page over whatever is going on. The tree stops under it: timers, tweens, animation, physics, a
+## recorded line and the dream clip all wait. Outside free walking the page has only Resume and Settings.
+func pause() -> void:
+	if get_tree().paused or not mode in PAUSABLE:
+		return
+	if mode != "play":
+		paused_from = {"mode": mode, "frozen": player.frozen, "cam": camera_rig.input_enabled, "hud": hud.hud_visible,
+			"mouse": Input.mouse_mode, "focus": get_viewport().gui_get_focus_owner()}
+	menus.show_pause()
+
+
+## One frame of a scripted beat timed by hand: the next frame the tree is not paused in. Returns its length.
+func _frame() -> float:
+	await get_tree().process_frame
+	while get_tree().paused:
+		await get_tree().process_frame
+	return get_process_delta_time()
 
 
 func enter_menu(name: String) -> void:
@@ -1927,7 +1956,7 @@ func drop_airpod(grate := false) -> void:
 	if grate:
 		_drain_grate(Vector3(land.x, player.global_position.y + 0.006, land.z), player.facing_yaw())
 		var b := body
-		get_tree().create_timer(0.42).timeout.connect(func():
+		get_tree().create_timer(0.42, false).timeout.connect(func():
 			if is_instance_valid(b):
 				b.collision_mask = 0   # through the bars
 				b.linear_velocity = Vector3(0, -0.6, 0)
@@ -1944,10 +1973,10 @@ func drop_airpod(grate := false) -> void:
 	camera_rig.set_shot(from, land, 38.0 if grate else 34.0, from.distance_to(land), true)
 	var t := 0.0
 	while t < 2.2 and is_instance_valid(body) and _hold_shot:
-		await get_tree().process_frame
+		var dt := await _frame()
 		if not _hold_shot or not is_instance_valid(body):
 			break   # the next line already cut away
-		t += get_process_delta_time()
+		t += dt
 		var at := body.global_position
 		if at.y < land.y - 0.3:   # safety: never chase it under the floor
 			break
@@ -2733,7 +2762,7 @@ func _photo_group() -> void:
 	camera_shot("steps_group")
 	hud.set_letterbox(false)
 	for i in 3:
-		await get_tree().create_timer(GROUP_TIMER / 3.0).timeout
+		await get_tree().create_timer(GROUP_TIMER / 3.0, false).timeout
 		Sfx.ui("ui_hover", -2.0 + i * 2.0)
 	var heads := {}
 	for id in ["toma", "anisha", "ian", "silvia", "ishita", "cristina", "joaquin"]:
@@ -2809,7 +2838,7 @@ func set_airpods(where: String) -> void:
 ## "Six hours earlier."). The screen stays black after: what comes next fades it up. Returns how long it takes.
 func caption(text: String, seconds := 2.4) -> float:
 	hud.fade_to(1.0, 0.5)
-	get_tree().create_timer(0.55).timeout.connect(func():
+	get_tree().create_timer(0.55, false).timeout.connect(func():
 		if mode == "dialogue":   # still in the scene that asked (not skipped on into the next chapter's card)
 			hud.caption(text, seconds))
 	return 0.55 + seconds + 0.5
@@ -2878,9 +2907,10 @@ func _post_credits() -> void:
 	player.stow_airpods(true)   # both in the case: the post-credits put them in, one after the other
 	Sfx.set_zone("street")
 	if _score != "":
-		Sfx.music(_score, SCORE_DB - 4.0, 2.0)   # quieter now: in both his ears, walking home
+		Sfx.music(_score, SCORE_DB - 4.0, 2.0)
+		Sfx.music_level(SCORE_DB - 4.0, 2.0)   # quieter now: in both his ears, walking home (the credits' track goes on)
 	print("[credits] post-credits at %s on rue Pasteur" % Chapters.clock_text())
-	await get_tree().create_timer(0.6).timeout
+	await get_tree().create_timer(0.6, false).timeout
 	hud.fade_to(0.0, 1.2)
 	say(story.steps("post.credits"), "madame2")
 
@@ -2904,9 +2934,10 @@ const PLAY_MENUS := ["pause", "journal", "map", "wardrobe", "photo", "phone"]
 
 
 func _notification(what: int) -> void:
-	if what == NOTIFICATION_APPLICATION_FOCUS_OUT and mode == "play":
-		menus.show_pause()
-	elif what == NOTIFICATION_WM_CLOSE_REQUEST and (mode == "play" or mode in PLAY_MENUS):
-		# closing the window saves first; in a conversation, cutscene or minigame the last save stands
-		# (it was written at the end of the last conversation, or under the chapter card)
+	if what == NOTIFICATION_APPLICATION_FOCUS_OUT and (mode == "play" or not GameState.sandboxed()):
+		# an automated run goes on unattended in the background: only free walking pauses there
+		pause()
+	elif what == NOTIFICATION_WM_CLOSE_REQUEST and (mode == "play" or mode in PLAY_MENUS) and paused_from.is_empty():
+		# closing the window saves first; in a conversation, cutscene or minigame (paused or not) the last save
+		# stands (it was written at the end of the last conversation, or under the chapter card)
 		save()

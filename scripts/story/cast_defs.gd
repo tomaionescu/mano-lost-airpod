@@ -15,7 +15,7 @@ const SPEAKERS := {
 static func npc_defs() -> Array:
 	return [
 		{"id": "toma", "name": "Toma", "model": "toma_fit1", "pos": Vector3(17.55, -0.9, 14.33), "yaw": PI, "sit": true, "color": Color("#6fa3ff"), "range": 2.3},
-		{"id": "prof", "name": "M. Bernard", "model": "prof", "pos": Vector3(18.2, -2.4, 7.4), "yaw": 0.0, "color": Color("#d2b48c"), "range": 2.6, "talk_clip": "talk_idle", "chatting": true},
+		{"id": "prof", "name": "M. Bernard", "model": "prof", "pos": Vector3(18.2, -2.4, 7.4), "yaw": 0.0, "color": Color("#d2b48c"), "range": 2.6, "talk_clip": "talk_idle", "lecturing": true},
 		{"id": "sleeper", "name": "Sleepy SUP", "model": "lucas", "pos": Vector3(24.5, -1.5, 12.43), "yaw": PI, "sit": true, "sleep": true, "no_look": true, "color": Color("#f0a35e")},
 		{"id": "ian", "name": "Ian", "model": "ian", "pos": Vector3(5.0, 0.0, 28.0), "yaw": PI / 2, "color": Color("#d9a877"), "range": 2.3, "talk_clip": "talk_idle", "chatting": true},
 		{"id": "silvia", "name": "Silvia", "model": "silvia", "pos": Vector3(7.0, 0.0, 28.0), "yaw": -PI / 2, "color": Color("#ffb38a"), "range": 2.3, "talk_clip": "talk_idle", "chatting": true},

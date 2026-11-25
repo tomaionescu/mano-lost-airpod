@@ -485,6 +485,10 @@ in Godot with `node.get_meta("extras")`. `scripts/level/level_binder.gd` reads t
 Each prop is built round its own origin, at floor contact and facing +Z, and exported to `assets/props/<name>.glb` with
 its own `-colonly` collider when it is solid. `PROP_` markers place them.
 
+The AirPod (`airpod.glb`) is the exception: the game attaches it itself (`Player.make_airpod`), so its origin is the
+centre of its head, with the ear canal toward -X, the stem down -Y and leaning toward +Z. It is the left one, mirrored in
+X for the right ear, and the stem is a separate mesh (`airpod_stem`). `--props-only --props=airpod` rebuilds it alone.
+
 `assets/levels/campus_import.gd` is the post-import script for the level and every prop; the build writes it into each
 `.import` file. It turns on vertex colour as an albedo multiplier, because the baked grime and variation would otherwise
 be ignored, and applies the `far_*` rule. At load, `LevelBinder` creates the lights, instances the props, builds

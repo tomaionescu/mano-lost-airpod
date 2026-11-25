@@ -2,7 +2,7 @@
 Kit.js props) and exported to assets/props/<name>.glb with its own -colonly collider when it is solid.
 Placed in the level by PROP_<name>__<nn> markers (campus_dress.py)."""
 import bpy, math, random, os
-from mathutils import Vector
+from mathutils import Vector, Matrix
 import campus_geo as G
 import campus_mat as CM
 from campus_mat import mat as defmat
@@ -48,6 +48,9 @@ defmat("M_plate_blue", None, color="#1f4fa8", rough=0.4)
 defmat("M_sign_red", None, color="#c8202a", rough=0.45)
 defmat("M_sign_blue", None, color="#1c4fa0", rough=0.45)
 defmat("M_barrier_red", None, color="#d63b2f", rough=0.5)
+defmat("M_airpod_white", None, color="#f6f4ef", rough=0.16, grime="none", macro=0.0)
+defmat("M_airpod_mesh", None, color="#111215", rough=0.8, metal=0.3, grime="none", macro=0.0)
+defmat("M_airpod_sensor", None, color="#060608", rough=0.1, grime="none", macro=0.0)
 
 
 # ------------------------------------------------------------------ small geometry helpers
@@ -718,6 +721,82 @@ def tv_unit(B):
     B.cbox(-0.9, 0.0, -0.22, 0.9, 1.32, 0.22)
 
 
+# ------------------------------------------------------------------ the AirPod
+def skin(B, rows, mats, inside):
+    """smooth closed surface through rings of local points (every ring has the same count; a ring of one repeated
+    point is a pole). mats[j] is the material of the band between rings j and j + 1. Normals come from the
+    neighbouring points and face away from `inside`."""
+    inside = Vector(inside)
+    rows = [[Vector(p) for p in r] for r in rows]
+    n = len(rows[0])
+    nrm = []
+    for j, r in enumerate(rows):
+        up, dn = rows[max(j - 1, 0)], rows[min(j + 1, len(rows) - 1)]
+        out = []
+        for i in range(n):
+            c = (r[(i + 1) % n] - r[i - 1]).cross(dn[i] - up[i])
+            if c.length < 1e-12:   # a pole
+                c = r[i] - inside
+            out.append(c.normalized() * (1.0 if c.dot(r[i] - inside) >= 0 else -1.0))
+        nrm.append(out)
+    for j in range(len(rows) - 1):
+        for i in range(n):
+            k = (i + 1) % n
+            q = [(rows[j][i], nrm[j][i], (i / n, j / len(rows))), (rows[j][k], nrm[j][k], ((i + 1) / n, j / len(rows))),
+                 (rows[j + 1][k], nrm[j + 1][k], ((i + 1) / n, (j + 1) / len(rows))), (rows[j + 1][i], nrm[j + 1][i], (i / n, (j + 1) / len(rows)))]
+            if (q[0][0] - q[1][0]).length < 1e-9:
+                q = q[1:]
+            elif (q[2][0] - q[3][0]).length < 1e-9:
+                q = q[:3]
+            fn = (q[1][0] - q[0][0]).cross(q[2][0] - q[0][0])
+            if fn.dot(q[0][0] - inside) < 0:
+                q = q[::-1]
+            B.face([v[0] for v in q], mats[j], uvs=[v[2] for v in q], smooth=True, normals=[v[1] for v in q])
+
+
+def airpod(B):
+    """A true-wireless stem earbud at real size, the left one (mirror X for the right). Unlike the furniture its
+    origin is the centre of its head, because the game seats it in an ear and on a palm: the ear canal is toward
+    -X, the outside of the ear +X, the stem hangs down -Y and leans toward +Z (the wearer's face). The stem is
+    its own part (airpod_stem), so the game can give it another material."""
+    mm = 0.001
+    r0 = 9.5 * mm
+    S = Vector((0.88, 1.0, 0.95))            # the head: an ovoid, shallower than it is tall
+    d = Vector((-1.0, -0.25, 0.35)).normalized()   # toward the ear canal
+    bulge, spread = 3.2 * mm, math.radians(62)
+
+    def head(n):
+        a = n.angle(d)
+        p = Vector((n.x * S.x, n.y * S.y, n.z * S.z)) * r0
+        return p + d * bulge * (0.5 + 0.5 * math.cos(PI * a / spread)) if a < spread else p
+
+    # the head, its pole on the bulge so that the speaker mesh is a clean cap
+    q = Vector((0, 1, 0)).rotation_difference(d).to_matrix()
+    seg, rings, cap = 40, 28, 3
+    rows = [[head(q @ Vector((math.sin(PI * j / rings) * math.cos(2 * PI * i / seg), math.cos(PI * j / rings),
+                              math.sin(PI * j / rings) * math.sin(2 * PI * i / seg)))) for i in range(seg)] for j in range(rings + 1)]
+    skin(B, rows, ["M_airpod_mesh"] * cap + ["M_airpod_white"] * (rings - cap), (0, 0, 0))
+
+    # the sensor: a dark glossy lens just proud of the shell, above the bulge
+    e = Vector((-0.72, 0.62, -0.3)).normalized()
+    en = Vector((e.x / S.x, e.y / S.y, e.z / S.z)).normalized()
+    m = Matrix.Translation(head(e) - en * 0.1 * mm) @ Vector((0, 1, 0)).rotation_difference(en).to_matrix().to_4x4()
+    with B.frame(G.Xf(m)):
+        B.sphere(0, 0, 0, 1.3 * mm, "M_airpod_sensor", seg=16, rings=8, sy=0.25)
+
+    # the stem, from inside the head down to a metal ring round its end and the dark microphone mesh in it:
+    # (mm along it, radius in mm, material of the band below)
+    top, end = Vector((3.0, 1.0, 0.5)) * mm, Vector((3.6, -23.0, 5.0)) * mm
+    L = (end - top).length / mm
+    prof = [(0.0, 0.0, "M_airpod_white"), (0.0, 4.4, "M_airpod_white"), (5.0, 3.75, "M_airpod_white"), (10.0, 3.4, "M_airpod_white"),
+            (14.0, 3.3, "M_airpod_white"), (L - 1.5, 3.3, "M_chrome"), (L - 0.35, 3.3, "M_chrome"), (L - 0.08, 3.05, "M_chrome"),
+            (L, 2.5, "M_airpod_mesh"), (L, 0.0, None)]
+    m = Matrix.Translation(top) @ Vector((0, -1, 0)).rotation_difference((end - top).normalized()).to_matrix().to_4x4()
+    with B.in_part("airpod_stem"), B.frame(G.Xf(m)):
+        rows = [[(r * mm * math.cos(2 * PI * i / 24), -t * mm, r * mm * math.sin(2 * PI * i / 24)) for i in range(24)] for t, r, _ in prof]
+        skin(B, rows, [p[2] for p in prof[:-1]], (0, -L * mm / 2, 0))
+
+
 # ------------------------------------------------------------------ registry + export
 def registry():
     import campus_props_out as O
@@ -740,7 +819,7 @@ def registry():
         "beanbag_lime": (beanbag_lime, {}), "plant_lobby": (plant_lobby, {}), "plant_small": (plant_small, {}),
         "rollup_banner": (rollup_banner, {}), "water_cooler": (water_cooler, {}), "wet_floor_sign": (wet_floor_sign, {}),
         "fridge_drinks": (fridge_drinks, {}), "cash_register": (cash_register, {}), "tray_stack": (tray_stack, {}),
-        "tv_unit": (tv_unit, {}),
+        "tv_unit": (tv_unit, {}), "airpod": (airpod, {}),
     }
     R.update(O.registry())
     return R

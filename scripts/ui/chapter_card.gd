@@ -118,7 +118,7 @@ func _play() -> void:
 			if calm:
 				_circle.progress = 1.0
 			else:
-				get_tree().create_timer(t).timeout.connect(func(): Ink.draw_on(self, _circle, 0.2))
+				get_tree().create_timer(t, false).timeout.connect(func(): Ink.draw_on(self, _circle, 0.2))
 			t += 0.15
 		elif l.text == time_text:
 			Ink.write_on(l, TIME_T, t)
@@ -129,7 +129,7 @@ func _play() -> void:
 			t += secs + 0.05
 		written = t
 	var leave := maxf(written + 0.6, 0.25 + DATE_T + TIME_T + hold - 0.1)
-	get_tree().create_timer(leave).timeout.connect(_leave)
+	get_tree().create_timer(leave, false).timeout.connect(_leave)
 
 
 func _tween_rule(delay: float, calm: bool) -> void:

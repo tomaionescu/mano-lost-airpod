@@ -71,9 +71,9 @@ wins minigames from outside, so it does not judge pacing, difficulty or how a sc
 
 Input
 
-- The game can only be paused while walking freely. During a conversation, a cutscene or a minigame
-  the pause key does nothing and losing window focus does not pause. In a sit-down any key stands Mano
-  up.
+- The credits roll cannot be paused: its keys run it to the end. A sit-down pauses only when the
+  window loses focus, since any key stands Mano up. In the phone, Esc goes back; the gamepad's Menu
+  button pauses.
 - Keys are bound by physical position and cannot be rebound in the settings. On an AZERTY keyboard the
   map therefore opens with the `,` key, not with `M`.
 - Six prompts print fixed letters instead of the live binding: babyfoot (`W`, `S`), the lost and found
@@ -85,38 +85,36 @@ Input
 
 Characters
 
-- Eyes do not move. Every model carries the eight ARKit eye-look shapes, and the rig drives the head,
-  the blink, the mouth and the expressions but never those shapes, so a character looks where the head
-  points.
 - Mme Dupont's hair mesh is broken: stretched polygons hang from the fringe over her face and down to
   her waist in every front shot, including the last line of the game.
 
 Light and camera
 
-- Exposure is set per time of day only. Indoors the game lowers ambient light, fog and the
-  conversation fill light but keeps the outdoor exposure, so the Under is too dark at blue hour and at
-  night and the Voltaire stairwell is too bright.
+- Exposure follows the time of day and, indoors, three places only: the Under and Voltaire's ground
+  and first floors. The other rooms keep the outdoor exposure at night; SM14 looks right there, the
+  cafeteria and Amphi 4 have not been checked.
 - Anisha's first line opens on a two-shot from standing height in which Mano's back fills the frame.
 - Mano's thoughts are filmed over the nearest shoulder, which is crowded when three people stand
   together at the cafeteria counter or on the steps.
 
 Minigames
 
-- Babyfoot is not balanced. Karim's rods move at roughly half the speed of Mano's, a partner's rod is
-  faster than Karim's as well, and none of it has been tuned against players.
-- The babyfoot table in the level has its own eight rods of figures. The minigame draws its four rods
-  on top without hiding them, so the table's figures show through.
+- Babyfoot is tuned against a simulated player (a reaction delay, an aim error, missed kicks), not
+  against people. In that simulation a decent player wins the first game about two times in three
+  with a partner and less than half the time alone, and about half the games end on the 90 s clock.
 
 Audio
 
-- The music is never panned to one ear, although Mano wears a single AirPod until chapter 4. It plays
-  in stereo throughout, and there is no mono setting (V2-12 in the design backlog).
+- The music plays in stereo throughout, although Mano wears a single AirPod until chapter 4: the
+  one-ear mix of the design (V2-12) is left out by choice.
 - All music is six tracks by Kevin MacLeod. The soundtrack change planned in V2-11 has not been made,
   nor has the audio mix pass (V2-34).
 
 Story and text
 
-- Chapter 5 is short: one to-do and no walking, about four minutes by the estimate described below.
+- Chapter 5 is short by design: two to-dos on the steps (talk with three friends, then the offer) and no
+  errand: about four and a half minutes with the credits by the estimate described below. Its length has
+  not been timed with a player.
 - Karim says Cristina asked for "M." and did not know the name, but her message in the group chat at
   18:54 already says "It's Mano's?".
 - At night the thought on the passage gate says it is locked, and Mano walks through it all night.
@@ -149,14 +147,11 @@ subtitle background, mono audio and a UI scale (V2-35), and the KB1 terrace (V2-
 
 ## Next
 
-1. Make pause work in conversations, cutscenes and minigames.
-2. Add export presets, build the game, and run it on a second machine and with a gamepad.
-3. Read every key prompt from the live binding, bind the map key by its label, and give photo mode
+1. Add export presets, build the game, and run it on a second machine and with a gamepad.
+2. Read every key prompt from the live binding, bind the map key by its label, and give photo mode
    gamepad controls.
-4. Rebuild Mme Dupont's hair.
-5. Add an exposure correction per interior, starting with the Under and the Voltaire stairwell.
-6. Drive the eye-look shapes from the same target as the head.
-7. Hide the table's own figures during babyfoot, then tune Karim's speed against real players.
-8. Play the music in the left ear only until the second AirPod is found, with a mono setting beside it.
-9. Have someone who has not seen the game play it through with a stopwatch, and use the result to
+3. Rebuild Mme Dupont's hair.
+4. Check the cafeteria and Amphi 4 at night and give them a place entry if they need one.
+5. Tune babyfoot against real players.
+6. Have someone who has not seen the game play it through with a stopwatch, and use the result to
    decide what chapter 5 needs.

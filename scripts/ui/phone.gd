@@ -84,7 +84,6 @@ var _sb_sel: StyleBoxFlat
 
 func _ready() -> void:
 	layer = 11
-	process_mode = Node.PROCESS_MODE_ALWAYS
 	UITheme.init()
 	_root = Control.new()
 	_root.set_anchors_preset(Control.PRESET_FULL_RECT)
@@ -231,7 +230,7 @@ func show_dead() -> void:
 	_dark = 1.0
 	battery = 0
 	_batt.text = "0 %"
-	get_tree().create_timer(1.6).timeout.connect(func():
+	get_tree().create_timer(1.6, false).timeout.connect(func():
 		if state == "dead":
 			hide_card())
 
@@ -245,7 +244,7 @@ func glance(dead: bool) -> void:
 		show_dead()
 		return
 	show_lock(Chapters.clock_text())
-	get_tree().create_timer(2.4).timeout.connect(func():
+	get_tree().create_timer(2.4, false).timeout.connect(func():
 		if state == "lock":
 			hide_card())
 
@@ -263,7 +262,7 @@ func flood(msgs: Array, clock: String) -> float:
 	var t := 0.0
 	var buzzes := clampi(n / 6 + 1, 1, 6)
 	for k in buzzes:
-		get_tree().create_timer(t + k * 0.42).timeout.connect(func(): Sfx.ui("phone_buzz", -7.0 - k))
+		get_tree().create_timer(t + k * 0.42, false).timeout.connect(func(): Sfx.ui("phone_buzz", -7.0 - k))
 	for i in shown.size():
 		var m: Dictionary = shown[i]
 		var line := String(m.get("text", ""))
@@ -273,9 +272,9 @@ func flood(msgs: Array, clock: String) -> float:
 		if Chat.threads().get(String(m.get("thread", "")), {}).get("group", false):
 			head = "%s, %s" % [head, Chat.title(String(m.get("thread", "")))]
 		var delay := 0.3 + i * 0.35
-		get_tree().create_timer(delay).timeout.connect(func(): preview(head, line, false))
+		get_tree().create_timer(delay, false).timeout.connect(func(): preview(head, line, false))
 	if n > MAX_ROWS:
-		get_tree().create_timer(0.3 + shown.size() * 0.35).timeout.connect(func():
+		get_tree().create_timer(0.3 + shown.size() * 0.35, false).timeout.connect(func():
 			_more_row(n - MAX_ROWS))
 	return 0.6 + shown.size() * 0.35 + 0.8
 
@@ -306,7 +305,7 @@ func is_open() -> bool:
 
 func _buzz() -> void:
 	Sfx.ui("phone_buzz", -6.0)
-	get_tree().create_timer(0.32).timeout.connect(func(): Sfx.ui("phone_buzz", -8.0))
+	get_tree().create_timer(0.32, false).timeout.connect(func(): Sfx.ui("phone_buzz", -8.0))
 
 
 ## The battery since the BDE strip: 100 % at 19:10, a per cent every six minutes.
@@ -772,7 +771,7 @@ func reply(i: int) -> void:
 	Chat.mark_read(tid)
 	_go("thread", tid)
 	if not reacts.is_empty():
-		get_tree().create_timer(1.1).timeout.connect(func():
+		get_tree().create_timer(1.1, false).timeout.connect(func():
 			Sfx.ui("phone_buzz", -9.0)
 			Chat.mark_read(tid)
 			if app == "thread" and thread_id == tid:
@@ -876,7 +875,7 @@ func _input(event: InputEvent) -> void:
 	var handled := true
 	if event is InputEventKey and event.is_action_pressed("phone"):
 		close()
-	elif event.is_action_pressed("back") or event.is_action_pressed("pause"):
+	elif event.is_action_pressed("back"):   # Esc is also the pause key: in the phone it goes back; the Menu button pauses
 		back()
 	elif event.is_action_pressed("ui_up", true) or event.is_action_pressed("ui_up_alt", true):
 		_move(-1)
@@ -936,6 +935,8 @@ func _process(dt: float) -> void:
 		_batt.modulate.a = screen_on * (0.35 + 0.65 * (0.5 + 0.5 * cos(_t * 14.0)))
 	if _card.visible:
 		_card.queue_redraw()
+	if state == "dead" and _want == 0.0 and _shown == 0.0:
+		state = "hidden"   # the dead phone is back in his pocket: the next glance or phone key shows it again
 	# the phone in his hand: slides up from the bottom right, the scene dims behind it
 	_open_k = move_toward(_open_k, 1.0 if state == "open" else 0.0, dt / 0.28)
 	var ok := _open_k * _open_k * (3.0 - 2.0 * _open_k)

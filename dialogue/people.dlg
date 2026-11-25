@@ -5,15 +5,20 @@
 # lines that changed (V2-10, V2-21..23) are listed in tests/fixtures/v1_rewrites.json. Chapter beats live in the
 # chapter files (c1.dlg to c5.dlg). What everyone says in chapters 3, 4 and 5 (V2-25 to V2-27) comes first in
 # each cue, the later chapter before the earlier one (`chapter == 3`), so chapters 1-2 play as before. In chapter
-# 5, once the group photo is taken, talking to one of the seven friends offers the other AirPod
+# 5, after the group photo, a friend's first talk is their exchange on the steps (steps_<friend>, counted in
+# steps_talks by c5.heard); once three are counted, a friend Mano has talked with offers the other AirPod
 # (c5.offer_<friend>).
 
 ~ talk.toma
-if chapter == 5 and group_photo and given_to == ""
+if chapter == 5 and steps_toma and steps_talks >= 3 and given_to == ""
 	=> c5.offer_toma
 elif chapter == 5
-	% toma: [#smile] Best night. Don't tell anyone I said that. [slot]
-	% toma: [#grin] The playlist worked. The steps worked. You worked. [slot]
+	toma: [#smile] Best night. Don't tell anyone I said that. [slot]
+	mano: [#smirk] Too late. It's going in the group chat.
+	toma: [#grin] The playlist worked. The steps worked. You worked. [slot]
+	if not steps_toma
+		$ set steps_toma
+		=>< c5.heard
 elif chapter == 4 and not found
 	toma: [#grin] Cristina found you? Then why is there still one ear? [slot]
 	toma: The sofa. Go. Kebabs on the steps, ideally warm. [slot]
@@ -58,11 +63,15 @@ prof: Shortest path to it: not my problem.
 
 # Ian and Silvia stand together: either of them starts the pastry war
 ~ talk.ian
-if chapter == 5 and group_photo and given_to == ""
+if chapter == 5 and steps_ian and steps_talks >= 3 and given_to == ""
 	=> c5.offer_ian
 elif chapter == 5
-	% ian: [#smile] Same pastry, same kebab, same song. We're fine. [slot]
-	% silvia: [#smile] Ian checked the placeholders. I'm so proud. [slot]
+	ian: [#smile] Same pastry, same kebab, same song. We're fine. [slot]
+	silvia: [#smile] Ian checked the placeholders. I'm so proud. [slot]
+	mano: [#smile] Peace on the steps. Noted. In ink.
+	if not steps_ian
+		$ set steps_ian
+		=>< c5.heard
 elif chapter == 4
 	ian: [#smile] The report's done. Together. Zero lorem ipsum. [slot]
 	silvia: [#grin] One lorem ipsum. I left one in. For love. [slot]
@@ -85,7 +94,7 @@ else
 	=> c1.pastry
 
 ~ talk.silvia
-if chapter == 5 and group_photo and given_to == ""
+if chapter == 5 and steps_ian and steps_talks >= 3 and given_to == ""
 	=> c5.offer_silvia
 else
 	=> talk.ian
@@ -215,11 +224,15 @@ else
 ~ talk.anisha
 if not toma
 	anisha: [#annoyed] Not now, my code is dying.
-elif chapter == 5 and group_photo and given_to == ""
+elif chapter == 5 and steps_anisha and steps_talks >= 3 and given_to == ""
 	=> c5.offer_anisha
 elif chapter == 5
-	% anisha: [#smile] OK at 23:38. I'm framing the terminal. [slot]
-	% anisha: [#grin] Harissa at midnight. Best decision of the year. [slot]
+	anisha: [#smile] OK at 23:38. I'm framing the terminal. [if mouli_night] [slot]
+	mano: [#smirk] Frame the kebab too. It did half the work. [if mouli_night]
+	anisha: [#grin] Harissa at midnight. Best decision of the year. [slot]
+	if not steps_anisha
+		$ set steps_anisha
+		=>< c5.heard
 elif chapter == 4 and smuggled and not mouli_night
 	=> c4.smuggled
 elif chapter == 4 and mouli_night
@@ -335,11 +348,15 @@ else
 
 # The three new friends (V2-21): on campus only where a chapter stages them (data/chapters.json "stage")
 ~ talk.ishita
-if chapter == 5 and group_photo and given_to == ""
+if chapter == 5 and steps_ishita and steps_talks >= 3 and given_to == ""
 	=> c5.offer_ishita
 elif chapter == 5
-	% ishita: [#smile] Ten photos. One week. I'm already nervous. [slot]
-	% ishita: [#grin] Best tour of my life. Lowest budget. [slot]
+	ishita: [#smile] Ten photos. One week. I'm already nervous. [slot]
+	mano: Eleven, with the last one. That one's the keeper.
+	ishita: [#grin] Best tour of my life. Lowest budget. [slot]
+	if not steps_ishita
+		$ set steps_ishita
+		=>< c5.heard
 elif chapter == 4 and not found
 	ishita: [#smirk] Cristina found you? Then why are you still here? Go! [slot]
 elif chapter == 4
@@ -371,11 +388,15 @@ else
 	ishita: [#grin] I want to meet whoever writes notes like that. Find her.
 
 ~ talk.joaquin
-if chapter == 5 and group_photo and given_to == ""
+if chapter == 5 and steps_joaquin and steps_talks >= 3 and given_to == ""
 	=> c5.offer_joaquin
 elif chapter == 5
-	% joaquin: [#neutral] Kebabs eaten: eight. Sauces right: most. [slot]
-	% joaquin: [#smile] Toma's thing. I came. Definitely. [slot]
+	joaquin: [#neutral] Kebabs eaten: eight. Sauces right: most. [slot]
+	mano: [#smirk] Most is a passing grade.
+	joaquin: [#smile] Toma's thing. I came. Definitely. [slot]
+	if not steps_joaquin
+		$ set steps_joaquin
+		=>< c5.heard
 elif chapter == 4 and met_cristina and not kebab_done
 	=> c4.orders_again
 elif chapter == 4
@@ -397,11 +418,15 @@ else
 
 # Cristina is never on stage before chapter 4 (the near-misses of chapter 3): the last line is only a fallback
 ~ talk.cristina
-if chapter == 5 and group_photo and given_to == ""
+if chapter == 5 and steps_cristina and steps_talks >= 3 and given_to == ""
 	=> c5.offer_cristina
 elif chapter == 5
-	% cristina: [#smile] First night with everyone. I like the steps. [slot]
-	% cristina: [#grin] I'm keeping the sticky notes. Evidence. [slot]
+	cristina: [#smile] First night with everyone. I like the steps. [slot]
+	mano: [#smile] The steps like you back. So do we.
+	cristina: [#grin] I'm keeping the sticky notes. Evidence. [slot]
+	if not steps_cristina
+		$ set steps_cristina
+		=>< c5.heard
 elif chapter == 4 and not met_cristina
 	=> c4.meet
 elif chapter == 4 and searching and not found

@@ -212,6 +212,14 @@ func music(stem: String, volume_db := -6.0, fade := 2.5, out := 2.0) -> void:
 	music_started.emit(stem)
 
 
+## The track playing now moves to `volume_db` over `fade` seconds (music() does nothing for the same track).
+func music_level(volume_db: float, fade := 2.5) -> void:
+	var p := _music[_music_idx]
+	if _music_name != "" and p.has_meta("target_db"):
+		p.set_meta("target_db", volume_db)
+		p.set_meta("fade", fade)
+
+
 ## The track playing now ("" for none).
 func music_now() -> String:
 	return _music_name

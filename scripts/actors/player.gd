@@ -58,6 +58,34 @@ func set_model(path: String) -> void:
 var airpods := {}   # "left" / "right" -> Node3D
 
 
+const AIRPOD := "res://assets/props/airpod.glb"
+
+
+## An AirPod (the prop is the left one: its origin the centre of its head, the ear canal toward -X, the stem down -Y
+## and leaning toward +Z, the wearer's face), mirrored for the right ear. Its white plastic gets its gloss and a
+## little warmth here, which the glTF file cannot carry. `body` replaces the white plastic (the lost & found's gold
+## one), `stem` the stem's alone (a chewed one).
+static func make_airpod(right := false, body: Material = null, stem: Material = null) -> Node3D:
+	var pod: Node3D = load(AIRPOD).instantiate()
+	if right:
+		pod.scale.x = -1.0
+	for mi: MeshInstance3D in pod.find_children("*", "MeshInstance3D", true, false):
+		for i in mi.mesh.get_surface_count():
+			var white := mi.mesh.surface_get_material(i) as StandardMaterial3D
+			if white == null or white.resource_name != "M_airpod_white":
+				continue
+			white.clearcoat_enabled = true
+			white.clearcoat_roughness = 0.1
+			white.subsurf_scatter_enabled = true
+			white.subsurf_scatter_strength = 0.2
+			white.backlight_enabled = true
+			white.backlight = Color(0.22, 0.15, 0.1)
+			var over := stem if stem != null and mi.name == "airpod_stem" else body
+			if over != null:
+				mi.set_surface_override_material(i, over)
+	return pod
+
+
 ## The one AirPod Mano still has, in his left ear (the plot of the game).
 func _attach_airpod(side := "left") -> void:
 	var sk := rig.skeleton
@@ -67,29 +95,12 @@ func _attach_airpod(side := "left") -> void:
 	att.bone_name = "head"
 	sk.add_child(att)
 	var head_rest := sk.get_bone_global_rest(sk.find_bone("head"))
-	var ear_model := head_rest.origin + Vector3(0.074 if side == "left" else -0.074, 0.03, -0.004)
+	var ear_model := head_rest.origin + Vector3(0.078 if side == "left" else -0.078, 0.03, -0.004)
+	# a pivot on the ear with the model's axes (not the head bone's), which is the frame the prop is built in
 	var pod := Node3D.new()
-	pod.position = head_rest.affine_inverse() * ear_model
+	pod.transform = head_rest.affine_inverse() * Transform3D(Basis.IDENTITY, ear_model)
 	att.add_child(pod)
-	var white := StandardMaterial3D.new()
-	white.albedo_color = Color(0.97, 0.97, 0.96)
-	white.roughness = 0.18
-	white.clearcoat_enabled = true
-	var bud := MeshInstance3D.new()
-	var sm := SphereMesh.new()
-	sm.radius = 0.0095
-	sm.height = 0.019
-	bud.mesh = sm
-	bud.material_override = white
-	pod.add_child(bud)
-	var stem := MeshInstance3D.new()
-	var cm := CapsuleMesh.new()
-	cm.radius = 0.0032
-	cm.height = 0.03
-	stem.mesh = cm
-	stem.position = head_rest.basis.inverse() * Vector3(0.002, -0.017, 0.006)
-	stem.material_override = white
-	pod.add_child(stem)
+	pod.add_child(make_airpod(side == "right"))
 	pod.name = "AirPod_" + side
 	airpods[side] = pod
 

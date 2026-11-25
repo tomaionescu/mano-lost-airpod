@@ -15,13 +15,15 @@ extends Node
 ## Mano up from a sit-down after a few seconds.
 ## Cold open, finale and chapter 4 plans: cold_open (new game: the cold open's card, its three shots, the freeze,
 ## "Six hours earlier.", then chapter 1's card), credits (chapter 5 from the title: the steps, the toast, the group
-## photo with every head in its frame, "Want one?", the credits roll with its prints, the post-credits drain, the
+## photo with every head in its frame, three talks, "Want one?" [give=<id>], the credits roll with its prints, the post-credits drain, the
 ## recap), kebab (Joaquin's orders with real keys: two tickets wrong on purpose, Cristina's pencil line, the cook's
-## read-back), findmy (the sound search in the Under: rings between the thumps and on one, the signal bar closing
+## read-back), findmy (the sound search in the Under: no dig before a ring, rings between the thumps and on one, the signal bar closing
 ## in, the battery gone, Cristina's phone, the dig), soleil ("1, 2, 3, ACU!": caught three times on purpose, then
 ## "I saw nothing"), moulinette night [round_time=s] (the night variant: two runs time out, Anisha takes the
 ## keyboard), shots ids=a,b [mano=<point>] (world.json shots as framed, for checking them). basic and opening wait
 ## out the cold open; story plays from the cold open to the recap, film photos and the credits included.
+## pause [ids=<npc>] [dream | games]: Esc in a conversation, a minigame and on a chapter card, and what must wait
+## under the page; with `dream`, in the opening's clip and wake-up instead; with `games`, in each minigame.
 ## Collectibles and campus-life plans (scripts/dev/autotest_life.gd): ducks, photos, overheard [ids=], looks [ids=]
 ## [room=] [night], side, idle, chapter_select, journal, map.
 
@@ -175,6 +177,267 @@ func _choice_keys() -> void:
 			d._next()
 			await wait(0.2)
 		await wait(0.5)
+
+
+func _check(ok: bool, what: String) -> void:
+	print("[autotest] pause %s: %s" % ["ok" if ok else "FAILED", what])
+
+
+## Esc on the keyboard, then what the pause page shows: the mode, the tree stopped, the words on the notebook.
+func _pause_with_esc(where: String, from_mode: String) -> void:
+	await _key(KEY_ESCAPE)
+	await wait(0.8)
+	var words: Array = []
+	for b in game.menus.current.find_children("*", "Button", true, false):
+		words.append(b.text)
+	_check(game.mode == "pause" and get_tree().paused and game.paused_from.get("mode", "") == from_mode and words == ["Resume", "Settings"],
+		"%s: Esc pauses (mode %s from %s, tree paused %s, menu %s)" % [where, game.mode, game.paused_from.get("mode", "-"), get_tree().paused, words])
+	await shot(where + "_paused")
+
+
+## autotest=pause [ids=<npc>] [dream]: Esc in a conversation (the line, its recording and the faces stop; Settings changes the
+## subtitle size under the page; Esc goes back and resumes the line), in a minigame (coffee: its countdown waits)
+## and on a chapter card (the card and the black wait). Then the small fixes: one HUD fade at a time, the level
+## of the track playing, the dead phone glanced at twice, and Continue on a save at a chapter's end (black from
+## the title to the card). With `dream`: the opening's clip and its wake-up beats instead.
+func _pause_plan() -> void:
+	await wait(1.0)
+	game.menus.close()
+	if "dream" in OS.get_cmdline_user_args():
+		# the opening's clip and the hand-timed wake-up beats under a pause (chapter 1's opening, no cold open)
+		game._stop_title_fade()
+		game._title_pose(false)
+		game._opening()
+		while game.dream_player == null:
+			await wait(0.05)
+		await wait(2.0)
+		await _pause_with_esc("dream", "cutscene")
+		var at: float = game.dream_player.stream_position
+		await wait(3.0)
+		_check(is_equal_approx(game.dream_player.stream_position, at) and game.dream_player.is_playing(), "the clip waits (%.2f s in, then %.2f)" % [at, game.dream_player.stream_position])
+		await _key(KEY_ESCAPE)
+		await wait(1.0)
+		_check(game.dream_player != null and game.dream_player.stream_position > at, "and plays on after Resume (%.2f s in)" % (game.dream_player.stream_position if game.dream_player else -1.0))
+		await shot("dream_resumed")
+		await _past_dream()
+		await wait(0.5)
+		await _pause_with_esc("wake", "cutscene")
+		await wait(4.0)   # longer than the beat on the desk
+		_check(game.opening_phase == "wake" and game.player.rig.eyes_closed > 0.9, "the wake-up waits (phase '%s', eyes %.2f closed)" % [game.opening_phase, game.player.rig.eyes_closed])
+		await _key(KEY_ESCAPE)
+		await wait(0.4)
+		await shot("wake_resumed")
+		return
+	game.resume()
+	if "games" in OS.get_cmdline_user_args():
+		await _pause_games()
+		return
+	GameState.flags["toma"] = true
+	var id := "karim"
+	for arg in OS.get_cmdline_user_args():
+		if arg.begins_with("ids="):
+			id = arg.substr(4)
+	# a conversation
+	var d = game.dialogue
+	var n = game.npcs[id]
+	game.player.teleport(_free_spot_near(n), 0.0)
+	await wait(0.5)
+	if not d.running:
+		game.interact(n.interact)
+	await wait(1.2)
+	await shot("convo_before")
+	var line: String = d._text
+	var voiced: bool = d.voice_player.playing
+	await _pause_with_esc("convo", "dialogue")
+	var t_line: float = d._t_line
+	var v_at: float = d.voice_player.get_playback_position()
+	await _key(KEY_E)   # the confirm key under the page must not reach the conversation
+	await wait(2.5)
+	_check(d._t_line == t_line and d._text == line and game.mode == "pause", "the line waits (%.2f s in, '%s')" % [d._t_line, d._text])
+	_check(not voiced or (d.voice_player.stream_paused and is_equal_approx(d.voice_player.get_playback_position(), v_at)),
+		"its recording waits (voiced %s, paused %s, at %.2f s)" % [voiced, d.voice_player.stream_paused, v_at])
+	await _key(KEY_DOWN)
+	await _key(KEY_ENTER)
+	await wait(0.8)
+	await shot("convo_settings")
+	var size0: int = Dialogue.subtitle_size()
+	GameState.set_setting("subtitles_size", 1.5)
+	await _key(KEY_ESCAPE)   # back to the pause page
+	await wait(0.6)
+	_check(game.mode == "pause" and get_tree().paused, "Esc in the settings goes back to the pause page (mode %s)" % game.mode)
+	await _key(KEY_ESCAPE)   # and out
+	await wait(0.6)
+	_check(game.mode == "dialogue" and not get_tree().paused and game.paused_from.is_empty() and d.running and d._text == line,
+		"Esc again resumes the conversation on the same line (mode %s, '%s')" % [game.mode, d._text])
+	_check(d._t_line > t_line and not d.voice_player.stream_paused, "the line goes on (%.2f s in)" % d._t_line)
+	_check(Dialogue.subtitle_size() > size0, "the subtitles are %d px, from %d" % [Dialogue.subtitle_size(), size0])
+	await shot("convo_resumed_xl")
+	GameState.set_setting("subtitles_size", 1.0)
+	while d.running:
+		if not d._choices.is_empty():
+			d._pick(d._choices.size() - 1)
+		else:
+			d._shown = 9999.0
+			d._next()
+		await wait(0.3)
+	await wait(1.0)
+	if game.minigame == null and game.mode != "play":
+		game.resume()
+	# a minigame: the coffee machine's countdown
+	if game.minigame == null:
+		game.start_minigame("coffee", {}, func(_r): pass)
+	await wait(1.5)
+	var mg = game.minigame
+	await _pause_with_esc("minigame", "minigame")
+	var left: float = mg._time
+	await wait(3.0)
+	_check(is_instance_valid(mg) and mg._time == left, "the countdown waits (%.2f s left)" % left)
+	await _key(KEY_ESCAPE)
+	await wait(0.5)
+	_check(game.mode == "minigame" and is_instance_valid(mg) and mg._time < left, "and goes on after Resume (mode %s, %.2f s left)" % [game.mode, mg._time if is_instance_valid(mg) else -1.0])
+	await shot("minigame_resumed")
+	var guard := 0.0
+	while game.minigame != null and guard < 15.0:
+		await wait(0.25)
+		guard += 0.25
+	await wait(1.0)
+	# a chapter card
+	game.begin_chapter(2, true)
+	await wait(1.6)
+	await _pause_with_esc("card", "cutscene")
+	await wait(4.5)   # longer than the card stays up
+	_check(game.opening_phase == "chapter_card" and game.hud.fade.color.a > 0.99, "the card and the black wait (phase '%s', black %.2f)" % [game.opening_phase, game.hud.fade.color.a])
+	await _key(KEY_ESCAPE)
+	await wait(0.3)
+	_check(game.mode == "cutscene" and Input.mouse_mode == Input.MOUSE_MODE_HIDDEN, "Resume goes back to the card (mode %s)" % game.mode)
+	await shot("card_resumed")
+	guard = 0.0
+	while game.opening_phase != "" and guard < 8.0:
+		await wait(0.25)
+		guard += 0.25
+	_check(guard > 1.0, "the chapter comes up %.1f s after Resume (the card's own time was left)" % guard)
+	await advance_dialogue(40)
+	await wait(1.0)
+	if game.mode != "play":
+		game.resume()
+	# one fade at a time
+	var first: Tween = game.hud.fade_to(1.0, 5.0)
+	var second: Tween = game.hud.fade_to(0.0, 0.2)
+	await wait(0.5)
+	_check(not first.is_valid() and game.hud.fade.color.a < 0.01, "a new fade replaces the one in progress (black %.2f)" % game.hud.fade.color.a)
+	# the level of the track playing
+	var mp: AudioStreamPlayer = Sfx._music[Sfx._music_idx]
+	var stem := Sfx.music_now()
+	Sfx.music(stem, -30.0)
+	var same: bool = float(mp.get_meta("target_db", 0.0)) != -30.0
+	Sfx.music_level(-30.0, 0.3)
+	await wait(1.5)
+	_check(same and Sfx.music_now() == stem and mp.volume_db < -25.0, "music_level lowers '%s' where music() leaves it (%.1f dB)" % [stem, mp.volume_db])
+	game._zone_music()
+	# the phone in his hand: the gamepad's Menu button pauses, Esc on the page resumes, Esc in the phone puts it away
+	GameState.flags["phone_charged"] = true
+	game.phone.restore(true)
+	game.open_phone()
+	await wait(0.8)
+	var menu_button := InputEventJoypadButton.new()
+	menu_button.button_index = JOY_BUTTON_START
+	menu_button.pressed = true
+	Input.parse_input_event(menu_button)
+	await wait(0.8)
+	_check(game.mode == "pause" and game.paused_from.get("mode", "") == "phone", "the phone: the Menu button pauses (mode %s)" % game.mode)
+	await shot("phone_paused")
+	await _key(KEY_ESCAPE)
+	await wait(0.5)
+	_check(game.mode == "phone" and game.phone.is_open(), "Resume goes back to the phone (mode %s, open %s)" % [game.mode, game.phone.is_open()])
+	await _key(KEY_ESCAPE)
+	await wait(0.6)
+	_check(game.mode == "play" and not game.phone.is_open(), "Esc in the phone puts it away (mode %s)" % game.mode)
+	# a sit-down has no pause key: the window losing focus calls pause(), and Resume leaves him sitting
+	var sid := String(WorldData.sit_ids()[0])
+	game.begin_sit(sid)
+	await wait(3.0)
+	var sit_t: float = game._sit.t
+	game.pause()
+	await wait(2.5)
+	_check(game.mode == "pause" and game.paused_from.get("mode", "") == "sit" and game._sit.t == sit_t, "a sit-down pauses (mode %s, %.2f s in)" % [game.mode, sit_t])
+	await shot("sit_paused")
+	await _key(KEY_ESCAPE)
+	await wait(1.0)
+	_check(game.mode == "sit" and game.player.rig.sitting and game._sit.t > sit_t, "Resume leaves Mano sitting (mode %s, %.2f s in)" % [game.mode, game._sit.get("t", -1.0)])
+	await shot("sit_resumed")
+	await _key(KEY_E)
+	await wait(2.0)
+	if game.mode != "play":
+		game.resume()
+	# the dead phone, glanced at twice
+	GameState.flags["phone_charged"] = false
+	game.phone.restore(false)
+	game.phone.glance(true)
+	await wait(3.0)
+	var away: String = game.phone.state
+	game.phone.glance(true)
+	await wait(0.6)
+	_check(away == "hidden" and game.phone.state == "dead" and game.phone.is_up(), "the dead phone goes away (%s) and shows again (%s)" % [away, game.phone.state])
+	await shot("phone_dead_again")
+	await wait(2.5)
+	# Continue on a save at a chapter's end: black from the title to the card
+	var ends := String(Chapters.info().get("ends_with", ""))
+	GameState.flags[ends] = true
+	game.save()
+	game.show_title()
+	await wait(1.5)
+	game.continue_game()
+	var lowest := 1.0
+	var black := false
+	for i in 70:
+		await wait(0.05)
+		var a: float = game.hud.fade.color.a
+		if a > 0.99:
+			black = true
+		elif black:
+			lowest = minf(lowest, a)
+		if i == 40:
+			await shot("continue_card")
+	_check(black and lowest > 0.99 and game.opening_phase == "chapter_card", "Continue at '%s' stays black under the card (lowest %.2f, phase '%s')" % [ends, lowest, game.opening_phase])
+	GameState.clear_save()
+
+
+## autotest=pause games: Esc in each minigame. Under the page every number and flag the minigame keeps must stay as
+## it was through 3 s and a few of its own keys; after Resume the same minigame runs on.
+func _pause_games() -> void:
+	for which in ["coffee", "babyfoot", "lostfound", "moulinette", "kebab", "findmy", "soleil"]:
+		if which in ["kebab", "findmy", "soleil"]:
+			await _ch4_stage(which)
+		game.start_minigame(which, {}, func(_r): pass)
+		await wait(2.5)
+		var mg = game.minigame
+		await _pause_with_esc(which, "minigame")
+		var before := _numbers(mg)
+		for k in [KEY_E, KEY_W, KEY_D, KEY_Q]:   # not Space or Enter: they press the page's Resume
+			await _key(k)
+		await wait(3.0)
+		var moved: Array = []
+		var after := _numbers(mg)
+		for k in before:
+			if after.get(k) != before[k]:
+				moved.append(k)
+		_check(is_instance_valid(mg) and game.minigame == mg and moved.is_empty(), "%s waits under the page (%d values kept, changed: %s)" % [which, before.size(), moved])
+		await _key(KEY_ESCAPE)
+		await wait(1.5)
+		_check(game.mode == "minigame" and game.minigame == mg and not get_tree().paused and _numbers(mg) != before,
+			"%s goes on after Resume (mode %s)" % [which, game.mode])
+		await shot(which + "_resumed")
+		game._end_minigame()
+		await wait(0.8)
+
+
+## The script variables of `n` that are numbers, flags or strings, by name.
+func _numbers(n: Node) -> Dictionary:
+	var out := {}
+	for p in n.get_property_list():
+		if p.usage & PROPERTY_USAGE_SCRIPT_VARIABLE and p.type in [TYPE_BOOL, TYPE_INT, TYPE_FLOAT, TYPE_STRING, TYPE_VECTOR2, TYPE_VECTOR3]:
+			out[p.name] = n.get(p.name)
+	return out
 
 
 ## One key press and release, as the keyboard would send it.
@@ -882,6 +1145,24 @@ func _run() -> void:
 		elif plan == "babyfoot":
 			await hold("move_back", 0.4)
 			await wait(1.5)
+			if "cap" in OS.get_cmdline_user_args():
+				# the clock's last 15 s and what ends the match: the warning, then the result or "next goal wins"
+				var bf = game.minigame
+				bf._clock = bf.TIME_CAP - 16.0
+				await wait(2.0)
+				print("[autotest] babyfoot: %.0f s in, '%s'" % [bf._clock, bf._msg.text])
+				await shot("babyfoot_15s")
+				bf._clock = bf.TIME_CAP - 0.5
+				await wait(1.2)
+				print("[autotest] babyfoot: at the cap %d - %d, '%s', next goal wins %s, over %.1f" % [bf._ps, bf._as, bf._msg.text, bf._last_ball, bf._over])
+				await shot("babyfoot_cap")
+				var hid: Array = bf._hidden.duplicate()
+				await wait(4.0)
+				var back := 0
+				for h in hid:
+					back += int(h[0].get_surface_override_material(h[1]) == null)
+				print("[autotest] babyfoot: %d of the table's %d hidden surfaces are back" % [back, hid.size()])
+				print("[autotest] babyfoot: after the cap mode %s, minigame %s" % [game.mode, game.minigame])
 		elif plan == "lostfound":
 			var lf = game.minigame
 			var right := 0
@@ -952,6 +1233,10 @@ func _run() -> void:
 		return
 	if plan == "opening":
 		await _opening_plan()
+		get_tree().quit()
+		return
+	if plan == "pause":
+		await _pause_plan()
 		get_tree().quit()
 		return
 	# scripts/dev/autotest_life.gd: collectibles, life on campus, the look-ats, chapter select, the journal
@@ -2706,13 +2991,23 @@ func _credits_plan() -> void:
 	print("[autotest] credits: group photo %s: %d of %d heads in the frame %s" % [game.group_photo.get("path", "-"),
 		heads.values().filter(func(h): return h != null).size(), heads.size(), heads])
 	await shot("credits_after_photo")
-	# "Want one?" to Toma (the to-do's target)
-	var toma = game.npcs["toma"]
-	game.player.teleport(_free_spot_near(toma), 0.0)
-	game.player.face_towards(toma.global_position)
-	await wait(0.6)
-	game.interact(toma.interact)
-	await advance_dialogue(20, 1)
+	# three first talks on the steps, then "Want one?" to the first of them (give=<id>; Toma by default)
+	var give := "toma"
+	for arg in OS.get_cmdline_user_args():
+		if arg.begins_with("give="):
+			give = arg.substr(5)
+	var others: Array = ["toma", "anisha", "ishita"].filter(func(x): return x != give)
+	for who in [give, others[0], others[1], give]:
+		var n = game.npcs[who]
+		game.player.teleport(_free_spot_near(n), 0.0)
+		game.player.face_towards(n.global_position)
+		await wait(0.6)
+		game.interact(n.interact)
+		await advance_dialogue(20, 1)
+		if game.mode == "play":
+			await wait(5.0)   # the strip strikes the old count and writes the new one
+			await shot("credits_after_%s" % who)
+		print("[autotest] credits: talked to %s, %d of 3, to-do '%s'" % [who, int(GameState.flags.get("steps_talks", 0)), Chapters.objective_text()])
 	var t := 0.0
 	while game.mode != "credits" and t < 10.0:
 		await wait(0.2)
@@ -2745,6 +3040,30 @@ func _ch4_minigame_plan(which: String) -> void:
 	game.menus.close()
 	game.camera_rig.clear_shot(true)
 	game.resume()
+	await _ch4_stage(which)
+	var t0 := Time.get_ticks_msec() / 1000.0
+	var res := [null]
+	game.start_minigame(which, {}, func(r): res[0] = r)
+	await wait(1.2)
+	await shot(which + "_a")
+	match which:
+		"kebab":
+			await _drive_kebab()
+		"findmy":
+			await _drive_findmy()
+		"soleil":
+			await _drive_soleil()
+	var t := 0.0
+	while game.minigame != null and t < 20.0:
+		await wait(0.25)
+		t += 0.25
+	await wait(0.6)
+	await shot(which + "_end")
+	print("[autotest] %s: result %s after %.1f s (mode %s)" % [which, res[0], Time.get_ticks_msec() / 1000.0 - t0, game.mode])
+
+
+## Chapter 4 as the story has it when it starts `which` (kebab, findmy or soleil): flags, night, staging, Mano's place.
+func _ch4_stage(which: String) -> void:
 	var sf: Dictionary = Chapters.get_chapter(4).get("start_flags", {})
 	for k in sf:
 		GameState.flags[k] = GameState._copy(sf[k])
@@ -2775,25 +3094,6 @@ func _ch4_minigame_plan(which: String) -> void:
 	else:
 		game.place_at("mano", "pasteur_east")
 	await wait(1.0)
-	var t0 := Time.get_ticks_msec() / 1000.0
-	var res := [null]
-	game.start_minigame(which, {}, func(r): res[0] = r)
-	await wait(1.2)
-	await shot(which + "_a")
-	match which:
-		"kebab":
-			await _drive_kebab()
-		"findmy":
-			await _drive_findmy()
-		"soleil":
-			await _drive_soleil()
-	var t := 0.0
-	while game.minigame != null and t < 20.0:
-		await wait(0.25)
-		t += 0.25
-	await wait(0.6)
-	await shot(which + "_end")
-	print("[autotest] %s: result %s after %.1f s (mode %s)" % [which, res[0], Time.get_ticks_msec() / 1000.0 - t0, game.mode])
 
 
 func _move_to_option(mg, idx: int) -> void:
@@ -2861,9 +3161,22 @@ func _drive_findmy() -> void:
 	var pod: Vector3 = fm.pod_pos
 	var start: Vector3 = game.player.global_position
 	print("[autotest] findmy: start %.1f m from the AirPod" % fm._dist())
+	# beside the sofa before any ring: no dig prompt, and E finds nothing
+	var start_yaw: float = game.player.facing_yaw()
+	var silent := Vector3(pod.x, start.y, pod.z) + (start - pod).normalized() * 1.2
+	silent.y = start.y
+	game.player.teleport(silent, atan2(pod.x - silent.x, pod.z - silent.z))
+	game.camera_rig.snap_behind(game.player.facing_yaw())
+	await wait(1.0)
+	await shot("findmy_near_silent")
+	await _key(KEY_E)
+	await wait(0.3)
+	print("[autotest] findmy: %.1f m, no ring yet: can dig %s, prompt alpha %.2f, found %s" % [fm._dist(), fm.can_dig, fm._dig.modulate.a, fm.found])
+	game.player.teleport(start, start_yaw)
+	game.camera_rig.snap_behind(start_yaw)
 	# one ring right on a thump: drowned out
 	var guard := 0
-	while fm._since_thump > 0.1 and guard < 60:
+	while fm._since_thump > 0.1 and guard < 150:
 		await get_tree().process_frame
 		guard += 1
 	await _key(KEY_Q)

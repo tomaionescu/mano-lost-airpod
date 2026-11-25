@@ -368,9 +368,10 @@ func _check_ch3_orders() -> void:
 	GameState.reset_flags()
 
 
-## "Want one?" (chapter 5): from the steps after the group photo, talking to each of the seven friends and taking
-## choice 0 gives that friend the other AirPod (flags.given_to), shares the song and rolls the credits; "Not yet"
-## gives it to nobody. All seven replies are reachable.
+## "Want one?" (chapter 5): on the steps after the group photo, a friend's first talk is their exchange and offers
+## nothing; once three friends have been talked with, talking again to one of them and taking choice 0 gives that
+## friend the other AirPod (flags.given_to), shares the song and rolls the credits; "Not yet" gives it to nobody.
+## All seven replies are reachable.
 func _check_offers() -> void:
 	var sf: Dictionary = Chapters.get_chapter(5).get("start_flags", {})
 	for id in ["toma", "anisha", "ian", "silvia", "ishita", "cristina", "joaquin"]:
@@ -383,9 +384,17 @@ func _check_offers() -> void:
 		Chapters.reset_tracking()
 		var game = Support.FakeGame.new()
 		t.ok(String(Chapters.target(game).get("id", "")) == "toma" or not Chapters.target(game).is_empty(), "chapter 5's to-do points at the steps")
+		t.ok(Chapters.objective_text().ends_with("0 of 3."), "chapter 5's to-do counts the talks on the steps (%s)" % Chapters.objective_text())
 		game.dialogue.choose = func(_step) -> int: return 1
+		# the friend first, then two others: each first talk is an exchange with no question in it
+		var others: Array = ["toma", "anisha", "ishita", "joaquin"].filter(func(x): return x != id)
+		for who in [id, others[0], others[1]]:
+			game.play(game.story.talk(who))
+		t.ok(game.dialogue.choices.is_empty() and int(GameState.flags.get("steps_talks", 0)) == 3 and game.toasts.has("Who gets the other one?"),
+			"three first talks on the steps (%s first): no offer yet, then \"Who gets the other one?\" (%d talks)" % [id, int(GameState.flags.get("steps_talks", 0))])
+		t.ok(String(Chapters.main_todo().get("id", "")) == "give_one", "after three talks the to-do is the offer (%s)" % Chapters.main_todo().get("id", ""))
 		game.play(game.story.talk(id))
-		t.ok(String(GameState.flags.get("given_to", "")) == "", "\"Not yet\" to %s gives the AirPod to nobody" % id)
+		t.ok(String(GameState.flags.get("given_to", "")) == "" and game.dialogue.choices.size() == 1, "\"Not yet\" to %s gives the AirPod to nobody" % id)
 		game.dialogue.choose = func(_step) -> int: return 0
 		var n0: int = game.dialogue.shown.size()
 		game.play(game.story.talk(id))
@@ -393,6 +402,7 @@ func _check_offers() -> void:
 		var reply: Array = said.filter(func(x): return String(x).begins_with(id + ":"))
 		t.ok(String(GameState.flags.get("given_to", "")) == id and bool(GameState.flags.get("c5_done", false)) and game.credits_rolled == 1,
 			"\"Want one?\" to %s: given_to '%s', the song shared, the credits roll (%s)" % [id, GameState.flags.get("given_to", ""), reply])
+		t.ok(game.shots.has("cold_hand"), "\"Want one?\" to %s is chosen on the cold open's palm shot" % id)
 		t.ok(not reply.is_empty() and said.has("mano: Want one?"), "%s answers \"Want one?\" in their own words: %s" % [id, reply])
 	GameState.reset_flags()
 

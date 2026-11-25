@@ -83,14 +83,24 @@ stand-in level with the same marker names.
 | `dialogue` | `say()` / `talk_to()` | `Dialogue` owns input; `main.gd` frames each line |
 | `sit` | `begin_sit()` | A sit-down: authored cameras, a song, one thought; any input stands Mano up |
 | `minigame` | `start_minigame()` | The minigame node owns input and calls back with its result |
-| `pause`, `journal`, `map`, `wardrobe`, `photo`, `phone` | `enter_menu(name)` | A menu or the phone over a frozen scene |
+| `pause` | `pause()` | The pause page; the scene tree is paused under it |
+| `journal`, `map`, `wardrobe`, `photo`, `phone` | `enter_menu(name)` | A menu or the phone over a frozen scene |
 | `credits` | `roll_credits()` | The credits roll, then the post-credits scene |
 | `ending` | `show_ending()` / `show_recap()` | The last page; the save is cleared |
 
 In `play`, `_process` advances the story clock, polls the chapter's triggers every 0.25 s, passes the nearest
 interactable to the HUD prompt, updates the zone (ambience, music, footstep surface, area banner) and the waypoint,
-and autosaves every 30 s. `_unhandled_input` handles keys only in `play` and in `sit`. The journal key opens the
-journal on a tap and shows the objective while held. Losing window focus during play opens the pause menu.
+and autosaves every 30 s. `_unhandled_input` handles keys in `play` and in `sit`, and the pause key in every mode
+listed in `PAUSABLE`. The journal key opens the journal on a tap and shows the objective while held.
+
+`pause()` works from `play`, `dialogue`, `cutscene` (chapter cards included), `minigame`, `phone` and `sit`, on the
+pause key or when the window loses focus. It pauses the `SceneTree`: everything but `Menus`, `GameState`, `Sfx` and
+the autotest driver stops, including animation, physics, tweens, a recorded line and the dream clip, and timers are
+created with `create_timer(t, false)` so they stop too. Music and ambience play on. From `play` the page offers
+Resume, Journal, Settings and Save & quit; from any other mode only Resume and Settings, and `resume()` restores the
+mode, the mouse, the HUD and the keyboard focus that `paused_from` recorded. A sit-down has no pause key because any
+key stands Mano up, the phone keeps Esc for going back, and the credits cannot be paused. In automated runs a lost
+focus pauses only `play`.
 
 ## 3. The story layer
 
@@ -360,8 +370,9 @@ field inside, currently 2.
 `flags` is the whole story state, including the clock, the light preset and the phone's messages. Staging, objectives
 and music are not saved; they are recomputed from the flags on load.
 
-Writes are atomic. `_write_atomic()` writes `<file>.tmp`, renames the current file to `<file>.bak`, then renames the
-`.tmp` into place, so a crash at any step leaves the previous save or its backup readable. `_read_save_file()` tries
+Writes are atomic. `_write_atomic()` writes `<file>.tmp` and checks its length, renames the current file to
+`<file>.bak`, then renames the `.tmp` into place, so a crash or a failed write at any step leaves the previous save
+or its backup readable. `_read_save_file()` tries
 the main file, then the `.bak`, and accepts a file only if it parses and has a `flags` dictionary.
 
 Every read goes through `migrate()`. A version 1 save, from the earlier build that had no chapters, is brought to version 2:
@@ -388,7 +399,9 @@ Each character is one `.glb` under `assets/characters/` ([PIPELINE.md](PIPELINE.
 the `Skeleton3D` and the `AnimationPlayer` and builds an `AnimationTree` in code: a one-dimensional blend space for
 locomotion (idle, walk, jog and run, placed at each body's own stride speeds, which the model carries as metadata so
 feet do not slide), a transition node between locomotion, sitting and talking, and a one-shot node on top for
-gestures. Two `LookAtModifier3D` nodes on the neck and the head turn the character toward a point.
+gestures. Two `LookAtModifier3D` nodes on the neck and the head turn the character toward a point, and the eyes
+take the part of the angle the head leaves over (the eight eye-look shapes), with small darts every one to three
+seconds and a blink when the gaze jumps far.
 
 The face is driven through blend shapes with ARKit-style names: a random blink timer, a jaw that follows the
 recorded line's envelope or a random syllable rhythm, and expressions as named sets of targets that ease in and out.
@@ -413,8 +426,9 @@ goes to what he is looking at. Mano has three outfits, each a separate model.
 
 `CameraRig` has two states. The follow camera sits behind Mano's shoulder with separate horizontal and vertical
 damping, pulls in with a sphere sweep when geometry is in the way, recentres after two seconds without camera input
-while he walks, and adds a slight handheld sway. A scripted shot is a `{from, look, fov, focus}` set by `set_shot()`,
-reached by a cut or a blend, optionally with a slow drift or orbit. `clear_shot()` blends back.
+while he walks, and adds a slight handheld sway. A scripted shot is a `{from, look, aim, fov, focus}` set by `set_shot()`,
+reached by a cut or a blend, optionally with a slow drift or orbit; a conversation single aims slightly under its look
+point, which puts the eyes near the upper third of the picture. `clear_shot()` blends back.
 
 Conversations are filmed by `main.gd`, not authored shot by shot ([DESIGN.md](DESIGN.md) §4.5). When one starts,
 `_pick_side()` chooses the side of the line between the two heads that has more room, and the camera stays on it. For
@@ -425,7 +439,7 @@ character are rejected, and frontal views are preferred. Narration and staged op
 Authored cameras exist where a scene needs one: `$ shot <name>` uses a `world.json` shot, a readable spot can define a
 narrow insert, and each sit-down has two or three cameras played in sequence ([DESIGN.md](DESIGN.md) §4.1). Each shot
 selects a depth-of-field profile in `WorldEnv.DOF` by kind (`wide`, `ots`, `single`, `sit`, `insert`). In conversations
-and sit-downs an unshadowed fill light near the lens keeps faces readable; it is off at golden hour.
+and sit-downs an unshadowed fill light beside and above the lens keeps faces readable; it is off at golden hour.
 
 ## 8. The UI layer
 
@@ -466,7 +480,9 @@ ambience loops listed for the zone in `Sfx.ZONES`. Footsteps are positional one-
 
 `WorldEnv` owns the `Environment`, the sun and the sky. `apply_time()` moves between six presets (`golden`,
 `late_gold`, `last_light`, `blue`, `night`, `late`), each a set of differences from shared defaults: sun and moon
-position, sky blend, ambient, fog, exposure, colour grade, lamp levels and window emission. `LevelBinder` sorts the
+position, sky blend, ambient, fog, exposure, colour grade, lamp levels and window emission. `set_place()` adds what
+the zone the camera is in changes (`WorldEnv.PLACES`): the Under is exposed brighter at every hour, Voltaire's ground
+and first floors drop the night exposure boost, and a room gets a smaller share of the conversation fill. `LevelBinder` sorts the
 level's lights into lamp groups so a preset can dim street lamps, string lights and classroom panels separately.
 
 The quality setting selects one of four presets in `WorldEnv.apply_quality()`:
@@ -509,6 +525,7 @@ calling into `main.gd` and injecting input, logs `[autotest]` lines and saves sc
 | `story` | The whole story from the cold open to the recap on the critical path; `chapter=<n>` starts later |
 | `chapters`, `chapter_select`, `cold_open`, `opening`, `credits` | Every chapter started from the title; chapter select; the scripted opening and ending |
 | `convo`, `choices`, `voice` | Conversations with given characters, choices through real key events, recorded lines |
+| `pause` | Esc in a conversation, a minigame, on a chapter card, in the phone and a sit-down, with checks that the scene waits and resumes; `games` does it in each of the seven minigames, `dream` in the opening |
 | `look`, `looks`, `place`, `shots`, `sit` | Look-at spots, `world.json` points, framed shots and sit-downs, each visited and photographed |
 | `phone`, `hud`, `journal`, `map`, `ducks`, `photos`, `overheard`, `side`, `idle` | The phone and UI screens; collectibles, overheard talk, side stories, idle behaviour |
 | `moulinette`, `babyfoot`, `coffee`, `lostfound`, `kebab`, `findmy`, `soleil` | Each minigame played with real input |

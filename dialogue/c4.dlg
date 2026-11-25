@@ -69,7 +69,7 @@ mano: Third time in the Under tonight. It's basically my flat.
 $ set pocket_empty
 $ clock 21:20
 $ follow cristina
-$ clue "Cristina had my AirPod in the Under at 20:31, on the old sofa. It's not lost. It's in a sofa."
+$ clue "Cristina had my AirPod in the Under at 20:31. It's not lost. It's down there, and it can ring."
 
 # The Under, during the BDE's sound check (main trigger inside its door, Cristina beside Mano)
 ~ c4.search

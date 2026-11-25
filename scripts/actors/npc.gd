@@ -1,7 +1,7 @@
 class_name NPC
 extends Node3D
 ## A named character or a background student: idle / sitting / typing / walking a path,
-## turns to face Mano when talking, glances at him when he walks past.
+## turns to face Mano when talking, glances at him when he walks past; chatting or lecturing in between.
 ## Staging (V2-21): apply_stage() puts a character where a chapter wants them (data/chapters.json "stage", the
 ## `$ stage` command); follow() walks them on Mano's breadcrumb trail, about 1.6-2.2 m from him: beside and behind
 ## him (not between him and the follow camera), back onto the trail itself wherever a wall is in the way, and
@@ -92,8 +92,10 @@ func setup(d: Dictionary, player: Node3D) -> void:
 	_speed = d.get("speed", rig.stride_speed("walk") * randf_range(0.92, 1.02))
 	if not rig.sitting:
 		_make_body()
-	if d.get("chatting", false):
-		rig.set_conversing(true)
+	# "lecturing": speaks on and off like someone chatting, but stands in the plain idle with no talk gestures (their
+	# spread arms read as a stiff pose on someone alone at the front of a hall, seen from the back rows)
+	if d.get("chatting", false) or d.get("lecturing", false):
+		rig.set_conversing(d.get("chatting", false))
 		_chat = randf_range(1.0, 5.0)
 	if rig.anim_player:
 		# desynchronise idles so a crowd never moves in lockstep
@@ -459,7 +461,7 @@ func _process(dt: float) -> void:
 		if _chat <= 0.0:
 			_chat = randf_range(3.0, 7.0)
 			rig.talking = not rig.talking and randf() < 0.6
-			if rig.talking and randf() < 0.5:
+			if rig.talking and randf() < 0.5 and not def.get("lecturing", false):
 				rig.play_gesture("talk_1" if randf() < 0.5 else "talk_2")
 	if _clip_loop != "" and not talking and not following:
 		_clip_t -= dt

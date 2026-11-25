@@ -45,6 +45,7 @@ var bar_bottom: ColorRect
 var _bars := 0.0
 var _bars_target := 0.0
 var fade: ColorRect
+var _fade_tween: Tween            # the fade in progress (fade_to)
 var hud_visible := true
 var _hint_queue: Array[String] = []
 var _hint: StickyNote = null
@@ -405,10 +406,14 @@ func set_hud_visible(v: bool) -> void:
 	hud_visible = v
 
 
+## The full-screen fade to `alpha`. There is one fade at a time: a new one replaces the one in progress, with
+## whatever was chained on it, so two never pull the screen opposite ways.
 func fade_to(alpha: float, time := 0.6) -> Tween:
-	var tw := create_tween()
-	tw.tween_property(fade, "color:a", alpha, time)
-	return tw
+	if _fade_tween and _fade_tween.is_valid():
+		_fade_tween.kill()
+	_fade_tween = create_tween()
+	_fade_tween.tween_property(fade, "color:a", alpha, time)
+	return _fade_tween
 
 
 func _process(dt: float) -> void:

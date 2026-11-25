@@ -17,7 +17,7 @@ const NOTE_TEXT := "Took the M one\n(chewed stem!)\nto find its owner.\nIf it's 
 const NOTE_TIME := "18:10"
 const NOTE_INK := Color("#1a6f86")
 const NUDGE_AFTER := 3     # wrong picks before Mme Dupont points at the empty slot
-const SPACING := 0.065
+const SPACING := 0.056
 
 var game
 var _done: Callable
@@ -161,37 +161,11 @@ func _make_slot() -> Node3D:
 
 func _make_pod(p: Dictionary) -> Node3D:
 	var root := Node3D.new()
-	var body_mat := _goldm if p.get("gold", false) else _white
-	var bud := MeshInstance3D.new()
-	var sm := SphereMesh.new()
-	sm.radius = 0.0105
-	sm.height = 0.021
-	bud.mesh = sm
-	bud.scale = Vector3(1.0, 0.95, 1.1)
-	bud.material_override = body_mat
-	root.add_child(bud)
-	var grille := MeshInstance3D.new()
-	var gm := CylinderMesh.new()
-	gm.top_radius = 0.0035
-	gm.bottom_radius = 0.0035
-	gm.height = 0.001
-	grille.mesh = gm
-	grille.rotation.x = PI / 2
-	grille.position = Vector3(0, 0.002, 0.0112)
-	var dark := StandardMaterial3D.new()
-	dark.albedo_color = Color(0.08, 0.08, 0.09)
-	dark.roughness = 0.7
-	grille.material_override = dark
-	root.add_child(grille)
-	var stem := MeshInstance3D.new()
-	var cm := CapsuleMesh.new()
-	cm.radius = 0.0034
-	cm.height = 0.034
-	stem.mesh = cm
-	stem.position = Vector3(0.0, -0.017, -0.004)
-	stem.rotation.x = -0.25
-	stem.material_override = _chewed if p.get("chew", false) else body_mat
-	root.add_child(stem)
+	# the speaker mesh toward +Z and the stem down -Y, which the root's rest pose lays on the felt (speaker mesh up,
+	# stem toward the camera); the size of the one in Mano's palm
+	var pod := Player.make_airpod(false, _goldm if p.get("gold", false) else null, _chewed if p.get("chew", false) else null)
+	pod.basis = Basis(Vector3.UP, PI / 2) * 1.1
+	root.add_child(pod)
 	var mark := ""
 	var mark_col := Color(0.42, 0.45, 0.5)
 	if p.get("m", false):
@@ -209,7 +183,7 @@ func _make_pod(p: Dictionary) -> Node3D:
 		l.pixel_size = 0.00011 if mark != "DIR" else 0.00007
 		l.modulate = mark_col
 		l.outline_size = 0
-		l.position = Vector3(0.0075, 0.004, 0.006)
+		l.position = Vector3(0.0078, 0.0041, 0.0062)
 		l.rotation.y = 0.8
 		root.add_child(l)
 	if p.get("s42", false):
@@ -221,7 +195,7 @@ func _make_pod(p: Dictionary) -> Node3D:
 		st.modulate = Color(1, 1, 1)
 		st.outline_modulate = Color(0.1, 0.2, 0.6)
 		st.outline_size = 22
-		st.position = Vector3(0.0, -0.02, 0.0035)
+		st.position = Vector3(0.0045, -0.02, 0.0003)
 		root.add_child(st)
 	if p.get("acu", false):
 		var tag := Label3D.new()
@@ -230,9 +204,9 @@ func _make_pod(p: Dictionary) -> Node3D:
 		tag.font_size = 32
 		tag.pixel_size = 0.0001
 		tag.modulate = Color(0.85, 0.12, 0.1)
-		tag.position = Vector3(0.0, -0.022, 0.0036)
+		tag.position = Vector3(0.0049, -0.022, 0.0003)
 		root.add_child(tag)
-	root.rotation = Vector3(-0.35, randf_range(-0.6, 0.6), 0.0)
+	root.rotation = Vector3(-PI / 2, randf_range(-0.6, 0.6), 0.0)
 	return root
 
 
@@ -360,13 +334,15 @@ func _process(dt: float) -> void:
 	_t += dt
 	for i in _items.size():
 		var n: Node3D = _items[i].node
-		var lift := 0.045 if i == _sel else (0.0 if not _rejected.has(i) else -0.01)
-		n.position.y = lerpf(n.position.y, 0.03 + lift, 1.0 - exp(-dt * 10.0))
+		# a pod lies on the felt (a rejected one pressed into it); picked up, it stands and turns
+		var lying: bool = not _items[i].def.get("slot", false)
+		var lift := 0.045 if i == _sel else (0.0 if not _rejected.has(i) else (-0.004 if lying else -0.01))
+		n.position.y = lerpf(n.position.y, (0.026 if lying else 0.03) + lift, 1.0 - exp(-dt * 10.0))
 		if i == _sel:
 			n.rotation.y += dt * 0.9
 			n.rotation.x = lerpf(n.rotation.x, -0.15 + sin(_t * 1.3) * 0.15, 1.0 - exp(-dt * 4.0))
 		else:
-			n.rotation.x = lerpf(n.rotation.x, -0.35, 1.0 - exp(-dt * 4.0))
+			n.rotation.x = lerpf(n.rotation.x, -PI / 2 if lying else -0.35, 1.0 - exp(-dt * 4.0))
 	if _reply_t > 0.0:
 		_reply_t -= dt
 		if _reply_t <= 0.0:

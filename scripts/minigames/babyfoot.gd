@@ -1,13 +1,15 @@
 extends Node3D
-## Babyfoot against Karim on the BDE table. First to 3.
+## Babyfoot against Karim on the BDE table. First to 3, or ahead after TIME_CAP seconds (level then: next goal wins).
 ## Field logic in table-local metres: x along the table (Mano attacks +x), z across it.
 ## 2v2 (V2-23): with a partner (opts.partner or flags.foot_partner: ian, silvia or joaquin) Mano works the attack
-## rod and the partner the goalie rod. Karim gets 12 % slower for every game Mano has lost (flags.foot_losses),
-## never below 60 %. After two losses the partner says "Switch.", takes the attack and shoots past Karim's goalie.
+## rod and the partner the goalie rod. Karim's rods and shots get 12 % slower for every game Mano has lost
+## (flags.foot_losses), never below 60 %, and he misses more kicks. After two losses the attack rod kicks on every
+## touch and its shots are aimed past Karim's goalie: with a partner they say "Switch." and take that rod, alone
+## Mano has worked out where the gap is.
 
 const FX := 0.58
 const FZ := 0.33
-const GOAL := 0.11
+const GOAL := 0.13
 const SURF := 0.86
 const BALL_R := 0.017
 const RODS := [
@@ -17,8 +19,16 @@ const RODS := [
 	{"x": 0.47, "n": 1, "gap": 0.0, "team": -1, "role": "goal"},
 ]
 const PARTNERS := ["ian", "silvia", "joaquin"]
+const MANO_TEAM := Color("#2f6fd6")    # blue against Karim's yellow: the pair that stays apart on the green pitch
+const KARIM_TEAM := Color("#f2c21a")
+## The surfaces of the level's table that are its own rods, figures, handles, lines and loose ball. They are hidden
+## while the match runs: the minigame draws the rods in play.
+const PROP_PARTS := ["M_plastic_red", "M_plastic_blue", "M_chrome", "M_plate_white", "M_plastic_black"]
 const SLOWER := 0.12     # Karim's speed per game lost
 const SLOWEST := 0.6
+const HELP_AFTER := 2    # games lost before the attack rod's shots are aimed
+const TIME_CAP := 90.0   # seconds of play before the score decides
+const WALL := 0.45       # the speed a ball keeps off an end wall
 ## What the partner says as the game starts, and when they take over after two losses (text only: no voices).
 const PARTNER_LINES := {
 	"ian": ["Ian: \"I've got the goal. Pain au chocolat on three.\"", "Ian: \"Switch. Trust me.\""],
@@ -46,6 +56,9 @@ var _stuck := 0.0
 var _rods: Array = []
 var partner := ""          # "" is solo
 var switched := false      # the partner has the attack (after two losses)
+var aimed := false         # the attack rod's shots go to the open side of Karim's goal (after two losses)
+var _clock := 0.0
+var _last_ball := false    # level at the time cap: the next goal wins
 var karim_k := 1.0         # Karim's speed factor
 var _qz := 0.0             # the partner's rod
 var _qv := 0.0
@@ -54,6 +67,7 @@ var _q_t := 0.0
 var _q_target := 0.0
 var _pnpc: Node3D = null   # the partner standing at the table with Mano
 var _pnpc_home := []
+var _hidden: Array = []    # [MeshInstance3D, surface] of the table prop, hidden for the match
 var _ball_mesh: MeshInstance3D
 var _score: Label
 var _msg: Label
@@ -67,13 +81,16 @@ func setup(g, opts: Dictionary, done: Callable) -> void:
 		partner = ""
 	var losses := int(GameState.flags.get("foot_losses", 0))
 	karim_k = maxf(SLOWEST, 1.0 - SLOWER * losses)
-	switched = partner != "" and losses >= 2
+	aimed = losses >= HELP_AFTER
+	switched = partner != "" and aimed
 	print("[babyfoot] partner %s, Karim at %d %%, %s" % [partner if partner != "" else "none (solo)", roundi(karim_k * 100.0),
 		"switched: the partner attacks" if switched else ("2v2: the partner keeps goal" if partner != "" else "1v1")])
 	var a: Dictionary = game.binder.anchors.get("babyfoot", {})
 	if a.is_empty():
 		a = {"pos": game.player.global_position + Vector3(0, 0, -0.9), "yaw": 0.0}
 		_build_body()
+	else:
+		_hide_prop_parts()
 	global_position = a.pos
 	rotation.y = a.yaw
 	_build_field()
@@ -83,7 +100,7 @@ func setup(g, opts: Dictionary, done: Callable) -> void:
 	_build_ui()
 	_place_partner()
 	if partner == "":
-		_render_score("First to 3")
+		_render_score("Karim always leaves one side open. Shoot there." if aimed else "First to 3, or ahead after %d seconds" % roundi(TIME_CAP))
 	elif switched:
 		_render_score(PARTNER_LINES[partner][1])
 	else:
@@ -103,7 +120,27 @@ func _place_partner() -> void:
 	_pnpc.set_solid(false)
 
 
+## The level's table keeps a full set of frozen figures on eight rods. Its mesh has one surface per material, so
+## those surfaces get a material that discards every pixel (and casts no shadow) until the match is over.
+func _hide_prop_parts() -> void:
+	var none := StandardMaterial3D.new()
+	none.albedo_color = Color(1, 1, 1, 0)
+	none.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA_SCISSOR
+	for e in game.binder.props:
+		if e.asset != "babyfoot":
+			continue
+		for mi: MeshInstance3D in e.node.find_children("*", "MeshInstance3D", true, false):
+			for s in (mi.mesh.get_surface_count() if mi.mesh else 0):
+				var m := mi.mesh.surface_get_material(s)
+				if m and String(m.resource_name) in PROP_PARTS:
+					mi.set_surface_override_material(s, none)
+					_hidden.append([mi, s])
+
+
 func _exit_tree() -> void:
+	for h in _hidden:
+		if is_instance_valid(h[0]):
+			h[0].set_surface_override_material(h[1], null)
 	if _pnpc and is_instance_valid(_pnpc) and not _pnpc_home.is_empty():
 		_pnpc.apply_stage(_pnpc_home[0], _pnpc_home[1], {})
 		_pnpc.set_solid(true)
@@ -178,14 +215,14 @@ func _build_field() -> void:
 		handle.mesh = hm
 		handle.rotation.x = PI / 2
 		handle.position.z = 0.58 if r.team == 1 else -0.58
-		var hc := Color("#202020") if r.team == 1 else Color("#c0392b")
+		var hc := MANO_TEAM if r.team == 1 else KARIM_TEAM
 		if r.team == 1 and _controller(_rods.size()) == "partner":
 			hc = _partner_color()   # the partner's handle in their colour
 		handle.material_override = _mat(hc, 0.6)
 		grp.add_child(handle)
 		var figs: Array = []
 		for k in r.n:
-			var f := _figure(Color("#1d1d22") if r.team == 1 else Color("#e8b923"))
+			var f := _figure(MANO_TEAM if r.team == 1 else KARIM_TEAM)
 			grp.add_child(f)
 			figs.append(f)
 		_rods.append({"def": r, "group": grp, "figs": figs})
@@ -222,14 +259,14 @@ func _figure(c: Color) -> Node3D:
 	hm.height = 0.028
 	head.mesh = hm
 	head.position.y = 0.035
-	head.material_override = _mat(Color("#2a1d16"), 0.6)
+	head.material_override = _mat(c.lightened(0.3), 0.6)
 	g.add_child(head)
 	var legs := MeshInstance3D.new()
 	var lm := BoxMesh.new()
 	lm.size = Vector3(0.03, 0.05, 0.014)
 	legs.mesh = lm
 	legs.position.y = -0.075
-	legs.material_override = _mat(Color("#141414"), 0.7)
+	legs.material_override = _mat(c.darkened(0.3), 0.7)
 	g.add_child(legs)
 	return g
 
@@ -353,12 +390,19 @@ func _goal(side: int) -> void:
 	var msg := "GOAL! Mano scores." if side == 1 else "Karim scores. He will not shut up about it."
 	if side == 1 and switched and partner != "":
 		msg = "GOAL! %s scores. Karim is speechless." % partner.capitalize()
-	if _ps >= 3 or _as >= 3:
-		_over = 2.8
-		msg = "MANO WINS. The BDE is in shock." if _ps >= 3 else "KARIM WINS."
-		if _ps >= 3:
-			Sfx.play("crowd_cheer", -6.0)
-	_render_score(msg)
+	if _ps >= 3 or _as >= 3 or _last_ball:
+		_end_match()
+	else:
+		_render_score(msg)
+
+
+func _end_match() -> void:
+	_over = 2.8
+	_ball = null
+	_ball_mesh.visible = false
+	if _ps > _as:
+		Sfx.play("crowd_cheer", -6.0)
+	_render_score("MANO WINS. The BDE is in shock." if _ps > _as else "KARIM WINS.")
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -366,24 +410,45 @@ func _unhandled_input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 		if _over > 0.0 and _over < 2.0:
 			_over = 0.01
-		elif _kick <= 0.0:
-			_kick = 0.2
-			Sfx.play("babyfoot_kick", -8.0, "SFX", randf_range(0.95, 1.1))
+		else:
+			kick()
+
+
+func kick() -> void:
+	if _kick <= 0.0:
+		_kick = 0.2
+		Sfx.play("babyfoot_kick", -8.0, "SFX", randf_range(0.95, 1.1))
 
 
 func _process(dt: float) -> void:
-	if _over > 0.0:
-		_over -= dt
-		if _over <= 0.0:
-			var win := _ps >= 3
-			_done.call(win)
-			return
-	var oz := _pz
 	var axis := 0.0
 	if Input.is_action_pressed("move_forward") or Input.is_action_pressed("ui_up"):
 		axis -= 1.0
 	if Input.is_action_pressed("move_back") or Input.is_action_pressed("ui_down"):
 		axis += 1.0
+	step(dt, axis)
+	_update_visuals()
+
+
+## One tick of the match; `axis` is Mano's rod input, -1 to 1. Apart from _process so that a simulated player can
+## drive a match without a window.
+func step(dt: float, axis: float) -> void:
+	if _over > 0.0:
+		_over -= dt
+		if _over <= 0.0:
+			_done.call(_ps > _as)
+			return
+	elif not _last_ball:
+		if _clock < TIME_CAP - 15.0 and _clock + dt >= TIME_CAP - 15.0:
+			_render_score("15 seconds left. Whoever is ahead wins.")
+		_clock += dt
+		if _clock >= TIME_CAP:
+			_last_ball = _ps == _as
+			if _last_ball:
+				_render_score("Level on time. Next goal wins.")
+			else:
+				_end_match()
+	var oz := _pz
 	_pz = clampf(_pz + axis * 0.62 * dt, -FZ, FZ)
 	_pv = (_pz - oz) / maxf(dt, 1e-4)
 	_kick = maxf(0.0, _kick - dt)
@@ -405,17 +470,17 @@ func _process(dt: float) -> void:
 			_serve()
 	elif _ball != null and _over <= 0.0:
 		_step_ball(dt)
-	_update_visuals()
 
 
-## The partner reads the ball a little faster than Karim and with less error; on goal they go where the ball
-## will cross their rod, on the attack (switched) they line up with it.
+## The partner reads the ball about as often as Karim and with as much error, and misses a kick now and then: a
+## keeper who can be beaten. On goal they go where the ball will cross their rod, on the attack (switched) they
+## line up with it.
 func _partner_ai(dt: float) -> void:
 	var oq := _qz
 	_qkick = maxf(0.0, _qkick - dt)
 	_q_t -= dt
 	if _q_t <= 0.0:
-		_q_t = 0.18
+		_q_t = 0.22
 		if _ball == null:
 			_q_target = 0.0
 		else:
@@ -423,8 +488,8 @@ func _partner_ai(dt: float) -> void:
 			var lead := 0.0
 			if absf(_ball.vx) > 0.05:
 				lead = clampf((rod_x - _ball.x) / _ball.vx, 0.0, 0.5)
-			_q_target = _ball.z + _ball.vz * lead + randf_range(-0.02, 0.02)
-	_qz = clampf(_qz + clampf(_q_target - _qz, -0.46 * dt, 0.46 * dt), -FZ, FZ)
+			_q_target = _ball.z + _ball.vz * lead + randf_range(-0.05, 0.05)
+	_qz = clampf(_qz + clampf(_q_target - _qz, -0.44 * dt, 0.44 * dt), -FZ, FZ)
 	_qv = (_qz - oq) / maxf(dt, 1e-4)
 
 
@@ -445,13 +510,13 @@ func _step_ball(dt: float) -> void:
 			_goal(-1)
 			return
 		b.x = -FX + BALL_R
-		b.vx = absf(b.vx)
+		b.vx = absf(b.vx) * WALL
 	if b.x > FX - BALL_R:
 		if absf(b.z) < GOAL:
 			_goal(1)
 			return
 		b.x = FX - BALL_R
-		b.vx = -absf(b.vx)
+		b.vx = -absf(b.vx) * WALL
 	for rod in _rods:
 		var r: Dictionary = rod.def
 		if absf(b.x - r.x) > 0.03:
@@ -460,16 +525,20 @@ func _step_ball(dt: float) -> void:
 			if absf(b.z - fz) > 0.032:
 				continue
 			var by_partner: bool = r.team == 1 and _controller(_rods.find(rod)) == "partner"
-			if r.team == -1 and _akick <= 0.0 and randf() < 0.9:
+			if r.team == -1 and _akick <= 0.0 and randf() < 0.9 * karim_k * karim_k:
 				_akick = 0.2
-			if by_partner and _qkick <= 0.0:
+			# after two losses the attack rod kicks on every touch, whoever works it
+			var sure: bool = aimed and r.team == 1 and r.role == "attack"
+			if by_partner and _qkick <= 0.0 and (sure or randf() < 0.8):
 				_qkick = 0.2
+			elif sure and not by_partner:
+				_kick = 0.2
 			var kicking: bool = (_qkick > 0.0 if by_partner else _kick > 0.0) if r.team == 1 else _akick > 0.0
 			if kicking:
-				b.vx = float(r.team) * randf_range(0.85, 1.15)
+				b.vx = float(r.team) * randf_range(0.85, 1.15) * (karim_k if r.team == -1 else 1.0)
 				b.vz = (b.z - fz) * 7.0 + (_pv if r.team == 1 else _av) * 0.5 + randf_range(-0.1, 0.1)
-				if by_partner and switched:
-					# the partner's shot: fast, into the half of the goal Karim's goalie is not covering
+				if aimed and r.team == 1 and r.role == "attack":
+					# the shot after two losses: fast, into the half of the goal Karim's goalie is not covering
 					var aim := -0.075 if _az > 0.0 else 0.075
 					b.vx = 1.25
 					b.vz = (aim - b.z) / maxf((FX - b.x) / b.vx, 0.05)

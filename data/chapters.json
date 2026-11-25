@@ -1,0 +1,938 @@
+{
+ "version": 1,
+ "doc": "The chapters (V2-20): card, clock, light presets, staging, triggers and to-dos. The main to-do is the first entry with main: true whose `when` is true and whose `done` is false; when a chapter has none left and its ends_with flag is set, the next chapter's is shown (the card is still to come). Conditions use the flags of data/flags.json. kind: talk, go, fetch, play or find (never three fetch in a row). target: npc:<id>, spot:<id>, point:<id>, anchor:<id> or none; `targets` picks the nearest one whose `unless` is false, then `fallback`. A chapter ends when a cue runs `$ chapter n`; a chapter missing from this file plays bridge.end. `card_at` puts Mano somewhere under a chapter's card (chapter 3 starts in the Under, wherever chapter 2 ended); a trigger's `bring` puts the follower beside Mano where it fires (Ishita's tour); `started` is a condition that holds once the start cue has played through (a Continue on a save written under the card before that plays the start cue again). Chapter 0 is the cold open (`opening`: \"cold_open\": 23:41 on the steps, then \"Six hours earlier.\" and chapter 1's card with the dream); chapter 1's `opening`: \"wake\" plays the dream and the wake-up when the story reaches it from the cold open (a chapter-select replay skips both). After chapter 5 the credits, the post-credits and the recap play from c5.dlg / post.dlg (`$ credits`, `$ recap`).",
+ "first": 0,
+ "clock_rate": 3.0,
+ "music_db": {"under_party": -11.0},
+ "music": {
+  "zone:under": "under_party",
+  "golden": "explore",
+  "late_gold": [["karim", "explore_dusk"], ["true", "explore"]],
+  "last_light": "explore_dusk",
+  "blue": "explore_dusk",
+  "night": "explore_dusk",
+  "late": "explore_dusk"
+ },
+ "chapters": [
+  {
+   "n": 0,
+   "id": "cold_open",
+   "title": "23:41",
+   "card": {"time": "23:41", "date": "jeudi 15 octobre", "place": "cour Pasteur", "chapter": ""},
+   "clock": "23:41",
+   "time": "late",
+   "times": ["late"],
+   "group_shot": "steps_wide",
+   "opening": "cold_open",
+   "start_cue": "c0.open",
+   "start_at": "point:steps5_mano",
+   "start_flags": {},
+   "stage": {
+    "toma": {"point": "steps5_toma"},
+    "ian": {"point": "steps5_ian", "sit": true},
+    "silvia": {"point": "steps5_silvia", "sit": true},
+    "cristina": {"point": "steps5_cristina", "sit": true},
+    "joaquin": {"point": "steps5_joaquin", "sit": true},
+    "anisha": {"point": "steps5_anisha", "sit": true},
+    "ishita": {"point": "steps5_ishita", "sit": true},
+    "theo": {"hide": true},
+    "karim": {"point": "under_bar_karim"}
+   },
+   "triggers": [],
+   "todos": [],
+   "ends_with": "cold_open_seen"
+  },
+  {
+   "n": 1,
+   "id": "mono",
+   "title": "Mono",
+   "card": {"time": "17:42", "date": "jeudi 15 octobre", "place": "Amphi 4", "chapter": "1 Mono"},
+   "clock": "17:42",
+   "clock_end": "18:29",
+   "clock_holds": [{"while": "not ines", "until": "18:15"}],
+   "time": "golden",
+   "times": ["golden", "late_gold"],
+   "opening": "wake",
+   "start_cue": "c1.wake",
+   "start_with": "toma",
+   "start_flags": {},
+   "start_at": "point:amphi_aisle",
+   "stage": {
+    "karim": [{"when": "not toma", "point": "amphi_karim", "clip": "pickup"}],
+    "ian": {"point": "court_ian", "chat": true},
+    "silvia": {"point": "court_silvia", "chat": true},
+    "ishita": [{"when": "not ishita_met", "point": "passage_ishita"}, {"when": "camera", "point": "sm14_ishita"}],
+    "acu": [{"when": "ishita_met and not ines", "point": "f1_acu_watch"}]
+   },
+   "triggers": [
+    {
+     "id": "pastry_war",
+     "near": "npc:ian",
+     "radius": 6.0,
+     "zone": "court",
+     "when": "toma and choco == \"\" and not ines",
+     "cue": "c1.pastry",
+     "with": "ian",
+     "main": true,
+     "once": true
+    },
+    {
+     "id": "ishita_passage",
+     "near": "npc:ishita",
+     "radius": 4.5,
+     "when": "toma and not ishita_met and not ines",
+     "cue": "c1.ishita",
+     "with": "ishita",
+     "main": true,
+     "once": true
+    },
+    {
+     "id": "ishita_sm14",
+     "near": "point:sm14_door",
+     "radius": 2.2,
+     "when": "ishita_met and not camera and not ines",
+     "cue": "c1.ishita_sm14",
+     "with": "ishita",
+     "main": true,
+     "once": true,
+     "place": {"mano": "sm14_meet_mano", "ishita": "sm14_meet_ishita"}
+    },
+    {
+     "id": "think_amphi",
+     "zone": "amphi",
+     "after": 4.0,
+     "when": "toma and not ishita_met and not ines",
+     "cue": "c1.think_amphi",
+     "bark": true
+    },
+    {
+     "id": "think_street",
+     "zone": "street",
+     "when": "ishita_met and not camera",
+     "cue": "c1.think_street",
+     "bark": true
+    },
+    {
+     "id": "think_stairs",
+     "zone": "volt_f1",
+     "when": "ishita_met and not camera",
+     "cue": "c1.think_stairs",
+     "bark": true
+    }
+   ],
+   "todos": [
+    {
+     "id": "talk_toma",
+     "main": true,
+     "kind": "talk",
+     "text": "Talk to Toma",
+     "when": "not toma",
+     "done": "toma",
+     "target": "npc:toma",
+     "label": "Toma"
+    },
+    {
+     "id": "walk_ishita",
+     "main": true,
+     "kind": "go",
+     "text": "Show Ishita the way to SM14. I know it. For once.",
+     "when": "ishita_met and not camera and not ines",
+     "done": "camera or ines",
+     "target": "npc:anisha",
+     "label": "SM14"
+    },
+    {
+     "id": "help_anisha",
+     "main": true,
+     "kind": "play",
+     "text": "Help Anisha beat the moulinette. Then she talks.",
+     "when": "anisha_asked and not ines",
+     "done": "ines",
+     "target": "npc:anisha",
+     "label": "Anisha"
+    },
+    {
+     "id": "find_anisha",
+     "main": true,
+     "kind": "go",
+     "text": "Find my AirPod: Anisha saw something, SM14",
+     "when": "toma and not anisha_asked and not ines",
+     "done": "anisha_asked or ines",
+     "target": "npc:anisha",
+     "label": "Anisha"
+    },
+    {
+     "id": "remember_promise",
+     "main": false,
+     "carry": true,
+     "kind": "find",
+     "text": "Remember what I promised Toma",
+     "when": "promise and not promise_known",
+     "done": "promise_known",
+     "target": "none"
+    },
+    {
+     "id": "charge_phone",
+     "main": false,
+     "carry": true,
+     "kind": "fetch",
+     "text": "Charge my phone",
+     "when": "phone_dead and not phone_charging",
+     "done": "phone_charging",
+     "target": "none"
+    }
+   ],
+   "ends_with": "c1_done"
+  },
+  {
+   "n": 2,
+   "id": "lost_found",
+   "title": "Lost & Found",
+   "card": {"time": "18:30", "date": "jeudi 15 octobre", "place": "SM14", "chapter": "2 Lost & Found"},
+   "clock": "18:30",
+   "clock_end": "19:04",
+   "clock_holds": [{"while": "not lf_twist", "until": "18:48"}, {"while": "not c2_done", "until": "18:55"}],
+   "time": "late_gold",
+   "times": ["late_gold", "last_light"],
+   "start_cue": "",
+   "start_flags": {
+    "toma": true,
+    "ines": true,
+    "coins": 1,
+    "promise": true,
+    "phone_dead": true,
+    "ishita_met": true,
+    "camera": true,
+    "anisha_asked": true,
+    "choco": "pac",
+    "c1_done": true,
+    "clues": [
+     "My AirPod: a little \"M\" scratched on it, and a chewed stem.",
+     "Anisha sees everything. She's in SM14: Bâtiment Voltaire, 1st floor. Cross rue Pasteur and take the stairs.",
+     "Ishita lent me her disposable camera: ten photos of campus life tonight. Back to her at 23:00, on the steps.",
+     "Anisha saw Karim (BDE) pick up a white earbud near my seat. The Under is down the ramp in the corner of cour Pasteur."
+    ]
+   },
+   "start_at": "anchor:pcSeat",
+   "stage": {
+    "student2": [{"when": "survivor_out and lf_twist", "point": "planter_survivor"}],
+    "sleeper": [{"when": "sup_awake", "hide": true}],
+    "ian": {"point": "under_ian", "chat": true},
+    "silvia": {"point": "under_silvia", "chat": true},
+    "joaquin": {"point": "under_joaquin"},
+    "ishita": [{"when": "camera", "point": "sm14_ishita"}]
+   },
+   "triggers": [
+    {
+     "id": "joaquin_under",
+     "near": "npc:joaquin",
+     "radius": 5.0,
+     "zone": "under",
+     "when": "not joaquin_met and not karim",
+     "cue": "c2.under",
+     "with": "joaquin",
+     "main": true,
+     "once": true
+    },
+    {
+     "id": "sunset",
+     "near": "point:planter_wall",
+     "radius": 4.0,
+     "when": "lf_twist and not c2_done",
+     "cue": "c2.sunset",
+     "main": true,
+     "once": true
+    },
+    {
+     "id": "think_under",
+     "zone": "under",
+     "when": "not joaquin_met and not karim",
+     "cue": "c2.think_under",
+     "bark": true
+    },
+    {"id": "think_dusk", "zone": "street", "when": "karim and not lf_twist", "cue": "c2.think_dusk", "bark": true},
+    {"id": "think_cafe", "zone": "cafe", "when": "karim and not madame_met", "cue": "c2.think_cafe", "bark": true}
+   ],
+   "todos": [
+    {
+     "id": "find_karim",
+     "main": true,
+     "kind": "go",
+     "text": "Karim has my AirPod. Find him in the Under.",
+     "when": "not karim",
+     "done": "karim",
+     "target": "npc:karim",
+     "label": "Karim"
+    },
+    {
+     "id": "lost_found_desk",
+     "main": true,
+     "kind": "go",
+     "text": "Lost & found, Voltaire reception. Karim says it's there.",
+     "when": "not coffee_given and not sign and not madame_met",
+     "done": "sign or madame_met or coffee_given",
+     "target": "spot:sign",
+     "label": "Accueil"
+    },
+    {
+     "id": "find_madame",
+     "main": true,
+     "kind": "find",
+     "text": "Find Mme Dupont: she has the key. Cafeteria, probably.",
+     "when": "not coffee_given and not madame_met",
+     "done": "madame_met or coffee_given",
+     "target": "npc:madame",
+     "label": "Mme Dupont"
+    },
+    {
+     "id": "bring_coffee",
+     "main": true,
+     "kind": "fetch",
+     "text": "Bring Mme Dupont her coffee. Then she opens the box.",
+     "when": "coffee and not coffee_given",
+     "done": "coffee_given",
+     "target": "npc:madame",
+     "label": "Mme Dupont"
+    },
+    {
+     "id": "find_coins",
+     "main": true,
+     "kind": "fetch",
+     "text": "Find 2 euros for her coffee. I have {{coins}}.",
+     "when": "not coffee_given and coins < 2 and not paid",
+     "done": "coins >= 2 or paid or coffee or coffee_given",
+     "targets": [{"ref": "spot:coin_sofa", "unless": "got_sofa", "label": "A spare euro?"}],
+     "fallback": {"ref": "spot:coffee", "label": "Coffee machine"}
+    },
+    {
+     "id": "get_coffee",
+     "main": true,
+     "kind": "play",
+     "text": "Get Mme Dupont a coffee. The machine's in the cafeteria.",
+     "when": "not coffee_given",
+     "done": "coffee or coffee_given",
+     "target": "spot:coffee",
+     "label": "Coffee machine"
+    },
+    {
+     "id": "search_lost_found",
+     "main": true,
+     "kind": "find",
+     "text": "Search the lost & found. It has to be in there.",
+     "when": "coffee_given and not lf_twist",
+     "done": "lf_twist",
+     "target": "npc:madame2",
+     "label": "Mme Dupont"
+    },
+    {
+     "id": "get_air",
+     "main": true,
+     "kind": "go",
+     "text": "Get some air on rue Pasteur. Think. Who is C.?",
+     "when": "lf_twist and not c2_done",
+     "done": "c2_done",
+     "target": "point:planter_wall",
+     "label": "rue Pasteur"
+    }
+   ],
+   "ends_with": "c2_done"
+  },
+  {
+   "n": 3,
+   "id": "blue_hour",
+   "title": "Blue Hour",
+   "card": {"time": "19:10", "date": "jeudi 15 octobre", "place": "the Under", "chapter": "3 Blue Hour"},
+   "clock": "19:10",
+   "clock_end": "20:44",
+   "clock_holds": [
+    {"while": "not phone_charged", "until": "19:12"},
+    {"while": "not cristina_note", "until": "19:20"},
+    {"while": "not karim_cristina", "until": "19:24"},
+    {"while": "not summit_done", "until": "19:55"},
+    {"while": "playlist == \"\"", "until": "20:10"},
+    {"while": "not c3_done", "until": "20:40"}
+   ],
+   "time": "blue",
+   "times": ["blue", "night"],
+   "start_cue": "c3.phone",
+   "started": "finder_place != \"\"",
+   "start_with": "karim",
+   "start_at": "point:under_strip",
+   "card_at": "point:under_strip",
+   "start_flags": {
+    "toma": true,
+    "ines": true,
+    "karim": true,
+    "sign": true,
+    "madame_met": true,
+    "coffee_given": true,
+    "coins": 0,
+    "got_sofa": true,
+    "promise": true,
+    "phone_dead": true,
+    "phone_charging": true,
+    "ishita_met": true,
+    "camera": true,
+    "anisha_asked": true,
+    "croissant": true,
+    "choco": "pac",
+    "c1_done": true,
+    "joaquin_met": true,
+    "foot_partner": "ian",
+    "joaquin_tip": true,
+    "lf_twist": true,
+    "c2_done": true,
+    "time": "blue",
+    "clues": [
+     "My AirPod: a little \"M\" scratched on it, and a chewed stem.",
+     "Anisha sees everything. She's in SM14: Bâtiment Voltaire, 1st floor. Cross rue Pasteur and take the stairs.",
+     "Ishita lent me her disposable camera: ten photos of campus life tonight. Back to her at 23:00, on the steps.",
+     "Anisha saw Karim (BDE) pick up a white earbud near my seat. The Under is down the ramp in the corner of cour Pasteur.",
+     "Karim left my AirPod at the lost & found: the Voltaire reception, ground floor of the Bâtiment Voltaire.",
+     "Mme Dupont will not open the lost & found without a coffee. The machine costs 2 euros.",
+     "C. took my AirPod to give it back to me. Who is C.?"
+    ]
+   },
+   "stage": {
+    "sleeper": [{"when": "sup_awake", "hide": true}],
+    "karim": {"point": "under_bar_karim"},
+    "joaquin": {"point": "under_joaquin"},
+    "ishita": [
+     {"when": "tour_count >= 3", "point": "steps_ishita", "chat": true, "leave": true},
+     {"when": "not touring", "point": "court_ishita", "clip": "look_around"}
+    ],
+    "toma": {"point": "steps_toma"},
+    "ian": [
+     {"when": "not summit_done", "point": "cafe_ian"},
+     {"when": "summit_done", "point": "steps_ian", "chat": true, "leave": true}
+    ],
+    "silvia": [
+     {"when": "not summit_done", "point": "cafe_silvia"},
+     {"when": "summit_done", "point": "steps_silvia", "chat": true, "leave": true}
+    ]
+   },
+   "triggers": [
+    {
+     "id": "ishita_tour",
+     "near": "npc:ishita",
+     "radius": 5.0,
+     "zone": "court",
+     "when": "cristina_texted and not touring and tour_count == 0",
+     "cue": "c3.tour",
+     "with": "ishita",
+     "main": true,
+     "once": true
+    },
+    {
+     "id": "tour_velib",
+     "near": "spot:velib",
+     "radius": 3.0,
+     "when": "touring and not tour_velib and tour_count < 3",
+     "cue": "c3.tour_velib",
+     "with": "ishita",
+     "bring": "ishita",
+     "main": true,
+     "once": true
+    },
+    {
+     "id": "tour_amphi",
+     "near": "point:amphi_aisle",
+     "radius": 3.0,
+     "when": "touring and not tour_amphi and tour_count < 3",
+     "cue": "c3.tour_amphi",
+     "with": "ishita",
+     "bring": "ishita",
+     "main": true,
+     "once": true
+    },
+    {
+     "id": "tour_stickers",
+     "near": "spot:stickers",
+     "radius": 2.4,
+     "when": "touring and not tour_stickers and tour_count < 3",
+     "cue": "c3.tour_stickers",
+     "with": "ishita",
+     "bring": "ishita",
+     "main": true,
+     "once": true
+    },
+    {
+     "id": "tour_sofa",
+     "near": "spot:coin_sofa",
+     "radius": 2.4,
+     "when": "touring and not tour_sofa and tour_count < 3",
+     "cue": "c3.tour_sofa",
+     "with": "ishita",
+     "bring": "ishita",
+     "main": true,
+     "once": true
+    },
+    {
+     "id": "tour_vending",
+     "near": "spot:vending",
+     "radius": 2.6,
+     "when": "touring and not tour_vending and tour_count < 3",
+     "cue": "c3.tour_vending",
+     "with": "ishita",
+     "bring": "ishita",
+     "main": true,
+     "once": true
+    },
+    {
+     "id": "tour_bay",
+     "near": "point:kb1_bay",
+     "radius": 3.0,
+     "when": "touring and not tour_bay and tour_count < 3",
+     "cue": "c3.tour_bay",
+     "with": "ishita",
+     "bring": "ishita",
+     "main": true,
+     "once": true
+    },
+    {
+     "id": "kebab_wait",
+     "near": "point:pasteur_east",
+     "radius": 4.5,
+     "when": "tour_count >= 3 and summit_done and playlist != \"\" and not c3_done",
+     "cue": "c3.end",
+     "main": true,
+     "once": true
+    },
+    {
+     "id": "think_court3",
+     "zone": "court",
+     "when": "phone_charged and not cristina_note",
+     "cue": "c3.think_court",
+     "bark": true
+    },
+    {"id": "think_street3", "zone": "street", "when": "cristina_texted", "cue": "c3.think_street", "bark": true},
+    {
+     "id": "think_under3",
+     "zone": "under",
+     "when": "karim_cristina and summit_done",
+     "cue": "c3.think_under",
+     "bark": true
+    }
+   ],
+   "todos": [
+    {
+     "id": "find_cafe",
+     "main": true,
+     "kind": "go",
+     "text": "The finder says the cafeteria, 19:12. That's now. Go.",
+     "when": "phone_charged and not cristina_note",
+     "done": "cristina_note",
+     "target": "spot:cristina_note_cafe",
+     "label": "Cafeteria"
+    },
+    {
+     "id": "back_under",
+     "main": true,
+     "kind": "go",
+     "text": "Cristina went to the Under. Back down, fast.",
+     "when": "cristina_note and not karim_cristina",
+     "done": "karim_cristina",
+     "target": "npc:karim",
+     "label": "Karim"
+    },
+    {
+     "id": "meet_ishita",
+     "main": true,
+     "kind": "talk",
+     "text": "Ishita wants a tour. She's in cour Pasteur with her camera.",
+     "when": "cristina_texted and not touring and tour_count < 3",
+     "done": "touring or tour_count >= 3",
+     "target": "npc:ishita",
+     "label": "Ishita"
+    },
+    {
+     "id": "ishita_tour",
+     "main": true,
+     "kind": "go",
+     "text": "Show Ishita three places that matter. {{tour_count}} of 3.",
+     "when": "touring and tour_count < 3",
+     "done": "tour_count >= 3",
+     "targets": [
+      {"ref": "spot:velib", "unless": "tour_velib", "label": "The bike rack"},
+      {"ref": "point:amphi_aisle", "unless": "tour_amphi", "label": "My seat"},
+      {"ref": "spot:stickers", "unless": "tour_stickers", "label": "The stickers"},
+      {"ref": "spot:coin_sofa", "unless": "tour_sofa", "label": "The sofa"},
+      {"ref": "spot:vending", "unless": "tour_vending", "label": "The machines"},
+      {"ref": "point:kb1_bay", "unless": "tour_bay", "label": "KB1's glass"}
+     ],
+     "fallback": {"ref": "npc:ishita", "label": "Ishita"}
+    },
+    {
+     "id": "pastry_summit",
+     "main": true,
+     "kind": "talk",
+     "text": "Ian and Silvia, in the cafeteria. It was never about the pastry.",
+     "when": "cristina_texted and not summit_done",
+     "done": "summit_done",
+     "target": "npc:ian",
+     "label": "Ian & Silvia"
+    },
+    {
+     "id": "the_playlist",
+     "main": true,
+     "kind": "talk",
+     "text": "Toma's on the steps. The playlist. My promise.",
+     "when": "cristina_texted and playlist == \"\"",
+     "done": "playlist != \"\"",
+     "target": "npc:toma",
+     "label": "Toma"
+    },
+    {
+     "id": "to_the_kebab",
+     "main": true,
+     "kind": "go",
+     "text": "21:00, the kebab. Rue Pasteur, east end. Early, for once.",
+     "when": "tour_count >= 3 and summit_done and playlist != \"\" and not c3_done",
+     "done": "c3_done",
+     "target": "point:pasteur_east",
+     "label": "rue Pasteur, east"
+    }
+   ],
+   "ends_with": "c3_done"
+  },
+  {
+   "n": 4,
+   "id": "sauce_samourai",
+   "title": "Sauce Samouraï",
+   "card": {"time": "21:00", "date": "jeudi 15 octobre", "place": "rue Pasteur", "chapter": "4 Sauce Samouraï"},
+   "clock": "21:00",
+   "clock_end": "23:40",
+   "clock_holds": [
+    {"while": "not pocket_empty", "until": "21:20"},
+    {"while": "not found", "until": "21:45"},
+    {"while": "not smuggled", "until": "22:00"},
+    {"while": "not mouli_night", "until": "23:38"},
+    {"while": "not c4_done", "until": "23:40"}
+   ],
+   "time": "night",
+   "times": ["night", "late"],
+   "start_cue": "c4.meet",
+   "started": "met_cristina",
+   "start_with": "cristina",
+   "start_at": "point:pasteur_east",
+   "card_at": "point:pasteur_east",
+   "start_flags": {
+    "photos_taken": {"ph_slide": 3, "ph_stickers": 3, "ph_bikes": 3},
+    "toma": true,
+    "ines": true,
+    "karim": true,
+    "sign": true,
+    "madame_met": true,
+    "coffee_given": true,
+    "coins": 0,
+    "got_sofa": true,
+    "promise": true,
+    "phone_dead": true,
+    "phone_charging": true,
+    "ishita_met": true,
+    "camera": true,
+    "anisha_asked": true,
+    "croissant": true,
+    "choco": "pac",
+    "c1_done": true,
+    "joaquin_met": true,
+    "foot_partner": "ian",
+    "joaquin_tip": true,
+    "lf_twist": true,
+    "c2_done": true,
+    "time": "night",
+    "clues": [
+     "My AirPod: a little \"M\" scratched on it, and a chewed stem.",
+     "Anisha sees everything. She's in SM14: Bâtiment Voltaire, 1st floor. Cross rue Pasteur and take the stairs.",
+     "Ishita lent me her disposable camera: ten photos of campus life tonight. Back to her at 23:00, on the steps.",
+     "Anisha saw Karim (BDE) pick up a white earbud near my seat. The Under is down the ramp in the corner of cour Pasteur.",
+     "Karim left my AirPod at the lost & found: the Voltaire reception, ground floor of the Bâtiment Voltaire.",
+     "Mme Dupont will not open the lost & found without a coffee. The machine costs 2 euros.",
+     "C. took my AirPod to give it back to me. Who is C.?",
+     "C. is Cristina, new this year, Toma's friend. My AirPod's in the promo chat since 18:20.",
+     "Cristina has my AirPod. The kebab with Joaquin at 21:00, rue Pasteur's east end. Bring proof.",
+     "The song for the steps: \"Evening\". Toma's whole plan: the steps, for the new ones."
+    ],
+    "phone_charged": true,
+    "promise_known": true,
+    "cristina_note": true,
+    "karim_cristina": true,
+    "cristina_texted": true,
+    "tour_count": 3,
+    "tour_amphi": true,
+    "tour_stickers": true,
+    "tour_velib": true,
+    "ishita_fav": "amphi",
+    "film_shots": 3,
+    "summit_done": true,
+    "playlist": "ending",
+    "toma_beat": true,
+    "c3_done": true,
+    "finder_place": "cafe",
+    "finder_time": "19:12",
+    "chat_batches": ["preview", "flood", "cristina", "memory"],
+    "moments": ["sit_planter"]
+   },
+   "stage": {
+    "sleeper": [{"when": "sup_awake", "point": "court_sup4", "awake": true}, {"awake": true}],
+    "waiting": [{"when": "waiting_bye", "hide": true}],
+    "cristina": [
+     {"when": "found", "point": "steps5_cristina", "sit": true, "leave": true},
+     {"when": "not pocket_empty", "point": "kebab_cristina"}
+    ],
+    "joaquin": [{"when": "pocket_empty", "point": "steps5_joaquin", "sit": true, "leave": true}, {"point": "kebab_joaquin"}],
+    "toma": {"point": "steps_toma"},
+    "ishita": {"point": "steps_ishita"},
+    "ian": {"point": "steps_ian", "chat": true},
+    "silvia": {"point": "steps_silvia", "chat": true},
+    "karim": {"point": "under_bar_karim"},
+    "chloe": {"point": "under_chloe"},
+    "acu": [{"when": "anisha_sos and not smuggled", "point": "acu_soleil"}]
+   },
+   "triggers": [
+    {
+     "id": "under_search",
+     "near": "point:under_entry",
+     "radius": 5.0,
+     "zone": "under",
+     "when": "pocket_empty and not found and not searching",
+     "cue": "c4.search",
+     "with": "cristina",
+     "bring": "cristina",
+     "main": true,
+     "once": true
+    },
+    {
+     "id": "sm14_acu",
+     "near": "point:sm14_door",
+     "radius": 2.4,
+     "when": "anisha_sos and not smuggled",
+     "cue": "c4.acu",
+     "with": "acu",
+     "place": {"mano": "sm14_soleil_start", "acu": "acu_soleil"},
+     "main": true,
+     "once": true
+    },
+    {
+     "id": "steps_arrive",
+     "near": "point:steps5_mano",
+     "radius": 5.0,
+     "when": "mouli_night and not c4_done",
+     "cue": "c4.end",
+     "main": true,
+     "once": true
+    },
+    {
+     "id": "think_court4",
+     "zone": "court",
+     "when": "pocket_empty and not found",
+     "cue": "c4.think_court",
+     "bark": true
+    },
+    {
+     "id": "think_street4",
+     "zone": "street",
+     "when": "anisha_sos and not smuggled",
+     "cue": "c4.think_street",
+     "bark": true
+    },
+    {
+     "id": "think_court4b",
+     "zone": "court",
+     "when": "mouli_night and not c4_done",
+     "cue": "c4.think_late",
+     "bark": true
+    }
+   ],
+   "todos": [
+    {
+     "id": "meet_cristina",
+     "main": true,
+     "kind": "talk",
+     "text": "Cristina and Joaquin, 21:00. Rue Pasteur's east end.",
+     "when": "not met_cristina",
+     "done": "met_cristina",
+     "target": "npc:cristina",
+     "label": "Cristina"
+    },
+    {
+     "id": "the_orders",
+     "main": true,
+     "kind": "play",
+     "text": "Joaquin's orders. I'm the memory, apparently.",
+     "when": "met_cristina and not kebab_done",
+     "done": "kebab_done",
+     "target": "npc:joaquin",
+     "label": "Joaquin"
+    },
+    {
+     "id": "sofa_again",
+     "main": true,
+     "kind": "go",
+     "text": "The Under, 20:31. The sofa ate my AirPod.",
+     "when": "pocket_empty and not found and not searching",
+     "done": "found or searching",
+     "target": "point:under_entry",
+     "label": "The Under"
+    },
+    {
+     "id": "ring_it",
+     "main": true,
+     "kind": "find",
+     "text": "Make it ring. Listen between the thumps.",
+     "when": "searching and not found",
+     "done": "found",
+     "target": "npc:cristina",
+     "label": "Cristina"
+    },
+    {
+     "id": "anisha_food",
+     "main": true,
+     "kind": "go",
+     "text": "Anisha. SM14. Starving. Her kebab's in my bag.",
+     "when": "anisha_sos and not smuggled",
+     "done": "smuggled",
+     "target": "point:sm14_door",
+     "label": "SM14"
+    },
+    {
+     "id": "anisha_last",
+     "main": true,
+     "kind": "play",
+     "text": "One last moulinette. 23:42.",
+     "when": "smuggled and not mouli_night",
+     "done": "mouli_night",
+     "target": "npc:anisha",
+     "label": "Anisha"
+    },
+    {
+     "id": "to_the_steps",
+     "main": true,
+     "kind": "go",
+     "text": "The steps. Now. Toma's going to kill us.",
+     "when": "mouli_night and not c4_done",
+     "done": "c4_done",
+     "target": "point:steps5_mano",
+     "label": "The steps"
+    }
+   ],
+   "ends_with": "c4_done"
+  },
+  {
+   "n": 5,
+   "id": "stereo",
+   "title": "Stereo",
+   "card": {"time": "23:41", "date": "jeudi 15 octobre", "place": "cour Pasteur", "chapter": "5 Stereo"},
+   "clock": "23:41",
+   "clock_end": "24:10",
+   "clock_holds": [{"while": "not group_photo", "until": "23:52"}, {"while": "given_to == \"\"", "until": "23:58"}],
+   "time": "late",
+   "times": ["late"],
+   "group_shot": "steps_wide",
+   "start_cue": "c5.steps",
+   "started": "group_photo",
+   "start_with": "toma",
+   "start_at": "point:steps5_mano",
+   "card_at": "point:steps5_mano",
+   "start_flags": {
+    "photos_taken": {"ph_slide": 3, "ph_stickers": 3, "ph_bikes": 3},
+    "toma": true,
+    "ines": true,
+    "karim": true,
+    "sign": true,
+    "madame_met": true,
+    "coffee_given": true,
+    "coins": 0,
+    "got_sofa": true,
+    "promise": true,
+    "phone_dead": true,
+    "phone_charging": true,
+    "ishita_met": true,
+    "camera": true,
+    "anisha_asked": true,
+    "croissant": true,
+    "choco": "pac",
+    "c1_done": true,
+    "joaquin_met": true,
+    "foot_partner": "ian",
+    "joaquin_tip": true,
+    "lf_twist": true,
+    "c2_done": true,
+    "time": "late",
+    "clues": [
+     "My AirPod: a little \"M\" scratched on it, and a chewed stem.",
+     "Anisha sees everything. She's in SM14: Bâtiment Voltaire, 1st floor. Cross rue Pasteur and take the stairs.",
+     "Ishita lent me her disposable camera: ten photos of campus life tonight. Back to her at 23:00, on the steps.",
+     "Anisha saw Karim (BDE) pick up a white earbud near my seat. The Under is down the ramp in the corner of cour Pasteur.",
+     "Karim left my AirPod at the lost & found: the Voltaire reception, ground floor of the Bâtiment Voltaire.",
+     "Mme Dupont will not open the lost & found without a coffee. The machine costs 2 euros.",
+     "C. took my AirPod to give it back to me. Who is C.?",
+     "C. is Cristina, new this year, Toma's friend. My AirPod's in the promo chat since 18:20.",
+     "Cristina has my AirPod. The kebab with Joaquin at 21:00, rue Pasteur's east end. Bring proof.",
+     "The song for the steps: \"Evening\". Toma's whole plan: the steps, for the new ones."
+    ],
+    "phone_charged": true,
+    "promise_known": true,
+    "cristina_note": true,
+    "karim_cristina": true,
+    "cristina_texted": true,
+    "tour_count": 3,
+    "tour_amphi": true,
+    "tour_stickers": true,
+    "tour_velib": true,
+    "ishita_fav": "amphi",
+    "film_shots": 3,
+    "summit_done": true,
+    "playlist": "ending",
+    "toma_beat": true,
+    "c3_done": true,
+    "finder_place": "under",
+    "finder_time": "20:31",
+    "chat_batches": ["preview", "flood", "cristina", "memory", "sos"],
+    "moments": ["sit_planter"],
+    "met_cristina": true,
+    "kebab_done": true,
+    "kebab_score": 13,
+    "kebab_total": 15,
+    "kebab_wrong": ["ian"],
+    "pocket_empty": true,
+    "found": true,
+    "cristina_beat": true,
+    "anisha_sos": true,
+    "airpods_case": true,
+    "smuggled": true,
+    "mouli_night": true,
+    "anisha_beat": true,
+    "c4_done": true
+   },
+   "stage": {
+    "sleeper": [{"when": "sup_awake", "point": "court_sup4", "awake": true}, {"awake": true}],
+    "waiting": [{"when": "waiting_bye", "hide": true}],
+    "student2": [{"when": "survivor_sun", "point": "court_survivor5"}],
+    "toma": {"point": "steps5_toma"},
+    "ian": {"point": "steps5_ian", "sit": true},
+    "silvia": {"point": "steps5_silvia", "sit": true},
+    "cristina": {"point": "steps5_cristina", "sit": true},
+    "joaquin": {"point": "steps5_joaquin", "sit": true},
+    "anisha": {"point": "steps5_anisha", "sit": true},
+    "ishita": {"point": "steps5_ishita", "sit": true},
+    "theo": {"hide": true},
+    "karim": {"point": "under_bar_karim"}
+   },
+   "triggers": [],
+   "todos": [
+    {
+     "id": "give_one",
+     "main": true,
+     "kind": "talk",
+     "text": "Two AirPods. Seven friends. Who gets the other one?",
+     "when": "group_photo and given_to == \"\"",
+     "done": "given_to != \"\"",
+     "target": "npc:toma",
+     "label": "The steps"
+    }
+   ],
+   "ends_with": "c5_done"
+  }
+ ]
+}

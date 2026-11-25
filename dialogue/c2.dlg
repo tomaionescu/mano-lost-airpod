@@ -1,0 +1,164 @@
+# Chapter 2 "Lost & Found" (18:30-19:05, late_gold to last_light): data/chapters.json chapter 2, docs/DESIGN.md §3.5.
+# V2-23: the Under with Karim, Chloé and Joaquin (his intro is a [slot]); babyfoot 1v1 or 2v2
+# (Ian or Silvia from the pastry war, Joaquin, or alone); Karim's admission; the phone on the BDE's charging strip;
+# Joaquin's tip for the machine; the coffee law (the SECOND coffee; the first came from "a nice new girl"); the
+# coins from Anisha's euro and the sofa; the lost & found twist (five joke AirPods and C.'s note: no right one);
+# the clue "Who is C.?"; last_light and 18:50 under the box's exit; the sun on rue Pasteur's axis at 18:55, the
+# street lamps coming on, the planter-wall sit-down, and `$ chapter 3` ("3 Blue Hour").
+# Karim's and Mme Dupont's recorded lines (assets/audio/voice) are kept word for word wherever their beat survives.
+
+# A thought on the way down (bark trigger)
+~ c2.think_under
+think: The Under, the BDE's basement. Smells like babyfoot and decisions.
+
+# Joaquin at the babyfoot (main trigger near him, chapters.json joaquin_under)
+~ c2.under
+joaquin: [#neutral] Hey. You're Mano? Toma's Mano? [slot]
+mano: I'm... nobody's Mano. Yes. Hi.
+joaquin: Joaquin. New this year. Toma said you'd be the one with one AirPod. [slot]
+think: I'm a description now.
+karim: [#grin] Joaquin! Back for game five?
+joaquin: [#smirk] I'm not losing. I'm collecting data. [slot]
+joaquin: Four games, four losses. Karim always shoots left. [slot]
+karim: [#smirk] I heard that. I shoot wherever I want.
+joaquin: [#neutral] ...Left.
+karim: [#grin] Ian and Silvia came down to watch me win. Very supportive. [if choco != ""]
+think: Of course it's Karim. Every story has a Karim.
+$ set joaquin_met
+$ clue "Joaquin (new this year) has lost to Karim four times, and calls it data. Karim always shoots left."
+
+# talk.karim's "Let's go": who plays with Mano (docs/DESIGN.md §3.7, choice 4). The pastry ally comes first.
+~ c2.partner
+karim: [#grin] Bring a teammate if you want. I play both rods. BDE tradition.
+think: Two against one. Who's on my side?
+- Ian [if choco != "choco"]
+	ian: [#grin] Pain au chocolat gang, assemble.
+	$ set foot_partner = "ian"
+- Silvia [if choco != "pac"]
+	silvia: [#grin] Chocolatine gang. Finally, a sport.
+	$ set foot_partner = "silvia"
+- Joaquin [if joaquin_met]
+	joaquin: [#smile] Okay. I have notes. [slot]
+	$ set foot_partner = "joaquin"
+- Alone
+	karim: [#smirk] Respect. Bad idea, but respect.
+	$ set foot_partner = "solo"
+$ minigame babyfoot stand_at=babyfootSpot win=c2.foot_win lose=c2.foot_lose with=karim
+
+~ c2.foot_lose
+$ add foot_losses 1
+karim: [#grin] HAHAHA. BDE champion, baby.
+ian: [#annoyed] Lucky. That was pure luck. [if foot_partner == "ian" and foot_losses == 1]
+ian: [#annoyed] He got lucky. Twice. In a row. [if foot_partner == "ian" and foot_losses >= 2]
+silvia: [#annoyed] That didn't count. I blinked. [if foot_partner == "silvia"]
+joaquin: [#neutral] Data point five. [if foot_partner == "joaquin" and foot_losses == 1]
+joaquin: [#neutral] Data point six. Same conclusion. [if foot_partner == "joaquin" and foot_losses >= 2]
+karim: [#tired] My hands are tired. From WINNING. [if foot_losses >= 2]
+think: Either he's slower now, or I'm faster. Probably not. [if foot_losses >= 2]
+karim: Run it back?
+- Rematch
+	$ minigame babyfoot stand_at=babyfootSpot win=c2.foot_win lose=c2.foot_lose with=karim
+- Later
+	karim: [#smirk] Come back when you've trained, little man.
+
+~ c2.foot_win
+karim: [#shock] ...WHAT. Nobody beats me at babyfoot.
+ian: [#grin] Pain au chocolat gang wins AGAIN. [if foot_partner == "ian"]
+silvia: [#grin] Chocolatine supremacy. Write it down. [if foot_partner == "silvia"]
+joaquin: [#smile] ...I told you. He always shoots left. [if foot_partner == "joaquin"]
+karim: [#sad] Fine. Thing is... I don't have it anymore.
+karim: I dropped it at the lost & found, the Voltaire reception.
+mano: [#annoyed] You made me play for NOTHING?
+karim: [#smirk] You played for honor, bro.
+$ set karim = true
+$ clue "Karim left my AirPod at the lost & found: the Voltaire reception, ground floor of the Bâtiment Voltaire."
+mano: Also. Can I charge my phone? It died at 17:43.
+karim: [#smile] BDE charging strip, behind the bar. Come back in an hour.
+$ set phone_charging
+$ toast "Phone on the BDE strip"
+think: An hour with no phone. Like it's the olden days.
+karim: [#grin] And Mano? BDE party tonight. 23:00, right here. Bring your one ear.
+think: 23:00. Why does everyone have plans at 23:00?
+if joaquin_met
+	joaquin: [#neutral] Hey. One thing, for later.
+	joaquin: The coffee machine. Hit the left side, not the right. [slot]
+	mano: Why?
+	joaquin: [#smirk] Data. [slot]
+	$ set joaquin_tip
+	$ clue "Joaquin's tip: the coffee machine, hit the left side, not the right."
+think: Lost & found: KB1, ground floor. Up the ramp, across the street.
+
+# Thoughts on the way (bark triggers)
+~ c2.think_dusk
+think: The gold's climbing the buildings. The street's already in the shade.
+
+~ c2.think_cafe
+think: The cafet'. It smells like coffee nobody is drinking.
+
+# The coffee machine's minigame (use.coffee starts it)
+~ c2.coffee_ok
+$ set coffee = true
+$ set paid = false
+nar: *CLUNK*
+think: One hot coffee. I got a COFFEE.
+think: Joaquin was right. The left side. [if joaquin_tip]
+$ toast "Got a coffee" coffee
+
+~ c2.coffee_fail
+think: The machine wins this round. My 2 euros are still inside.
+think: Try again. With feeling.
+
+# The lost & found box (talk.madame2 starts it): whatever is picked, the note is the end of it. The box's exit is
+# a cut: last_light and 18:48 under it.
+~ c2.twist
+$ set lf_twist
+$ time last_light fade=0.5
+$ clock 18:48
+mano: [#shock] "Took the M one to find its owner. C."
+think: Blue-green ink, very neat, exclamation marks. C. is nice.
+mano: [#shock] Somebody TOOK it? Mme Dupont!
+madame: [#smirk] Oh. Her. The nice new girl with the coffee.
+madame: She asked very politely. Nobody asks politely.
+madame: She said someone would be sad without it. [slot]
+mano: Who IS she? What's her name?
+madame: [#annoyed] Do I look like the lost & found of NAMES?
+mano: ...You look exactly like the lost & found.
+madame: *sips coffee* Not my problem, sweetie.
+think: C. took my AirPod, to give it back to me.
+think: Who is C.?
+$ clue "C. took my AirPod to give it back to me. Who is C.?"
+madame: *sips coffee* Wonderful. Now leave.
+$ lamps street_lamps 0
+think: I need air. Rue Pasteur.
+
+# The planter wall on rue Pasteur at 18:55 (main trigger, chapters.json sunset): the sun sits on the street's axis,
+# the street lamps come on; the planter-wall sit-down is offered (V2-14: data/world.json sit_planter), and
+# the chapter ends when Mano gets up (or at once without it)
+~ c2.sunset
+$ place mano planter_wall
+$ shot sunset_street
+$ clock 18:55
+think: The sun is parked at the end of the street.
+$ lamps street_lamps 1 4
+think: Right on the axis of rue Pasteur. Seven minutes left.
+if survivor_out
+	=>< side.survivor.sunset
+think: Even the light leaves early.
+think: Recap: Karim found it. Karim lost it, in a box.
+think: A nice new girl took it out of the box. To find me.
+think: Somebody's been looking for me all evening.
+think: That's... new.
+if camera and film_shots < 10 and not "ph_sunset" in photos_taken
+	think: Ishita said campus life. This is the whole campus, leaving.
+	- Take a photo
+		$ photo film
+		think: Click. The sun on film. I'll see it in a week.
+	- Just watch
+		think: Some things don't fit on film.
+think: Seven minutes. Sit, or go?
+- Sit on the planter wall
+	$ sit sit_planter
+- Keep going
+	think: No time to watch it. Somebody's looking for me.
+$ set c2_done
+$ chapter 3

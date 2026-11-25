@@ -1,0 +1,32 @@
+{
+	"ducks": ["court_1"],
+	"flags": {
+		"choco": "pac",
+		"clues": [
+			"My AirPod: a little \"M\" scratched on it, and a chewed stem.",
+			"Anisha sees everything. She's in SM14: Bâtiment Voltaire, 1st floor. Cross rue Pasteur and take the stairs."
+		],
+		"coffee": false,
+		"coffee_given": false,
+		"coins": 2.0,
+		"foot_losses": 1.0,
+		"found": false,
+		"got": {"sofa": true},
+		"hints": ["move"],
+		"ines": true,
+		"karim": true,
+		"madame_met": true,
+		"merch": false,
+		"paid": false,
+		"sign": true,
+		"time": "golden",
+		"toma": true,
+		"old_key_nobody_knows": 7
+	},
+	"outfit": "classic",
+	"play_time": 312.5,
+	"pos": [18.75, -0.789999961853027, 14.0],
+	"saved_at": "2026-11-04T12:07:21",
+	"version": 1,
+	"yaw": -1.54163801670074
+}

@@ -1,0 +1,51 @@
+# After the story: the post-credits at 00:25 (docs/DESIGN.md §3.5, chapter 5) and v1's ending gag.
+# post.credits plays after the credits roll (main.roll_credits), with Mme Dupont locking up behind Mano on rue
+# Pasteur: v1's lines word for word where they fit (the AirPods back in, *plink*, "Where is my OTHER one."), and
+# Mme Dupont's two recorded lines from v1's ending, so both keep their voice files: "M scratch, chewed stem...
+# gross. Yes, that one is yours." (unused in chapter 2 because of its twist) and "Not my problem, sweetie.". Then
+# the recap.
+# post.v1_ending is v1's ending as it was (the AirPod back from the lost & found): no chapter plays it, because
+# of the chapter 2 twist; autotest=ending plays it on its own (Story.ending()).
+
+# 00:25, rue Pasteur, Mano alone heading for the last metro; Mme Dupont locking up behind him
+~ post.credits
+think: 00:25. Last metro at {{word.last_metro}}. Rue Pasteur, all mine.
+think: "Keep it charged," Toma said. Both in. Stereo, all the way home. [if given_to == "toma"]
+think: "Not chewed any more," Anisha said. It is still chewed. [if given_to == "anisha"]
+think: Ian gave it back "for political reasons". [if given_to == "ian"]
+think: Silvia gave it back. "Same AirPod. Two ears. Like the pastry." [if given_to == "silvia"]
+think: Ishita gave it back. She kept the memory, as promised. [if given_to == "ishita"]
+think: Cristina gave it back. Second handover of the night. This one worked. [if given_to == "cristina"]
+think: Joaquin gave it back with a note: "one song, four minutes, data noted." [if given_to == "joaquin"]
+mano: [#grin] Okay. Music time. Left one in...
+$ airpods ear
+mano: ...right one in...
+$ drop_airpod grate
+nar: *plink*
+mano: ...
+mano: [#shock] Wait.
+think: A drain. Right under my foot. The only drain on rue Pasteur.
+mano: [#shock] Where is my OTHER one.
+think: Mme Dupont, locking up. She leans over the grate.
+madame: [#annoyed] M scratch, chewed stem... gross. Yes, that one is yours.
+madame: [#smirk] *sips coffee* Not my problem, sweetie.
+$ set credits_done
+$ recap
+
+~ post.v1_ending
+madame: [#annoyed] M scratch, chewed stem... gross. Yes, that one is yours.
+$ sfx fanfare
+$ give_airpod
+$ banner "Stereo restored" "two ears. finally."
+$ toast "My AirPod!" airpod
+mano: [#grin] FINALLY. Two ears. Stereo. Life is good again.
+madame: *sips coffee* Wonderful. Now leave.
+mano: Okay. Music time. Left one in...
+mano: ...right one in...
+$ drop_airpod
+nar: *plink*
+mano: ...
+mano: [#shock] Wait.
+mano: [#shock] Where is my OTHER one.
+madame: [#smirk] *sips coffee* Not my problem, sweetie.
+$ ending

@@ -1,0 +1,8 @@
+# The bridge to the ending: `$ chapter n` for a chapter data/chapters.json does not have plays this, then the
+# "à suivre…" page. Every chapter (0 to 5) is in the data and the story ends with the credits, the post-credits
+# and the recap (c5.dlg, post.dlg), so only a chapter number the data does not have reaches this
+# (tests/test_quest.gd checks it).
+
+~ bridge.end
+think: The night is not over. The rest of it just isn't written yet.
+$ ending

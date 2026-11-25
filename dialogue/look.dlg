@@ -1,0 +1,324 @@
+# Look-ats and readables (V2-28): what Story.use(spot) plays for the spots data/world.json adds,
+# room by room. Every line is Mano's inner voice (`think`): first person, two short sentences at most, about 60 %
+# funny, 25 % observational, 15 % wistful (docs/DESIGN.md §3.12). `if night()` gives a spot its line for the blue hour,
+# the night and late (about 25 of them). A `read` spot opens a 20° insert on what is read (world.json `insert`,
+# main.interact); the others are barks: Mano keeps walking while the thought shows.
+
+# ---------------------------------------------------------------- Amphi 4
+~ use.amphi_lectern
+think: A sticker on the lectern: "Dijkstra was right."
+think: Someone added, in biro: "about what?"
+
+~ use.amphi_backpack
+think: A backpack with a keyring shaped like a semicolon.
+think: Somebody here finishes their statements.
+
+~ use.amphi_laptop
+if night()
+	think: A laptop left open, glowing in an empty amphi. Forty-seven tabs.
+else
+	think: A laptop, forty-seven tabs open. One of them is "how to sleep".
+
+~ use.amphi_row
+if night()
+	think: Empty rows in the dark. They look like they're waiting for a lecture.
+else
+	think: Fold-down seats, row after row. Each one squeaks a different note.
+
+~ use.amphi_extinguisher
+think: Fire extinguisher. Last checked in March. Of some year.
+
+# ---------------------------------------------------------------- SM14
+~ use.sm14_board
+think: "Piscine J09. Rush 42sh vendredi. Norme: 25 lignes max."
+think: And a graph in the corner. Dijkstra follows me everywhere.
+
+~ use.sm14_clock
+if night()
+	think: SM14's clock, still four minutes fast at night. Consistent.
+else
+	think: SM14's clock runs four minutes fast. Everyone knows.
+	think: Everyone still panics.
+
+~ use.sm14_trace
+think: Someone's terminal, mid-moulinette. Red lines. Lots of red lines.
+think: That's a -42 if I've ever seen one.
+
+~ use.sm14_bottle
+think: A sealed water bottle. The only snack the ACUs allow.
+
+~ use.sm14_backpack
+think: A backpack covered in pins. One says "it compiles".
+think: Not "it works". Just "it compiles". Honest.
+
+~ use.sm14_screens
+if night()
+	think: One screen still on at this hour. "Segmentation fault".
+	think: Somebody's night, summed up.
+else
+	think: Somebody's terminal: "Segmentation fault". Somebody's evening: over.
+
+~ use.sm14_sign
+think: "SM14". I've walked past this door twice looking for it.
+think: Ishita did it three times. We're even.
+
+# ---------------------------------------------------------------- SM15
+~ use.sm15_screens
+think: A screen saver bouncing a logo toward the corner. Almost. Almost.
+
+~ use.sm15_clock
+think: SM15's clock is right. Nobody trusts it.
+
+~ use.sm15_backpack
+think: A backpack, alone, unzipped. Someone's coming back for it.
+think: Or someone's very trusting.
+
+~ use.sm15_bottle
+think: Another sealed bottle. Peak hydration, zero snacks.
+
+~ use.sm15_room
+if night()
+	think: SM15 at night. Every screen asleep. Lucky screens.
+else
+	think: SM15, empty. The best room on the floor, and nobody knows why.
+
+~ use.sm15_note
+think: A terminal left logged in, a build halfway through.
+think: Nobody touches someone else's make. House rules.
+
+# ---------------------------------------------------------------- KB1, the 1st-floor corridor
+~ use.f1_lockers
+think: Lockers. Mine is number... I don't have a locker.
+think: That explains a lot.
+
+~ use.f1_bench
+if night()
+	think: The bench is empty now. Even the moulinette went home.
+else
+	think: A bench for waiting on the moulinette. Like a station, but sadder.
+
+~ use.f1_extinguisher
+think: Another extinguisher. KB1 takes no chances.
+
+~ use.f1_notice
+think: The corridor's notice board. Notes on notes, pinned since September.
+think: Somewhere under them there's a "QCM vendredi 9h". There always is.
+
+~ use.f1_mouli
+think: A moulinette poster. It looks friendly.
+think: It is not friendly.
+
+~ use.f1_acu
+think: The ACUs' poster. Very serious font.
+think: I've read it every day since September. I still feel watched.
+
+# ---------------------------------------------------------------- KB1, the ground floor and the accueil
+~ use.gf_vending
+think: Another red vending machine. Same love story, different ending.
+
+~ use.gf_cooler
+if night()
+	think: The water cooler gurgles in the empty hall. It's the only one talking.
+else
+	think: The water cooler gurgles like it knows something.
+
+~ use.gf_banner
+think: An EPITA roll-up banner, left over from the open days.
+think: Still up. Still welcoming. More than the accueil, today.
+
+~ use.gf_notice
+think: The accueil's notice board. Timetables, a lost umbrella, a student card.
+think: Nothing about a lost AirPod. Yet.
+
+~ use.gf_wet_floor
+think: "Wet floor." It hasn't been wet since 2019. Nobody moves it.
+
+~ use.gf_armchair
+think: Mustard armchairs. Nobody sits in them. They're for looking at.
+
+~ use.gf_plant
+think: This plant is plastic. I watered it in September. Twice.
+
+~ use.gf_desk
+if night()
+	think: The desk lamp is off. Whoever sits here went home on time.
+else
+	think: An empty desk, a mug, a chair still turned to the door.
+
+# ---------------------------------------------------------------- rue Pasteur
+~ use.st_morris
+think: The Morris column: concert, théâtre, opéra, festival. All in March.
+think: I'll be here in March. Probably in SM14.
+
+~ use.st_meter
+think: A parking meter. I respect it. I will never use it.
+
+~ use.st_zone30
+think: Zone 30. The mopeds read it as a suggestion.
+
+~ use.st_moped
+if night()
+	think: The red moped's still here. Its owner is having a long night too.
+else
+	think: A red moped, a helmet on the seat. Trust, on rue Pasteur.
+
+~ use.st_cabinet
+think: A utility cabinet wearing more stickers than my laptop.
+
+~ use.st_tree
+if night()
+	think: The plane tree in the lamplight. Its leaves look gold again.
+else
+	think: A plane tree, dropping leaves on exactly where I'd sit.
+
+~ use.st_bin
+think: A croissant in the bin. Untouched. A sad croissant.
+think: The poster upstairs was right about them.
+
+~ use.st_no_parking
+think: No parking. Three mopeds disagree.
+
+~ use.st_lamp
+if clock_after("18:55")
+	think: The street lamp. It came on at 18:55. I was there for it.
+else
+	think: The street lamp's still off. It comes on with the sun going.
+
+~ use.st_east
+if night()
+	think: The end of rue Pasteur. The périphérique hums past it, all night.
+else
+	think: The end of rue Pasteur. Past it, the périphérique, humming.
+
+~ use.st_car
+think: A white car with a parking ticket. A local tradition.
+
+# ---------------------------------------------------------------- cour Pasteur
+~ use.ct_picnic
+if night()
+	think: The picnic table at night. Someone left a cold coffee. Brave.
+else
+	think: A picnic table carved with initials. And one Dijkstra graph.
+
+~ use.ct_table2
+think: Another picnic table. Nobody picnics. Everybody codes.
+
+~ use.ct_birch
+think: A birch in a crate. It's doing its best.
+think: Same.
+
+~ use.ct_birch2
+if night()
+	think: The birch at night, lit from the cafeteria. Pretending it's day.
+else
+	think: Another birch in a crate. They're a little family.
+
+~ use.ct_bikes
+if night()
+	think: The court's bikes in the dark. Flat tyres don't need light.
+else
+	think: More bikes, more flat tyres. It's a theme.
+
+~ use.ct_bin
+think: A pastry wrapper in the bin. Pain au chocolat or chocolatine?
+think: The wrapper won't say. Smart wrapper.
+
+~ use.ct_ramp
+if night()
+	think: The ramp glows green from the exit sign. A dungeon. A fun one.
+else
+	think: The ramp down to the Under. Down is where the fun is.
+
+~ use.ct_bin2
+think: Someone binned a sorted, folded flyer. The BDE would cry.
+
+~ use.ct_amphi_door
+think: Amphi 4's door sighs every time it closes.
+think: Fair. I'd sigh too.
+
+# ---------------------------------------------------------------- the passage
+~ use.pa_cabinet
+think: A cabinet: "Ne pas ouvrir." So I won't. Probably.
+
+~ use.pa_gate
+if night()
+	think: The passage gate. At night it locks, and the campus becomes an island.
+else
+	think: The passage gate, folded back. In September I got lost from here.
+
+~ use.pa_roof
+if night()
+	think: The pigeons in the passage roof have gone quiet. Even they log off.
+else
+	think: Pigeons up in the passage roof, holding a meeting.
+
+~ use.pa_wall
+think: No sign for SM14 anywhere in here. That explains Ishita.
+
+~ use.pa_light
+if night()
+	think: The passage light flickers in four-four time. Someone should dance.
+else
+	think: A light that's off in the day and flickers at night. A night owl.
+
+# ---------------------------------------------------------------- the cafeteria
+~ use.cf_register
+think: The till. Contactless only. My coins feel personally attacked.
+
+~ use.cf_microwave
+if night()
+	think: Six microwaves. One beeps for a lasagne nobody came back for.
+else
+	think: Six microwaves. One queue. Zero patience.
+
+~ use.cf_table
+think: A table with a ring from a coffee cup. A whole history.
+
+~ use.cf_bins
+think: Three bins: paper, plastic, and despair. Despair is full.
+
+~ use.cf_plant
+think: A plant by the window. The only one in here that gets the sun.
+
+~ use.cf_menu
+if night()
+	think: The counter, closed. Tomorrow's plat du jour: pâtes, probably.
+else
+	think: The counter. The plat du jour is pâtes. Yesterday's too.
+	think: Consistent. Like the bikes.
+
+# ---------------------------------------------------------------- the Under
+~ use.un_arcade
+if night()
+	think: The arcade glows in the dark. High scores: KARIM, KARIM, KARIM.
+else
+	think: An arcade cabinet. High scores: KARIM, KARIM, KARIM...
+
+~ use.un_poster
+think: The BDE's poster for tonight, {{word.party}}.
+think: Big letters, bigger promises.
+
+~ use.un_beanbags
+think: Beanbags. You don't sit in them. They swallow you.
+
+~ use.un_tv
+think: The TV only ever shows the BDE's playlist. On mute.
+
+~ use.un_shelf
+think: Board games. Every Monopoly box is missing a hotel.
+
+~ use.un_games2
+think: More board games. A chess set with eleven pawns.
+think: Nobody's complained. We make do.
+
+~ use.un_bins
+think: Recycling, sorted with love. And one chip, unsorted.
+
+~ use.un_extinguisher
+if night()
+	think: The extinguisher, ready for the party. Just in case.
+else
+	think: An extinguisher, ready for the party. Hopefully not needed.
+
+~ use.un_armchair
+think: A mustard armchair. Older than the BDE. Wiser, too.

@@ -1,0 +1,26 @@
+{
+ "version": 1,
+ "doc": "Joaquin's kebab orders (chapter 4, scripts/minigames/kebab.gd; docs/DESIGN.md §3.10). Each friend's default order was reviewed by that friend (`slot`: true). Rounds: a ticket shows the friend's name in their colour and the order for `show` seconds, then Mano rebuilds the asked `fields` from the menu; in the `readback` round the cook reads every ticket back with a sauce, some of them wrong (`cook`), and Mano says right or wrong. Nothing is lost: a wrong order goes into flags.kebab_wrong for the steps (chapter 5).",
+ "bases": ["galette", "pain", "assiette"],
+ "sauces": ["blanche", "algérienne", "samouraï", "harissa", "andalouse", "ketchup", "mayo"],
+ "extras": ["frites", "oignons", "salade", "fromage"],
+ "orders": {
+  "joaquin": {"base": "galette", "sauce": "samouraï", "extra": "frites", "slot": true, "note": "'Samouraï is the correct sauce. This is not a debate.' (c3)"},
+  "cristina": {"base": "pain", "sauce": "blanche", "extra": "salade", "slot": true},
+  "mano": {"base": "galette", "sauce": "algérienne", "extra": "frites", "slot": true},
+  "toma": {"base": "assiette", "sauce": "andalouse", "extra": "frites", "slot": true},
+  "ishita": {"base": "galette", "sauce": "samouraï", "extra": "oignons", "slot": true, "note": "'samouraï. obviously' in the flood (chat.json)"},
+  "ian": {"base": "pain", "sauce": "algérienne", "extra": "fromage", "slot": true},
+  "silvia": {"base": "pain", "sauce": "algérienne", "extra": "fromage", "slot": true, "note": "the same order as Ian since the pastry summit: 'It's the same kebab.'"},
+  "anisha": {"base": "galette", "sauce": "harissa", "extra": "frites", "slot": true, "note": "Toma ordered it for her: she is still in SM14"}
+ },
+ "rounds": [
+  {"id": "us", "who": ["joaquin", "cristina", "mano"], "fields": ["base", "sauce", "extra"], "show": 2.5,
+   "intro": "Round one. The three of us."},
+  {"id": "steps", "who": ["toma", "ishita", "ian", "silvia"], "fields": ["sauce", "extra"], "show": 2.2,
+   "intro": "Round two. The steps, from Toma's list."},
+  {"id": "readback", "who": ["joaquin", "cristina", "mano", "toma", "ishita", "ian", "silvia", "anisha"], "readback": true, "show": 2.8,
+   "cook": {"toma": "mayo", "ian": "ketchup", "joaquin": "harissa"}, "new": ["anisha"],
+   "intro": "Round three. The cook reads them back. Catch his mistakes."}
+ ]
+}

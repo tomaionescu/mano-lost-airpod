@@ -1,0 +1,338 @@
+{
+ "Carpet004": {
+  "source": "ambientCG",
+  "url": "https://ambientcg.com/view?id=Carpet004",
+  "license": "CC0 1.0",
+  "files": [
+   "Carpet004_arm_1k.jpg",
+   "Carpet004_diff_1k.jpg",
+   "Carpet004_nor_gl_1k.jpg"
+  ]
+ },
+ "Carpet012": {
+  "source": "ambientCG",
+  "url": "https://ambientcg.com/view?id=Carpet012",
+  "license": "CC0 1.0",
+  "files": [
+   "Carpet012_arm_1k.jpg",
+   "Carpet012_diff_1k.jpg",
+   "Carpet012_diffg_1k.jpg",
+   "Carpet012_nor_gl_1k.jpg"
+  ]
+ },
+ "Fabric061": {
+  "source": "ambientCG",
+  "url": "https://ambientcg.com/view?id=Fabric061",
+  "license": "CC0 1.0",
+  "files": [
+   "Fabric061_arm_1k.jpg",
+   "Fabric061_diff_1k.jpg",
+   "Fabric061_nor_gl_1k.jpg"
+  ]
+ },
+ "Foliage001": {
+  "source": "ambientCG",
+  "url": "https://ambientcg.com/view?id=Foliage001",
+  "license": "CC0 1.0",
+  "files": [
+   "Foliage001_arm_1k.jpg",
+   "Foliage001_diff_1k.jpg",
+   "Foliage001_diffa_1k.png",
+   "Foliage001_nor_gl_1k.jpg"
+  ]
+ },
+ "LeafSet024": {
+  "source": "ambientCG",
+  "url": "https://ambientcg.com/view?id=LeafSet024",
+  "license": "CC0 1.0",
+  "files": [
+   "LeafSet024_arm_2k.jpg",
+   "LeafSet024_diff_2k.jpg",
+   "LeafSet024_diffa_2k.png",
+   "LeafSet024_nor_gl_2k.jpg"
+  ]
+ },
+ "LeafSet029": {
+  "source": "ambientCG",
+  "url": "https://ambientcg.com/view?id=LeafSet029",
+  "license": "CC0 1.0",
+  "files": [
+   "LeafSet029_arm_2k.jpg",
+   "LeafSet029_diff_2k.jpg",
+   "LeafSet029_diffa_2k.png",
+   "LeafSet029_nor_gl_2k.jpg"
+  ]
+ },
+ "Metal009": {
+  "source": "ambientCG",
+  "url": "https://ambientcg.com/view?id=Metal009",
+  "license": "CC0 1.0",
+  "files": [
+   "Metal009_arm_1k.jpg",
+   "Metal009_diff_1k.jpg",
+   "Metal009_nor_gl_1k.jpg"
+  ]
+ },
+ "OfficeCeiling001": {
+  "source": "ambientCG",
+  "url": "https://ambientcg.com/view?id=OfficeCeiling001",
+  "license": "CC0 1.0",
+  "files": [
+   "OfficeCeiling001_arm_1k.jpg",
+   "OfficeCeiling001_diff_1k.jpg",
+   "OfficeCeiling001_nor_gl_1k.jpg"
+  ]
+ },
+ "Rubber004": {
+  "source": "ambientCG",
+  "url": "https://ambientcg.com/view?id=Rubber004",
+  "license": "CC0 1.0",
+  "files": [
+   "Rubber004_arm_1k.jpg",
+   "Rubber004_diff_1k.jpg",
+   "Rubber004_nor_gl_1k.jpg"
+  ]
+ },
+ "Terrazzo005": {
+  "source": "ambientCG",
+  "url": "https://ambientcg.com/view?id=Terrazzo005",
+  "license": "CC0 1.0",
+  "files": [
+   "Terrazzo005_arm_2k.jpg",
+   "Terrazzo005_diff_2k.jpg",
+   "Terrazzo005_nor_gl_2k.jpg"
+  ]
+ },
+ "Tiles110": {
+  "source": "ambientCG",
+  "url": "https://ambientcg.com/view?id=Tiles110",
+  "license": "CC0 1.0",
+  "files": [
+   "Tiles110_arm_1k.jpg",
+   "Tiles110_diff_1k.jpg",
+   "Tiles110_nor_gl_1k.jpg"
+  ]
+ },
+ "asphalt_02": {
+  "source": "Poly Haven",
+  "url": "https://polyhaven.com/a/asphalt_02",
+  "license": "CC0 1.0",
+  "files": [
+   "asphalt_02_arm_2k.jpg",
+   "asphalt_02_nor_gl_2k.jpg"
+  ]
+ },
+ "bark_platanus": {
+  "source": "Poly Haven",
+  "url": "https://polyhaven.com/a/bark_platanus",
+  "license": "CC0 1.0",
+  "files": [
+   "bark_platanus_arm_1k.jpg",
+   "bark_platanus_diff_1k.jpg",
+   "bark_platanus_nor_gl_1k.jpg"
+  ]
+ },
+ "beige_wall_001": {
+  "source": "Poly Haven",
+  "url": "https://polyhaven.com/a/beige_wall_001",
+  "license": "CC0 1.0",
+  "files": [
+   "beige_wall_001_arm_2k.jpg",
+   "beige_wall_001_diff_2k.jpg",
+   "beige_wall_001_nor_gl_2k.jpg"
+  ]
+ },
+ "bitumen": {
+  "source": "Poly Haven",
+  "url": "https://polyhaven.com/a/bitumen",
+  "license": "CC0 1.0",
+  "files": [
+   "bitumen_arm_1k.jpg",
+   "bitumen_diff_1k.jpg",
+   "bitumen_nor_gl_1k.jpg"
+  ]
+ },
+ "brick_wall_001": {
+  "source": "Poly Haven",
+  "url": "https://polyhaven.com/a/brick_wall_001",
+  "license": "CC0 1.0",
+  "files": [
+   "brick_wall_001_arm_2k.jpg",
+   "brick_wall_001_diff_2k.jpg",
+   "brick_wall_001_nor_gl_2k.jpg"
+  ]
+ },
+ "brown_mud_leaves_01": {
+  "source": "Poly Haven",
+  "url": "https://polyhaven.com/a/brown_mud_leaves_01",
+  "license": "CC0 1.0",
+  "files": [
+   "brown_mud_leaves_01_arm_1k.jpg",
+   "brown_mud_leaves_01_diff_1k.jpg",
+   "brown_mud_leaves_01_nor_gl_1k.jpg"
+  ]
+ },
+ "concrete_floor_02": {
+  "source": "Poly Haven",
+  "url": "https://polyhaven.com/a/concrete_floor_02",
+  "license": "CC0 1.0",
+  "files": [
+   "concrete_floor_02_arm_2k.jpg",
+   "concrete_floor_02_diff_2k.jpg",
+   "concrete_floor_02_nor_gl_2k.jpg"
+  ]
+ },
+ "concrete_pavers_02": {
+  "source": "Poly Haven",
+  "url": "https://polyhaven.com/a/concrete_pavers_02",
+  "license": "CC0 1.0",
+  "files": [
+   "concrete_pavers_02_arm_2k.jpg",
+   "concrete_pavers_02_diff_2k.jpg",
+   "concrete_pavers_02_nor_gl_2k.jpg"
+  ]
+ },
+ "concrete_tiles_02": {
+  "source": "Poly Haven",
+  "url": "https://polyhaven.com/a/concrete_tiles_02",
+  "license": "CC0 1.0",
+  "files": [
+   "concrete_tiles_02_arm_2k.jpg",
+   "concrete_tiles_02_diff_2k.jpg",
+   "concrete_tiles_02_nor_gl_2k.jpg"
+  ]
+ },
+ "concrete_wall_004": {
+  "source": "Poly Haven",
+  "url": "https://polyhaven.com/a/concrete_wall_004",
+  "license": "CC0 1.0",
+  "files": [
+   "concrete_wall_004_arm_2k.jpg",
+   "concrete_wall_004_diff_2k.jpg",
+   "concrete_wall_004_diffg_2k.jpg",
+   "concrete_wall_004_nor_gl_2k.jpg"
+  ]
+ },
+ "concrete_wall_008": {
+  "source": "Poly Haven",
+  "url": "https://polyhaven.com/a/concrete_wall_008",
+  "license": "CC0 1.0",
+  "files": [
+   "concrete_wall_008_arm_2k.jpg",
+   "concrete_wall_008_diff_2k.jpg",
+   "concrete_wall_008_nor_gl_2k.jpg"
+  ]
+ },
+ "floor_tiles_02": {
+  "source": "Poly Haven",
+  "url": "https://polyhaven.com/a/floor_tiles_02",
+  "license": "CC0 1.0",
+  "files": [
+   "floor_tiles_02_arm_2k.jpg",
+   "floor_tiles_02_diff_2k.jpg",
+   "floor_tiles_02_nor_gl_2k.jpg"
+  ]
+ },
+ "floor_tiles_06": {
+  "source": "Poly Haven",
+  "url": "https://polyhaven.com/a/floor_tiles_06",
+  "license": "CC0 1.0",
+  "files": [
+   "floor_tiles_06_arm_2k.jpg",
+   "floor_tiles_06_diff_2k.jpg",
+   "floor_tiles_06_nor_gl_2k.jpg"
+  ]
+ },
+ "gravel_concrete": {
+  "source": "Poly Haven",
+  "url": "https://polyhaven.com/a/gravel_concrete",
+  "license": "CC0 1.0",
+  "files": [
+   "gravel_concrete_arm_1k.jpg",
+   "gravel_concrete_diff_1k.jpg",
+   "gravel_concrete_nor_gl_1k.jpg"
+  ]
+ },
+ "oak_veneer_01": {
+  "source": "Poly Haven",
+  "url": "https://polyhaven.com/a/oak_veneer_01",
+  "license": "CC0 1.0",
+  "files": [
+   "oak_veneer_01_arm_1k.jpg",
+   "oak_veneer_01_diff_1k.jpg",
+   "oak_veneer_01_diffg_1k.jpg",
+   "oak_veneer_01_nor_gl_1k.jpg"
+  ]
+ },
+ "painted_plaster_wall": {
+  "source": "Poly Haven",
+  "url": "https://polyhaven.com/a/painted_plaster_wall",
+  "license": "CC0 1.0",
+  "files": [
+   "painted_plaster_wall_arm_1k.jpg",
+   "painted_plaster_wall_nor_gl_1k.jpg"
+  ]
+ },
+ "pavement_03": {
+  "source": "Poly Haven",
+  "url": "https://polyhaven.com/a/pavement_03",
+  "license": "CC0 1.0",
+  "files": [
+   "pavement_03_arm_2k.jpg",
+   "pavement_03_diff_2k.jpg",
+   "pavement_03_nor_gl_2k.jpg"
+  ]
+ },
+ "plastered_wall_02": {
+  "source": "Poly Haven",
+  "url": "https://polyhaven.com/a/plastered_wall_02",
+  "license": "CC0 1.0",
+  "files": [
+   "plastered_wall_02_arm_2k.jpg",
+   "plastered_wall_02_diff_2k.jpg",
+   "plastered_wall_02_nor_gl_2k.jpg"
+  ]
+ },
+ "raw_plank_wall": {
+  "source": "Poly Haven",
+  "url": "https://polyhaven.com/a/raw_plank_wall",
+  "license": "CC0 1.0",
+  "files": [
+   "raw_plank_wall_arm_1k.jpg",
+   "raw_plank_wall_diff_1k.jpg",
+   "raw_plank_wall_diffg_1k.jpg",
+   "raw_plank_wall_nor_gl_1k.jpg"
+  ]
+ },
+ "white_stucco": {
+  "source": "Poly Haven",
+  "url": "https://polyhaven.com/a/white_stucco",
+  "license": "CC0 1.0",
+  "files": [
+   "white_stucco_arm_2k.jpg",
+   "white_stucco_diff_2k.jpg",
+   "white_stucco_nor_gl_2k.jpg"
+  ]
+ },
+ "wood_floor": {
+  "source": "Poly Haven",
+  "url": "https://polyhaven.com/a/wood_floor",
+  "license": "CC0 1.0",
+  "files": [
+   "wood_floor_arm_2k.jpg",
+   "wood_floor_diff_2k.jpg",
+   "wood_floor_diffg_2k.jpg",
+   "wood_floor_nor_gl_2k.jpg"
+  ]
+ },
+ "yellow_brick": {
+  "source": "Poly Haven",
+  "url": "https://polyhaven.com/a/yellow_brick",
+  "license": "CC0 1.0",
+  "files": [
+   "yellow_brick_arm_2k.jpg",
+   "yellow_brick_diff_2k.jpg",
+   "yellow_brick_nor_gl_2k.jpg"
+  ]
+ }
+}

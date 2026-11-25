@@ -1,0 +1,333 @@
+# Chapter 3 "Blue Hour" (19:10-20:45, blue to night): data/chapters.json chapter 3, docs/DESIGN.md §3.5.
+# V2-25, with V2-24's phone and V2-14's sit-downs:
+#  - the Under at 19:10: Karim gives the phone back, charged; the flood of messages (dialogue/chat.json); the promise
+#    was the playlist; C. is Cristina; the finder app says the cafeteria, 19:12;
+#  - near-misses with Cristina: her note at the cafeteria counter (we crossed in the courtyard), Karim in the Under,
+#    then her message: the kebab with Joaquin at 21:00, "Bring proof it's yours.";
+#  - Ishita's tour: three of six places that matter to Mano, each a memory and her reaction; her favourite follows
+#    the preference order of c3.tour_end and comes back in chapter 5;
+#  - the pastry summit in the cafeteria: it was never about the pastry; the last pastry, split;
+#  - the playlist with Toma on the steps (three songs on disk, previewed 10 s each) and Toma's sincere beat;
+#  - rue Pasteur's east end: night and 20:40 under a fade, Joaquin's "21:00. Memory on.", and `$ chapter 4`.
+# Cristina is never on screen in this chapter.
+# [slot]: a line written in a friend's own voice, which the friend reviewed.
+# Pronouns: Mano he, Ishita she, Toma they; everyone else by name.
+
+# The Under, 19:10 (the chapter's start cue, with Karim behind the bar)
+~ c3.phone
+think: 19:10. The sun's gone. My phone's back.
+karim: [#grin] Mano! Your phone. One hundred per cent.
+karim: [#smirk] Charged with love. And a BDE cable.
+$ phone charge
+mano: [#smile] Karim. You're... actually nice?
+karim: [#annoyed] Don't tell anyone. It's bad for the brand.
+$ clock 19:12
+$ phone flood flood
+think: [#shock] It's buzzing. It won't stop buzzing.
+karim: [#grin] Popular guy.
+think: Everyone talked while I was dead. Okay. Reading.
+$ phone open messages
+think: The promise. The playlist, for tonight's thing.
+$ set promise_known
+think: [#shock] And somebody called Cristina found an AirPod. With an M.
+mano: [#shock] C. is Cristina. C. is CRISTINA.
+karim: [#smirk] Cristina? The one roasting me in the promo chat?
+mano: Cristina's been looking for me all evening!
+think: The finder app. Please. Please.
+$ phone finder cafe "19:12"
+$ phone open find
+mano: [#shock] The cafeteria, 19:12. That's NOW.
+karim: [#grin] Run, Mano. Run.
+$ clue "C. is Cristina, new this year, Toma's friend. My AirPod's in the promo chat since 18:20."
+$ clue "The finder app: my AirPod was in the cafeteria at 19:12."
+$ clue "The promise: the playlist for tonight. One song, for the end, on the steps."
+
+# Cristina's note at the cafeteria counter (data/world.json spot cristina_note_cafe, chapter 3)
+~ use.cristina_note_cafe
+if cristina_note
+	think: "Trying the BDE in the Under. C." The Under. Again.
+else
+	$ shot note_cafe
+	think: A sticky note by the till. Blue-green ink, very neat.
+	mano: "M.? Waited here till 19:15. Trying the Under. C."
+	$ clock 19:20
+	think: [#shock] 19:15. It's 19:20.
+	think: The Under. I just came FROM the Under.
+	think: [#tired] We crossed in the courtyard. I walked right past.
+	$ set cristina_note
+	$ clue "Cristina's note in the cafeteria: waited till 19:15, then tried the Under. We crossed."
+	$ shot clear
+
+# Karim, after the note (talk.karim in chapter 3)
+~ c3.karim_cristina
+mano: [#shock] Karim. Cristina. Blue-green pen. Here?
+karim: [#smirk] Five minutes ago. Asking for "M.".
+karim: I said "Mano?". Cristina said "Is that an M?".
+karim: I said "...yes". Great conversation.
+karim: [#grin] Then Chloé handed over a roll of tape and a job.
+mano: And NOW?
+karim: [#neutral] BDE errands. With Chloé. Somewhere upstairs.
+think: [#tired] Cristina chases me, I chase Cristina. It's a sitcom.
+$ set karim_cristina
+$ clock 19:24
+$ phone flood cristina
+think: A message. From a number I don't know.
+$ phone open cristina
+mano: [#smile] "Bring proof it's yours." Okay. Fair.
+karim: [#grin] Proof? Show the teeth marks.
+think: 21:00, the kebab, with Joaquin. Time to kill till then.
+$ set cristina_texted
+$ clue "Cristina has my AirPod. The kebab with Joaquin at 21:00, rue Pasteur's east end. Bring proof."
+
+# Ishita in cour Pasteur, photographing Toma's fairy lights (main trigger near her once Cristina has written)
+~ c3.tour
+ishita: [#grin] There you are. The guide. With my camera, I hope.
+mano: Still have it. I'm guarding it with my life.
+ishita: Toma says you're free till 21:00. Show me the campus.
+ishita: Three places. The ones that matter to you. [slot]
+mano: Three places that matter. To me. On campus.
+think: No pressure. Some pressure.
+ishita: [#smile] Lead on. I'll follow. You know how this works.
+$ set touring
+$ follow ishita
+$ clue "Ishita's tour: three places that matter to me. My seat, the sofa, the stickers, the bikes, the machines, KB1?"
+
+# The tour's stops (main triggers near each place while Ishita follows; she joins Mano there, `bring`). The sofa stop
+# opens on the sofa itself for a beat (world.json shot sofa_wide): its conversation shots had the big monitor and the
+# sticker column behind them, never the sofa; the first spoken line hands over to the two-shot
+~ c3.tour_amphi
+mano: My seat. Third row, by the aisle.
+mano: Best sleep on campus. Today: a whole lecture.
+ishita: [#smirk] You brought me to where you sleep through class.
+mano: It's where I woke up with one AirPod. It's historic.
+ishita: [#smile] Okay. The slide glows. It's a good seat. [slot]
+$ set tour_amphi
+=> c3.tour_photo
+
+~ c3.tour_sofa
+$ shot sofa_wide
+$ wait 1.6
+mano: The sofa. Older than all of us.
+mano: There was a euro in it earlier. And a fossilised chip.
+ishita: [#smirk] This is where you come to think?
+mano: It's where I come to not think. It's different.
+ishita: [#smile] It looks like everyone's sat here once. I like that. [slot]
+$ set tour_sofa
+=> c3.tour_photo
+
+~ c3.tour_stickers
+mano: The sticker column. Every club, every year.
+mano: And one sticker that just says "SEGV".
+ishita: Segmentation fault?
+mano: The school motto, basically.
+ishita: [#grin] I'm putting a photo club sticker here. Right next to SEGV. [slot]
+$ set tour_stickers
+=> c3.tour_photo
+
+~ c3.tour_velib
+mano: The bike rack. Every bike has a flat tyre.
+mano: It's my favourite thing on campus. Nobody knows why.
+ishita: [#annoyed] This is the worst place you could show me.
+mano: I know. Isn't it great?
+ishita: [#smirk] ...Okay. It's a little great. [slot]
+$ set tour_velib
+=> c3.tour_photo
+
+~ c3.tour_vending
+mano: The vending machines. Red takes coins. Blue keeps them.
+mano: They've seen every bad night of my first year.
+ishita: [#shock] That's tragic.
+mano: It's a love story. I'm loyal to the red one.
+ishita: [#grin] Then I'm photographing your one true love. [slot]
+$ set tour_vending
+=> c3.tour_photo
+
+~ c3.tour_bay
+mano: KB1's lobby. The glass bays.
+mano: At six, the sun comes straight down rue Pasteur.
+ishita: It's dark now.
+mano: You should've seen it at six. I was busy losing things.
+ishita: [#smile] Then show me tomorrow. At six. Deal. [slot]
+$ set tour_bay
+=> c3.tour_photo
+
+# A photo at each stop, or not (`$ photo film` keeps the frame as one of Ishita's prints for the credits,
+# user://film/, and counts it in film_shots); then the next one, or the end of the tour
+~ c3.tour_photo
+ishita: Take one? It's your camera tonight. Kind of.
+- Take a photo [if film_shots < 10]
+	$ photo film
+	think: Click. No screen, no retake. I'll see it in a week. [if last_photo != "dup"]
+	think: I took this one already. The film's for new things. [if last_photo == "dup"]
+- Just look
+	ishita: [#smile] Fine. Remember it the old way.
+$ add tour_count 1
+if tour_count >= 3
+	=> c3.tour_end
+else
+	ishita: [#smile] Next one, guide. [if tour_count == 1]
+	ishita: One more. Make it count. [if tour_count == 2]
+
+~ c3.tour_end
+ishita: [#smile] Three places. Okay. I get it now. [slot]
+if tour_sofa
+	$ set ishita_fav = "sofa"
+elif tour_bay
+	$ set ishita_fav = "bay"
+elif tour_amphi
+	$ set ishita_fav = "amphi"
+elif tour_stickers
+	$ set ishita_fav = "stickers"
+elif tour_velib
+	$ set ishita_fav = "velib"
+else
+	$ set ishita_fav = "vending"
+ishita: [#grin] My favourite? The sofa. Everyone's sat there once. [if ishita_fav == "sofa"] [slot]
+ishita: [#grin] My favourite? The glass bays. Six o'clock, tomorrow. [if ishita_fav == "bay"] [slot]
+ishita: [#grin] My favourite? Your seat. The historic one. [if ishita_fav == "amphi"] [slot]
+ishita: [#grin] My favourite? The stickers. SEGV. Iconic. [if ishita_fav == "stickers"] [slot]
+ishita: [#grin] My favourite? The flat tyres. Don't tell anyone. [if ishita_fav == "velib"] [slot]
+ishita: [#grin] My favourite? The red machine. Your true love. [if ishita_fav == "vending"] [slot]
+ishita: I'm helping Toma with the steps. Lights, chairs, Toma's nerves.
+ishita: [#smirk] Don't lose my camera before 23:00.
+$ toast "Ishita will remember that." tick
+$ set touring = false
+$ unfollow ishita
+$ clue "Ishita's tour, done. Her favourite place: it'll come up again, on the steps."
+
+# The pastry summit in the cafeteria (talk.ian or talk.silvia once Cristina has written); after "Leave them to it" the
+# next talk comes straight back to the counter (summit_heard)
+~ c3.summit
+if summit_heard
+	ian: [#sad] Mano. Back already?
+	silvia: [#sad] Still not about the pastry.
+	=> c3.summit_pick
+ian: [#annoyed] Mano. Tell Silvia the pastry war is over.
+silvia: [#annoyed] Tell Ian it was never about the pastry.
+mano: Okay. What's it about?
+ian: [#sad] ...
+silvia: [#sad] ...
+ian: The report. I did my half at 3:00 and Silvia redid it. [slot]
+silvia: It said "lorem ipsum" twice, Ian. Twice. [slot]
+ian: [#annoyed] It was a PLACEHOLDER. [slot]
+silvia: [#sad] I just didn't want us to lose points. Together. [slot]
+think: Right. It was never about the pastry.
+=> c3.summit_pick
+
+~ c3.summit_pick
+think: The counter. One pastry left. The last one of the day.
+- Buy the last pastry
+	think: Contactless. My phone's alive, and it pays for things.
+	$ sfx coin
+	mano: [#smile] One pastry. Two halves.
+	think: Pain au chocolat. Chocolatine. Whatever. Same pastry.
+	mano: It's the same pastry.
+	if choco == "pac"
+		ian: [#smile] ...Fine. Sorry, Silvia. I'll check my placeholders.
+		silvia: [#smile] And I'll ask before I redo things. Deal?
+	elif choco == "choco"
+		silvia: [#smile] ...Fine. Sorry, Ian. I should've asked first.
+		ian: [#smile] And no more reports at 3:00. Mostly.
+	else
+		ian: [#smile] Sorry.
+		silvia: [#smile] Sorry.
+		think: At the same time. Like a sitcom.
+	ian: [#grin] This is delicious. Whatever it's called.
+	silvia: [#grin] Chocolatine.
+	ian: [#smirk] Don't.
+	$ set summit_done
+	$ clock 19:55
+	$ toast "The pastry summit" tick
+	think: The cafet' closes at {{word.cafe_closes}}. I bought its last pastry.
+- Leave them to it
+	mano: I'll... give you a minute.
+	silvia: [#sad] Take the minute with you.
+	$ set summit_heard
+
+# Toma on the steps: the playlist (talk.toma in chapter 3 once Cristina has written). It sets 20:10 only after the
+# summit: before it the clock stays under 19:55 (chapters.json clock_holds), as the summit's last pastry is bought
+# before the cafeteria closes at 20:00 (the playlist first had the summit at 20:10, after closing time)
+~ c3.playlist
+toma: [#smirk] There you are. You read the chat. You look guilty.
+toma: [#grin] "Phone died. I remember the playlist now." Framed it. [if reply_steps == "sorry"]
+toma: [#grin] "Charging spiritually." Ishita's stealing that. [if reply_steps == "joke"]
+toma: [#smirk] You read everything and said nothing. Very you. [if reply_steps == ""]
+toma: "For real this time." I'm holding you to that. [if reply_toma == "sorry"]
+toma: [#grin] Speaker AND playlist. Yes. Both jobs. [if reply_toma == "joke"]
+mano: The playlist. I promised. I remember. Now.
+toma: One song for the end of the night. The one we all hear.
+toma: On the steps, everyone together. Your pick, DJ.
+=> c3.playlist_pick
+
+~ c3.playlist_pick
+think: Three songs on my phone I'd play for people.
+- "Evening", Kevin MacLeod
+	$ song ending 10
+	toma: [#smile] Slow. Like the end of something nice.
+	- This one
+		$ set playlist = "ending"
+		=> c3.playlist_done
+	- Hear another
+		=> c3.playlist_pick
+- "Almost Bliss", Kevin MacLeod
+	$ song explore 10
+	toma: [#grin] That sounds like walking somewhere with friends.
+	- This one
+		$ set playlist = "explore"
+		=> c3.playlist_done
+	- Hear another
+		=> c3.playlist_pick
+- "Morning", Kevin MacLeod
+	$ song title 10
+	toma: [#smirk] "Morning". At midnight. Bold.
+	- This one
+		$ set playlist = "title"
+		=> c3.playlist_done
+	- Hear another
+		=> c3.playlist_pick
+
+~ c3.playlist_done
+toma: [#smile] Done. "{{song.playlist}}". On the list. No take-backs.
+toma: Can I say something? Not a joke. [slot]
+toma: The new ones. I remember my first October here. [slot]
+toma: Everyone already had their people. [slot]
+toma: I just want them to have the steps. And us. [slot]
+mano: They'll have the steps. And us. And one song.
+toma: [#grin] And fairy lights. Forty euros of fairy lights. Don't tell anyone. [slot]
+think: Toma planned all of this. And I nodded with one ear.
+$ set toma_beat
+$ toast "Toma will remember that." tick
+$ clue "The song for the steps: \"{{song.playlist}}\". Toma's whole plan: the steps, for the new ones."
+toma: Now go. Kebab at 21:00. Rue Pasteur, east end. Be early for once.
+if summit_done
+	$ clock 20:10
+
+# Rue Pasteur's east end (main trigger once the tour, the summit and the playlist are done): night under a fade; under
+# the black Mano is set on the pavement by the street lamp, and two framed shots (world.json kebab_wide, kebab_close)
+# show his face: the play camera behind him had him as a silhouette against the road works
+~ c3.end
+$ time night fade=1.2
+$ wait 1.3
+$ place mano pasteur_east
+$ shot kebab_wide
+$ clock 20:40
+$ wait 1.4
+think: 20:40. Twenty minutes early. Me. Early.
+think: The blue's all gone. The street lamps took over.
+$ shot kebab_close
+$ phone flood memory
+think: The group chat. "21:00. Memory on."
+think: Joaquin texts like a calendar. I like Joaquin.
+think: Twenty minutes. Then Cristina. Then two ears.
+$ set c3_done
+$ chapter 4
+
+# Thoughts on the way (bark triggers)
+~ c3.think_court
+think: Blue hour. Everything looks like a memory already.
+
+~ c3.think_street
+think: Street lamps on, sky still blue. Twenty minutes of both.
+
+~ c3.think_under
+think: The BDE's setting up. Speakers, tape, a disco ball nobody asked for.

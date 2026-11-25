@@ -1,0 +1,21 @@
+# Chapter 0, the cold open "23:41" (docs/DESIGN.md §3.5; data/chapters.json chapter 0, opening "cold_open").
+# V2-27. The cour Pasteur steps at night under Toma's fairy lights, before anything is explained:
+# three shots (world.json cold_wide, cold_hand, cold_face): a wide of the eight on the steps against the lights, a
+# close one of Mano holding out his one AirPod ("Want one?"), his face lit by his phone; then the picture freezes,
+# "Okay. How did I get here?", black, "Six hours earlier.", and chapter 1's card, the dream and the wake-up.
+# Who the AirPod is held out to is never shown here: that is the last choice of chapter 5. A chapter-select replay
+# of chapter 1 skips all of this (main.begin_chapter).
+
+~ c0.open
+$ shot cold_wide
+$ wait 3.2
+$ shot cold_hand
+$ wait 0.8
+mano: Want one?
+$ shot cold_face
+$ wait 1.6
+$ freeze
+think: Okay. How did I get here?
+$ set cold_open_seen
+$ caption "Six hours earlier." 2.6
+$ chapter 1

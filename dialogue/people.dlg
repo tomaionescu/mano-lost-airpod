@@ -1,0 +1,417 @@
+# The people on campus: what Story.talk(id) plays (cue talk.<id>; talk.crowd for every background student, whose
+# `crowd:` lines are spoken by whoever Mano is talking to). Format: docs/ARCHITECTURE.md §3.1.
+# The v1 lines are ported word for word from v1's scripts/story/story.gd: a recorded line keeps its voice only
+# while its text stays exactly the same (VoiceLines.key), so voiced lines are not reworded here. The unvoiced v1
+# lines that changed (V2-10, V2-21..23) are listed in tests/fixtures/v1_rewrites.json. Chapter beats live in the
+# chapter files (c1.dlg to c5.dlg). What everyone says in chapters 3, 4 and 5 (V2-25 to V2-27) comes first in
+# each cue, the later chapter before the earlier one (`chapter == 3`), so chapters 1-2 play as before. In chapter
+# 5, once the group photo is taken, talking to one of the seven friends offers the other AirPod
+# (c5.offer_<friend>).
+
+~ talk.toma
+if chapter == 5 and group_photo and given_to == ""
+	=> c5.offer_toma
+elif chapter == 5
+	% toma: [#smile] Best night. Don't tell anyone I said that. [slot]
+	% toma: [#grin] The playlist worked. The steps worked. You worked. [slot]
+elif chapter == 4 and not found
+	toma: [#grin] Cristina found you? Then why is there still one ear? [slot]
+	toma: The sofa. Go. Kebabs on the steps, ideally warm. [slot]
+elif chapter == 4 and not mouli_night
+	toma: [#smirk] Anisha needs you more than your music does. Go. [slot]
+elif chapter == 4
+	toma: [#smirk] You're here. Finally. Sit. [slot]
+elif found
+	toma: [#smirk] Stereo? Finally. Took you long enough.
+elif chapter == 3 and playlist == "" and cristina_texted
+	=> c3.playlist
+elif chapter == 3 and playlist == ""
+	toma: [#smirk] You read the chat. I can tell. You look guilty.
+	toma: Go find Cristina first. Then come back. I have a job for you.
+elif chapter == 3
+	% toma: [#smile] Ishita's on lights. I'm on nerves. You're on the playlist.
+	% toma: [#grin] Kebab, then the steps. 23:00. With both ears, ideally.
+	% toma: "{{song.playlist}}". Good pick. I'm not crying. It's the lights.
+elif not ines
+	toma: SM14. Bâtiment Voltaire, 1st floor. Cross rue Pasteur and take the stairs.
+	% toma: Fun fact: Dijkstra never lost an AirPod. Coincidence? I think not.
+	% toma: If you find it, can you also find my motivation?
+	% toma: I would help, but I have to look busy in case an ACU walks by.
+	toma: [#smirk] And no. Still not telling you what you promised. [if promise and not promise_known]
+elif not karim
+	toma: [#shock] KARIM took it??
+	toma: The Under is down the ramp in the corner of cour Pasteur. Go get him.
+elif not coffee_given
+	toma: Mme Dupont runs on coffee. Literally.
+	toma: Check the cafeteria, in the X building, on cour Pasteur.
+elif not lf_twist
+	toma: Lost & found is at the Voltaire reception.
+	toma: Ground floor of the Bâtiment Voltaire. Go go go.
+else
+	toma: [#shock] Somebody took it to GIVE it back to you?
+	toma: [#smile] That's the nicest crime I've ever heard of.
+
+~ talk.prof
+prof: [#annoyed] Class is over, Mano. You slept through the whole Dijkstra lecture.
+prof: Your AirPod? I confiscate phones, not earbuds.
+prof: Shortest path to it: not my problem.
+
+# Ian and Silvia stand together: either of them starts the pastry war
+~ talk.ian
+if chapter == 5 and group_photo and given_to == ""
+	=> c5.offer_ian
+elif chapter == 5
+	% ian: [#smile] Same pastry, same kebab, same song. We're fine. [slot]
+	% silvia: [#smile] Ian checked the placeholders. I'm so proud. [slot]
+elif chapter == 4
+	ian: [#smile] The report's done. Together. Zero lorem ipsum. [slot]
+	silvia: [#grin] One lorem ipsum. I left one in. For love. [slot]
+elif chapter == 3 and not summit_done and cristina_texted
+	=> c3.summit
+elif chapter == 3 and not summit_done
+	ian: [#annoyed] Not now, Mano. We're being fine.
+	silvia: [#annoyed] Very fine. Extremely fine.
+elif chapter == 3
+	% ian: [#grin] "Same pastry." You're a philosopher now.
+	% silvia: [#smile] We're good. Thanks for the pastry, peacemaker.
+	% ian: [#smirk] The report's due Friday. We're doing it together. At 15:00.
+elif choco == "pac"
+	ian: [#grin] My guy. Pain au chocolat forever.
+	silvia: [#annoyed] Hmph. We are not friends anymore. (We are still friends.)
+elif choco != ""
+	silvia: [#grin] Chocolatine gang. Respect.
+	ian: [#annoyed] Hmph. We are not friends anymore. (We are still friends.)
+else
+	=> c1.pastry
+
+~ talk.silvia
+if chapter == 5 and group_photo and given_to == ""
+	=> c5.offer_silvia
+else
+	=> talk.ian
+
+~ talk.yanis
+% yanis: [#tired] The ACUs took my sleep schedule and never gave it back.
+% yanis: [#tired] Moulinette results drop at midnight. I am not okay.
+% yanis: [#tired] If you see a white earbud on the floor, it's probably mine. Or yours. Or everyone's.
+
+~ talk.acu
+acu: [#smirk] Piscine rule number one: no AirPods during exams.
+acu: If I find yours, it's mine.
+% acu: Kidding. Mostly.
+% acu: Also, your hoodie has trailing whitespace. Fix it.
+% acu: Remember: cheating is -42. Losing AirPods is just sad.
+
+# The piscine survivor (side story "Is the sun still yellow?", side.dlg): asked before the twist, he comes out to
+# the planter wall for the 18:55 sun (survivor_out, then survivor_sun at c2.sunset); chapter 5's cameo in the court
+~ talk.student2
+if chapter >= 5 and survivor_sun
+	student2: [#grin] The sun was orange. I've told everyone. Twice.
+	student2: [#smile] You're the guy from the planter wall. Thanks for that.
+	=> END
+elif chapter >= 3 and survivor_sun
+	student2: [#smile] Orange. It was orange. Thank you.
+	student2: Back to the moulinette. Recharged.
+	=> END
+elif chapter >= 3
+	student2: [#tired] People keep saying the sun set. I'll take their word for it.
+	student2: [#sad] I missed it again. [if survivor_out]
+	=> END
+elif survivor_out
+	student2: [#smile] Two minutes. I'm pushing. Then the sun. The planter wall.
+	=> END
+student2: [#tired] I've been in SM14 since 8:00.
+student2: I have forgotten what the sun looks like.
+student2: Is it still yellow?
+- Come and see. Rue Pasteur, before 18:55. [if not lf_twist]
+	=> side.survivor.ask
+- No idea, honestly
+	student2: [#tired] Same.
+
+~ talk.theo
+if chapter >= 3
+	theo: Free shade's over. Now it's free dark.
+	theo: Toma's been untangling those lights for an hour. It's beautiful.
+	=> END
+theo: These steps are the best seats on campus. Free shade, free drama.
+% theo: Ian and Silvia have been arguing about pastries for forty minutes.
+% theo: Karim keeps bragging about "a free AirPod". Weird flex.
+
+# The sleeping SUP (side story "Segmentation fault", side.dlg): a soutenance at 19:00; woken in chapter 2 with a
+# spare coffee or the BDE's air horn (sup_awake), he passed by chapter 4; asleep through it, he missed it
+~ talk.sleeper
+if chapter >= 4 and sup_awake
+	=> side.sup.passed
+elif chapter >= 4
+	=> side.sup.missed
+think: Out cold, face on the desk. A professional.
+sleeper: zzz... segmentation fault (core dumped)... zzz
+if not sup_clue
+	sleeper: zzz... soutenance... nineteen hundred... zzz
+	think: A soutenance at 19:00, and he's asleep. Someone should wake him.
+	$ set sup_clue
+	$ clue "The SUP asleep in Amphi 4 has a soutenance at 19:00. Coffee, or something very loud."
+if chapter == 2 and clock_before("19:00") and (spare_coffee or horn)
+	think: Coffee or horn. Gently or not.
+	- Coffee under his nose [if spare_coffee]
+		=> side.sup.coffee
+	- The air horn [if horn]
+		=> side.sup.horn
+	- Let him sleep
+		think: Five more minutes. I know the feeling.
+elif chapter <= 2
+	think: Gently won't do it. Coffee, maybe. Or something loud.
+
+~ talk.ines
+ines: Shh. The moulinette is thinking.
+
+# The waiting student (side story "Back in 5 min", side.dlg): served once Mme Dupont is back at the accueil; says
+# goodnight and goes home in chapter 4
+~ talk.waiting
+if chapter >= 4
+	waiting: [#grin] Thirteen hours. Worth it. Goodnight, Mano.
+	$ set waiting_bye
+	$ set side_waiting
+	$ stage waiting hide
+	think: "Back in 5 min": case closed. Thirteen hours later.
+elif chapter == 3
+	waiting: [#smile] Served. At 18:52. Nine hours and fifty-two minutes.
+	waiting: [#tired] I'm still here. Out of habit.
+	$ set side_waiting
+elif coffee_given
+	waiting: [#grin] She's back. Mme Dupont is BACK. I'm next.
+	waiting: [#smile] Nine hours. I could cry. I might.
+	$ set side_waiting
+else
+	waiting: [#tired] I have been waiting for the accueil since 9:00.
+	waiting: The note says five minutes.
+
+~ talk.student3
+student3: We do our SPE project here.
+student3: The salle machine smells like 72 hours of piscine.
+
+# Chloé still has last month's speech ready (the WEI was in September); her sheet is for {{word.signup_event}} (Q19)
+~ talk.chloe
+if chapter >= 4
+	chloe: [#grin] The sound check is my favourite part. Nobody's dancing yet.
+	chloe: [#smirk] You on my list? Costume optional. Enthusiasm mandatory. [if chloe_signed]
+elif chapter == 3 and karim_cristina
+	chloe: [#grin] Cristina? On tape duty. I gave the BIG roll.
+	chloe: [#smirk] Helpful people get jobs. It's the BDE way.
+elif chloe_signed
+	chloe: [#smile] You're on the list. Costume optional. Enthusiasm mandatory.
+else
+	chloe: [#grin] WEI registrations are open!
+	chloe: Bring a sleeping bag and lower your expectations.
+	mano: Chloé. The WEI was last month.
+	chloe: [#annoyed] I had the speech ready. Fine. The sheet's for {{word.signup_event}}.
+	chloe: [#smirk] Same sheet. New expectations. Sign?
+	- Sign
+		$ set chloe_signed
+		chloe: [#grin] Welcome to the list. It's mostly my friends. And now you.
+	- Not tonight
+		chloe: [#smirk] The sheet will remember this.
+
+~ talk.anisha
+if not toma
+	anisha: [#annoyed] Not now, my code is dying.
+elif chapter == 5 and group_photo and given_to == ""
+	=> c5.offer_anisha
+elif chapter == 5
+	% anisha: [#smile] OK at 23:38. I'm framing the terminal. [slot]
+	% anisha: [#grin] Harissa at midnight. Best decision of the year. [slot]
+elif chapter == 4 and smuggled and not mouli_night
+	=> c4.smuggled
+elif chapter == 4 and mouli_night
+	anisha: [#smile] Go! The steps! I'm right behind you. Pushing. [slot]
+elif chapter == 4
+	anisha: [#tired] 23:42. Still KO. Exercise five hates me personally. [slot]
+elif chapter == 3
+	% anisha: [#tired] 23:42. Still. I'm fine. My code is not.
+	% anisha: [#smirk] Cristina found it? Of course. The nice ones always find things.
+	% anisha: [#smile] Two OKs today. I'm saving the third one for 23:42.
+elif ines and not karim
+	anisha: [#smile] Thanks again! Go get Karim.
+	anisha: The Under is down the ramp in the corner of cour Pasteur.
+elif ines and not lf_twist
+	% anisha: [#smile] Exercise four just passed. I'm naming it after you.
+	% anisha: [#tired] The deadline is still 23:42. I'm still here. You're still looking.
+	% anisha: [#smirk] Karim lost it? In a BOX? Of course he did.
+elif ines
+	anisha: [#shock] Someone took it to find YOU? That's so nice it's suspicious.
+	anisha: [#smile] Find C. Then come back and tell me everything.
+elif ishita_met and not camera
+	=> c1.ishita_sm14
+elif anisha_asked
+	=> c1.anisha_retry
+else
+	=> c1.anisha
+
+~ talk.karim
+if not ines
+	karim: [#smirk] Yo Mano. Want a game of babyfoot?
+	karim: No? Then stop blocking my light.
+elif chapter == 5
+	karim: [#grin] Party's on! Come down after the steps. Bring both ears.
+elif chapter == 4
+	% karim: [#grin] Un, deux. Un, deux. Mano, you're in my sound check.
+	% karim: [#smirk] The sofa ate something? The sofa eats everything. BDE tradition.
+elif chapter == 3 and not phone_charged
+	=> c3.phone
+elif chapter == 3 and cristina_note and not karim_cristina
+	=> c3.karim_cristina
+elif chapter == 3 and not cristina_note
+	karim: [#grin] The cafeteria, Mano. 19:12. Why are you still here?
+elif chapter == 3
+	% karim: [#grin] Party at 23:00. Bring your one ear.
+	% karim: [#smirk] Your phone's at a hundred. You're welcome. Forever.
+	% karim: Cristina's somewhere with Chloé and a lot of tape.
+elif karim
+	karim: [#sad] Rematch whenever. I'm emotionally recovering.
+else
+	mano: [#annoyed] Karim. Did you take my AirPod?
+	karim: [#grin] Take? I FOUND it. Finders keepers. BDE rules.
+	karim: [#smirk] But I'm a fair man. Beat me at babyfoot. First to 3.
+	karim: You in?
+	- Let's go
+		=> c2.partner
+	- Not now
+		karim: [#smirk] Scared? I get it. I'm very good.
+
+# Mme Dupont at the cafeteria, until she has her coffee (world.json npc_when)
+~ talk.madame
+if coffee
+	mano: [#smile] Mme Dupont... I come bearing coffee.
+	madame: [#smile] ...You. Are my favourite student.
+	madame: [#smirk] Second favourite. The first coffee came from a nice new girl.
+	think: A nice new girl, with a coffee. Noted.
+	madame: Meet me at the Voltaire reception. Bring your good energy.
+	$ set coffee_given = true
+	$ set coffee = false
+	$ set madame_met = true
+	$ toast "Coffee delivered" coffee
+elif not madame_met
+	madame: [#annoyed] Don't. Talk. To me.
+	madame: [#annoyed] The machine ate my coins and I have NOT had my coffee.
+	madame: [#annoyed] My SECOND coffee. The first one was a gift. Gifts don't count.
+	mano: But I need the lost & found-
+	madame: [#annoyed] No coffee, no lost & found. That is the law.
+	$ set madame_met = true
+	$ clue "Mme Dupont will not open the lost & found without a coffee. The machine costs 2 euros."
+	$ clue "Somebody already brought Mme Dupont her FIRST coffee today. Gifts don't count, apparently."
+elif coins >= 2 or paid
+	madame: [#annoyed] You have money. The machine is RIGHT THERE.
+else
+	madame: [#annoyed] Coffee. Then we talk.
+
+# Mme Dupont back at the accueil after her coffee: her lines are still "madame" (one voice, VoiceLines.ALIAS)
+~ talk.madame2
+if found
+	madame: Go. Enjoy your music. Let me enjoy my coffee.
+elif chapter == 3
+	madame: [#smirk] Did the nice new girl find you?
+	mano: Cristina. Not yet. We keep crossing.
+	madame: [#annoyed] Young people. Always crossing. Never arriving.
+elif not karim
+	madame: Lost something? Tell me WHO brought it here and maybe I'll look.
+elif not coffee_given
+	madame: [#smirk] The box opens for people who bring me coffee.
+	madame: [#smirk] That's the rule. I just made it.
+elif lf_twist
+	madame: [#annoyed] I told you. A nice new girl. Polite. Gone.
+	madame: *sips coffee* Wonderful. Now leave.
+else
+	madame: [#smirk] Karim's earbud? Oh, honey. Look at this box.
+	madame: Students lose about 37 AirPods a week here.
+	madame: Find yours. Don't touch the director's.
+	$ minigame lostfound win=c2.twist lose=c2.twist with=madame2
+
+~ talk.crowd
+% crowd: Sorry, I'm late for a soutenance.
+% crowd: Have you seen the new Hackathon poster? Free pizza.
+% crowd: No, I haven't seen your AirPod. I can barely see my own future.
+% crowd: Is the moulinette down again or is it just me?
+% crowd: Bonne chance with... whatever you're doing.
+
+# The three new friends (V2-21): on campus only where a chapter stages them (data/chapters.json "stage")
+~ talk.ishita
+if chapter == 5 and group_photo and given_to == ""
+	=> c5.offer_ishita
+elif chapter == 5
+	% ishita: [#smile] Ten photos. One week. I'm already nervous. [slot]
+	% ishita: [#grin] Best tour of my life. Lowest budget. [slot]
+elif chapter == 4 and not found
+	ishita: [#smirk] Cristina found you? Then why are you still here? Go! [slot]
+elif chapter == 4
+	ishita: [#smile] The steps are ready. We just need a Mano. [slot]
+elif chapter == 3 and touring
+	ishita: [#smile] Where next, guide? Three places. {{tour_count}} so far.
+elif chapter == 3 and tour_count >= 3
+	% ishita: [#grin] Toma's making me hold the fairy lights. I'm basically staff now.
+	% ishita: [#smirk] Don't lose my camera before 23:00. I mean it.
+	% ishita: The steps at night. Okay. I get why you all sit here. [slot]
+elif chapter == 3 and cristina_texted
+	=> c3.tour
+elif chapter == 3
+	ishita: [#smile] Taking photos of Toma's fairy lights. They look better than they are.
+elif not ishita_met
+	=> c1.ishita
+elif not camera
+	ishita: [#smile] Lead on, guide. SM14 won't find itself.
+elif not ines
+	% ishita: [#smirk] Ten photos. No pressure. Some pressure.
+	% ishita: Anisha's code is scary. I watched it compile and I felt it.
+	% ishita: Take the photos you'd want to remember. That's the only rule. [slot]
+elif not lf_twist
+	% ishita: [#smile] Still have my camera? Good. Don't lose it in a box.
+	% ishita: Anisha says you beat the moulinette. She said it like a miracle.
+	% ishita: [#grin] SM14 at sunset looks like a screensaver. A nice one.
+else
+	ishita: [#shock] Someone left you a NOTE? Signed "C."?
+	ishita: [#grin] I want to meet whoever writes notes like that. Find her.
+
+~ talk.joaquin
+if chapter == 5 and group_photo and given_to == ""
+	=> c5.offer_joaquin
+elif chapter == 5
+	% joaquin: [#neutral] Kebabs eaten: eight. Sauces right: most. [slot]
+	% joaquin: [#smile] Toma's thing. I came. Definitely. [slot]
+elif chapter == 4 and met_cristina and not kebab_done
+	=> c4.orders_again
+elif chapter == 4
+	% joaquin: [#neutral] The kebabs are holding at 61 degrees. [slot]
+	% joaquin: [#smirk] I labelled the bag. By sauce. Obviously. [slot]
+elif chapter == 3
+	% joaquin: [#neutral] Kebab, 21:00. I have a spreadsheet of sauces. [slot]
+	% joaquin: Cristina's coming to the kebab. I'm adding a column. [slot]
+	% joaquin: [#smirk] Samouraï is the correct sauce. This is not a debate. [slot]
+elif not joaquin_met
+	=> c2.under
+elif not karim
+	joaquin: [#neutral] Karim always shoots left. Just so you know. [slot]
+	joaquin: Not that I've been counting. I've been counting.
+else
+	% joaquin: [#smile] You beat him. I'm adding that to the data.
+	% joaquin: [#neutral] Left side of the machine. Not the right. Trust the data.
+	% joaquin: [#neutral] Toma's thing at 23:00... I might come. Probably. [slot]
+
+# Cristina is never on stage before chapter 4 (the near-misses of chapter 3): the last line is only a fallback
+~ talk.cristina
+if chapter == 5 and group_photo and given_to == ""
+	=> c5.offer_cristina
+elif chapter == 5
+	% cristina: [#smile] First night with everyone. I like the steps. [slot]
+	% cristina: [#grin] I'm keeping the sticky notes. Evidence. [slot]
+elif chapter == 4 and not met_cristina
+	=> c4.meet
+elif chapter == 4 and searching and not found
+	=> c4.search_again
+elif chapter == 4 and pocket_empty and not found
+	cristina: [#sad] The sofa. The Under. I'm so sorry. Let's go. [slot]
+elif chapter == 4
+	cristina: [#smile] Go, go. Anisha needs you more than I do. [slot]
+else
+	cristina: [#smile] Hi! Sorry, I'm looking for someone. [slot]
+
+~ talk._default
+think: ...

@@ -1,0 +1,102 @@
+# Overheard talk (V2-31): two people talking near Mano, in small grey italics bottom left; it
+# never takes the controls (scripts/story/overheard.gd). Each cue is one loop between the two NPCs data/world.json
+# "overheard" names (a and b): a loop starts when Mano is within its radius (6 m) with a line of sight to them,
+# and fades out if he walks away. `crowd` lines go to whichever of the two is a crowd member. Some carry soft
+# clues. Lines only: no choices, no commands. [slot]: a line written in a friend's own
+# voice, which the friend reviewed.
+
+# Chapter 1, cour Pasteur by Amphi 4's door, after the pastry war: the report that comes back in chapter 3
+~ over.ian_silvia_report
+ian: The report. I'll do my half tonight. Promise. [slot]
+silvia: Your half is the introduction. One paragraph. [slot]
+ian: A very important paragraph. [slot]
+silvia: Ian. Right now it's lorem ipsum. [slot]
+ian: It's called a placeholder. It's a technique. [slot]
+
+# Chapter 1, Amphi 4: M. Bernard at the board and the SUP asleep in the back (the side story "Segmentation fault")
+~ over.prof_sleeper
+prof: ...and that is why Dijkstra never slept through a lecture.
+sleeper: zzz... shortest path... to bed... zzz
+prof: Our friend in the back has a soutenance at 19:00.
+prof: Somebody wake him. Not me. I have principles.
+sleeper: zzz... core dumped... zzz
+
+# KB1's lobby, by the round sofa
+~ over.lobby_pair
+crowd: Who booked SM15 and left it empty all day?
+crowd: Nobody. It's haunted. By the 8:00 TP.
+crowd: I'd swap my 8:00 for anything. Even a croissant.
+crowd: There's literally an ad on the board saying that.
+
+# cour Pasteur, the group by the birches
+~ over.court_pair
+% crowd: The moulinette gave me -42 on exercise three. Again.
+% crowd: My exercise compiled first try. I don't trust it.
+crowd: -42 isn't a grade. It's a warning.
+if night()
+	crowd: Are you staying for the BDE party?
+	crowd: I'm staying for the free chips. Same thing.
+else
+	crowd: The hackathon poster says free pizza. I'm in.
+	crowd: You're in for the pizza. Admit it.
+
+# Chapter 2, the Under, before Karim admits anything: the "free AirPod" (a soft clue)
+~ over.karim_flex
+karim: Found a free AirPod this afternoon. Finders keepers.
+crowd: It's one AirPod, Karim.
+karim: One free AirPod. Still free.
+crowd: You can't even listen in stereo.
+karim: I listen to victory. In mono.
+
+# Chapter 2, the Under, by the babyfoot
+~ over.karim_joaquin
+joaquin: Rematch. After you lose to Mano. [slot]
+karim: Nobody beats me at my own table.
+joaquin: Four defeats. Four data points. The model is converging. [slot]
+karim: Converge somewhere else. I'm warming up.
+
+~ over.ian_silvia_under
+silvia: Ten euros says Karim cheats. [slot]
+ian: He doesn't cheat. He's just loud. [slot]
+silvia: Loud is a strategy. [slot]
+ian: Then you're a grandmaster. [slot]
+
+# Chapter 2, the cafeteria, before the coffee (a soft clue: find Mme Dupont)
+~ over.madame_machine
+madame: Come on. Come ON. It took my coins again.
+crowd: She's been at that machine since lunch.
+madame: I heard that.
+crowd: Sorry, Mme Dupont. Since lunch, Mme Dupont.
+
+# The Under, the pair at the blue table
+~ over.under_pair
+crowd: Who left a chip in the sofa?
+crowd: That chip has been there since the WEI.
+crowd: It's not a chip anymore. It's a fossil.
+if night()
+	crowd: The sound check is so loud my code compiled faster.
+	crowd: That's not how compiling works. Keep going.
+else
+	crowd: Don't touch it. It's BDE heritage.
+
+# Chapter 3, the cafeteria, before the pastry summit (the report, again)
+~ over.ian_silvia_cafe
+ian: Can you pass the napkins? [slot]
+silvia: Can you write your half of the report? [slot]
+ian: That's not a napkin. [slot]
+silvia: It's not a report either. [slot]
+
+# Chapters 3 and 4, the steps after Ishita's tour: the fairy lights
+~ over.toma_ishita_lights
+ishita: Left a bit. No, your left. [slot]
+toma: My left is your right. This is a democracy. [slot]
+ishita: Then the lights vote left. [slot]
+toma: Fine. Left. Don't tell Mano I listened. [slot]
+
+# Chapter 4, the Under: the BDE's sound check
+~ over.karim_chloe_check
+karim: One, two. One, two. Is this thing on?
+chloe: It's been on since 20:00, Karim.
+karim: Then why is nobody dancing?
+chloe: Because it's a sound check.
+karim: Sound checks deserve dancing.

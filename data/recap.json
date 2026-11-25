@@ -1,0 +1,5 @@
+{
+ "version": 1,
+ "doc": "The recap after the credits: it shows 'your night' only; a 'Toma's night' column appears when toma_picks has entries.",
+ "toma_picks": []
+}

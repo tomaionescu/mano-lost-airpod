@@ -1,0 +1,205 @@
+{
+ "version": 1,
+ "doc": "v1 cards that the v2 story rewrites (V2-10's inner voice, the new chapters): {speaker, text, cue, why}. `silent`: voice keys (assets/audio/voice/manifest.json) whose card is gone on purpose. tests/test_port.gd reads this. The port keeps v1 word for word except the sign line, the narrator (now Mano's thoughts) and some generic slang. Only unvoiced lines are reworded: every voiced v1 card is still in the data.",
+ "rewrites": [
+  {
+   "speaker": "mano",
+   "text": "It's almost 18:00.",
+   "cue": "use.sign",
+   "why": "The accueil sign is read in chapter 2, after the 18:30 card and under an area banner reading 18:30; the new line names no time (\"That was over nine hours ago. Long five minutes.\"). Mano's lines are not voiced, so no voice goes silent."
+  },
+  {
+   "speaker": "nar",
+   "text": "EPITA, Le Kremlin-Bicêtre campus. 17:42. Amphi 4.",
+   "cue": "c1.wake",
+   "why": "V2-10: the chapter card already says where and when; Mano's first thought instead (\"Amphi 4, empty. The lecture ended without me.\")"
+  },
+  {
+   "speaker": "toma",
+   "text": "Bro. You slept through the WHOLE algo lecture. Again.",
+   "cue": "c1.wake",
+   "why": "V2-22 (docs/DESIGN.md §3.12): a friend's generic slang (\"bro\", \"Classic Mano\") replaced; Toma is not voiced: \"Mano. You slept through the WHOLE algo lecture. Again.\""
+  },
+  {
+   "speaker": "toma",
+   "text": "You only have one in? Classic Mano.",
+   "cue": "c1.wake",
+   "why": "V2-22 (docs/DESIGN.md §3.12): a friend's generic slang (\"bro\", \"Classic Mano\") replaced; Toma is not voiced: \"You only have one in? Of course you do.\""
+  },
+  {
+   "speaker": "toma",
+   "text": "SM14, bro. Bâtiment Voltaire, 1st floor. Cross rue Pasteur and take the stairs.",
+   "cue": "talk.toma",
+   "why": "V2-22 (docs/DESIGN.md §3.12): a friend's generic slang (\"bro\", \"Classic Mano\") replaced; Toma is not voiced: \"SM14. Bâtiment Voltaire, 1st floor...\""
+  },
+  {
+   "speaker": "nar",
+   "text": "Out cold, face on the desk.",
+   "cue": "talk.sleeper",
+   "why": "V2-10: the narrator becomes Mano's first-person thought (`think`); unvoiced, so nothing goes silent: \"Out cold, face on the desk. A professional.\""
+  },
+  {
+   "speaker": "nar",
+   "text": "...",
+   "cue": "talk._default",
+   "why": "V2-10: the narrator becomes Mano's first-person thought (`think`); unvoiced, so nothing goes silent (talk._default and use._default)"
+  },
+  {
+   "speaker": "nar",
+   "text": "COFFEE: 2 euros. You have 0. The machine judges you silently.",
+   "cue": "use.coffee",
+   "why": "V2-10: the narrator becomes Mano's first-person thought (`think`); unvoiced, so nothing goes silent: \"COFFEE: 2 euros, and I have {{coins}}. The machine judges me silently.\""
+  },
+  {
+   "speaker": "nar",
+   "text": "A sticky note on the desk: \"BACK IN 5 MIN.\" It is dated 9:00.",
+   "cue": "use.sign",
+   "why": "V2-10: the narrator becomes Mano's first-person thought (`think`); unvoiced, so nothing goes silent"
+  },
+  {
+   "speaker": "nar",
+   "text": "LOST & FOUND. Locked. Only Mme Dupont has the key.",
+   "cue": "use.lostbox",
+   "why": "V2-10: the narrator becomes Mano's first-person thought (`think`); unvoiced, so nothing goes silent"
+  },
+  {
+   "speaker": "nar",
+   "text": "Something shiny in the Gally crate... 1 euro! A bit muddy, still counts.",
+   "cue": "use.coin_planter",
+   "why": "V2-10: the narrator becomes Mano's first-person thought (`think`); unvoiced, so nothing goes silent"
+  },
+  {
+   "speaker": "nar",
+   "text": "You dig between the sofa cushions... 1 euro! And a fossilised chip. You keep the euro.",
+   "cue": "use.coin_sofa",
+   "why": "V2-10: the narrator becomes Mano's first-person thought (`think`); unvoiced, so nothing goes silent, in two thoughts (the chip pays off in chapter 4)"
+  },
+  {
+   "speaker": "nar",
+   "text": "A bike rack. Every bike on it has a flat tyre. Classic.",
+   "cue": "use.velib",
+   "why": "V2-10: the narrator becomes Mano's first-person thought (`think`); unvoiced, so nothing goes silent: docs/DESIGN.md §3.12's \"Consistent, at least.\""
+  },
+  {
+   "speaker": "nar",
+   "text": "EPITA. École pour l'informatique et les techniques avancées.",
+   "cue": "use.logo",
+   "why": "V2-10: the narrator becomes Mano's first-person thought (`think`); unvoiced, so nothing goes silent"
+  },
+  {
+   "speaker": "nar",
+   "text": "Also: your second home, apparently.",
+   "cue": "use.logo",
+   "why": "V2-10: the narrator becomes Mano's first-person thought (`think`); unvoiced, so nothing goes silent: \"my second home\""
+  },
+  {
+   "speaker": "nar",
+   "text": "EN PANNE. The sticker is so old it has its own sticker.",
+   "cue": "use.elevator",
+   "why": "V2-10: the narrator becomes Mano's first-person thought (`think`); unvoiced, so nothing goes silent"
+  },
+  {
+   "speaker": "nar",
+   "text": "The rue Voltaire doors. Right behind them: the périphérique. Not today.",
+   "cue": "use.north_door",
+   "why": "V2-10: the narrator becomes Mano's first-person thought (`think`); unvoiced, so nothing goes silent"
+  },
+  {
+   "speaker": "nar",
+   "text": "\"No food in the computer rooms. Sealed water bottles only.\"",
+   "cue": "use.rules",
+   "why": "V2-10: the narrator becomes Mano's first-person thought (`think`); unvoiced, so nothing goes silent"
+  },
+  {
+   "speaker": "nar",
+   "text": "Someone has drawn a sad croissant.",
+   "cue": "use.rules",
+   "why": "V2-10: the narrator becomes Mano's first-person thought (`think`); unvoiced, so nothing goes silent: \"... I feel seen.\""
+  },
+  {
+   "speaker": "nar",
+   "text": "Algorithmique - plus courts chemins. \"QCM vendredi 9h\".",
+   "cue": "use.slide",
+   "why": "V2-10: the narrator becomes Mano's first-person thought (`think`); unvoiced, so nothing goes silent"
+  },
+  {
+   "speaker": "nar",
+   "text": "Mano did not read the email.",
+   "cue": "use.slide",
+   "why": "V2-10: the narrator becomes Mano's first-person thought (`think`); unvoiced, so nothing goes silent: \"Tomorrow, 9:00. I did not read that email.\""
+  },
+  {
+   "speaker": "nar",
+   "text": "The gate to rue Roger Salengro. Locked after 18:00.",
+   "cue": "use.gate",
+   "why": "V2-10: the narrator becomes Mano's first-person thought (`think`); unvoiced, so nothing goes silent, and it follows the clock (locked since 18:00 once it is past 18:00)"
+  },
+  {
+   "speaker": "nar",
+   "text": "Chips: 1.50 euros for 30 grams. Your wallet says no.",
+   "cue": "use.vending",
+   "why": "V2-10: the narrator becomes Mano's first-person thought (`think`); unvoiced, so nothing goes silent"
+  },
+  {
+   "speaker": "nar",
+   "text": "A column covered in stickers: LSE, ACU, GCC, a cat...",
+   "cue": "use.stickers",
+   "why": "V2-10: the narrator becomes Mano's first-person thought (`think`); unvoiced, so nothing goes silent"
+  },
+  {
+   "speaker": "nar",
+   "text": "...and one that just says \"SEGV\".",
+   "cue": "use.stickers",
+   "why": "V2-10: the narrator becomes Mano's first-person thought (`think`); unvoiced, so nothing goes silent"
+  },
+  {
+   "speaker": "nar",
+   "text": "\"BACK IN 5 MIN.\" Still. Since 9:00.",
+   "cue": "use.sign",
+   "why": "V2-10: the narrator becomes Mano's first-person thought (`think`); unvoiced, so nothing goes silent"
+  },
+  {
+   "speaker": "nar",
+   "text": "COFFEE: 2 euros. Buy one?",
+   "cue": "use.coffee",
+   "why": "V2-10: the narrator becomes Mano's first-person thought (`think`); unvoiced, so nothing goes silent"
+  },
+  {
+   "speaker": "nar",
+   "text": "*clunk* ...nothing comes out. The machine is stuck!",
+   "cue": "use.coffee",
+   "why": "V2-10: the narrator becomes Mano's first-person thought (`think`); unvoiced, so nothing goes silent: the stage sound stays on the narrator (\"*clunk*\"), the rest is Mano's thought"
+  },
+  {
+   "speaker": "nar",
+   "text": "*CLUNK* One hot coffee drops out. You got a COFFEE.",
+   "cue": "c2.coffee_ok",
+   "why": "V2-10: the narrator becomes Mano's first-person thought (`think`); unvoiced, so nothing goes silent: \"*CLUNK*\" stays on the narrator, then \"One hot coffee. I got a COFFEE.\""
+  },
+  {
+   "speaker": "nar",
+   "text": "The machine wins this round. Your 2 euros are still inside. Try again.",
+   "cue": "c2.coffee_fail",
+   "why": "V2-10: the narrator becomes Mano's first-person thought (`think`); unvoiced, so nothing goes silent"
+  },
+  {
+   "speaker": "nar",
+   "text": "Your 2 euros are still stuck inside. Time to shake it again.",
+   "cue": "use.coffee",
+   "why": "V2-10: the narrator becomes Mano's first-person thought (`think`); unvoiced, so nothing goes silent"
+  },
+  {
+   "speaker": "nar",
+   "text": "The coffee machine hums smugly.",
+   "cue": "use.coffee",
+   "why": "V2-10: the narrator becomes Mano's first-person thought (`think`); unvoiced, so nothing goes silent"
+  },
+  {
+   "speaker": "anisha",
+   "text": "This morning Karim from the BDE picked up something white near your seat.",
+   "cue": "c1.anisha_ok",
+   "why": "\"this morning\" contradicts the wake-up (Karim staged by the seats at 17:42, Toma: \"Anisha left the lecture early.\") and docs/DESIGN.md §3.3 (Karim pockets it at 17:20, during the lecture). Two cards instead: \"Karim from the BDE was flyering the lecture.\" / \"Before I left, he picked up something white by your seat.\" Anisha is not voiced, so nothing goes silent."
+  }
+ ],
+ "silent": []
+}

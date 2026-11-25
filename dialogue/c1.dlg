@@ -1,0 +1,192 @@
+# Chapter 1 "Mono" (17:42-18:30, golden to late_gold): data/chapters.json chapter 1, docs/DESIGN.md §3.5.
+# V2-22: the wake-up (Karim blurred near the seats, the phone dying at 17:43), Toma's promise, the
+# one AirPod, the pastry war on the way out of the amphi, Ishita lost in the passage (she walks with Mano to SM14 and
+# lends him her disposable camera), Anisha's moulinette, her sincere beat, the Karim clue and the euro, the
+# croissant. The chapter ends when the moulinette passes: `$ chapter 2` plays the "2 Lost & Found" card.
+# [slot]: a line written in a friend's own voice, which the friend reviewed.
+# Lines with a voice file stay word for word (VoiceLines.key); the friends' and Mano's lines have none.
+
+# The wake-up: main._opening() plays it as a conversation with Toma after the dream. Karim, staged by the seats
+# for the blurred close-up, leaves under the first cut.
+~ c1.wake
+$ stage karim home now=true
+think: Amphi 4, empty. The lecture ended without me.
+mano: [#tired] ...zzz... huh? Is the lecture over?
+toma: [#smirk] Mano. You slept through the WHOLE algo lecture. Again.
+mano: Whatever. Let me put my music back on and- wait.
+mano: ...
+mano: [#shock] WHERE IS MY AIRPOD.
+$ phone show
+think: The finder app. Okay okay okay.
+$ phone preview toma "tonight 23:00, the steps. you're on speaker + playlist"
+$ phone preview anisha "KO KO KO"
+think: [#shock] 1 %. Two messages, no time: swipe.
+$ clock 17:43
+$ phone die
+$ set phone_dead
+think: [#tired] 17:43, dead. Of course it is.
+toma: [#grin] You only have one in? Of course you do.
+toma: Yours is the one with the little M you scratched on it, right?
+toma: And the stem is all chewed from moulinette stress.
+mano: [#annoyed] I don't chew it. ...okay, I chew it.
+toma: [#smile] Also. Tonight. 23:00. The steps. You promised.
+mano: Promised what?
+toma: [#annoyed] ...You weren't listening. Again. [slot]
+toma: [#smirk] Nope. Not telling you. You remember on your own.
+$ set promise
+think: I promised something. Out loud, with my mouth.
+toma: Anisha left the lecture early.
+toma: She's in SM14, and she sees everything. Start there.
+toma: Bâtiment Voltaire, 1st floor. Cross rue Pasteur and take the stairs.
+mano: [#tired] Fine. One ear it is.
+think: Left ear only. This is a crime.
+$ toast "Left ear only" airpod
+$ set toma = true
+$ clue "My AirPod: a little \"M\" scratched on it, and a chewed stem."
+$ clue "Anisha sees everything. She's in SM14: Bâtiment Voltaire, 1st floor. Cross rue Pasteur and take the stairs."
+$ clue "I promised Toma something for tonight: 23:00, the steps. Toma won't say what."
+
+# The pastry war: Ian calls out as Mano leaves the amphi (a main trigger by the door, chapters.json pastry_war)
+~ c1.pastry
+ian: Mano! Settle this. It's called PAIN AU CHOCOLAT, right?
+silvia: [#annoyed] CHOCOLATINE. Tell Ian, Mano.
+ian: [#smirk] Silvia's been wrong for forty minutes. I've been patient.
+silvia: [#annoyed] Ian's been LOUD for forty minutes.
+mano: Uh...
+think: Two friends, one pastry. No way out.
+- Pain au chocolat
+	ian: [#grin] A man of culture.
+	silvia: [#annoyed] Traitor. Unfollowed.
+	$ set choco = "pac"
+	ian: [#grin] Pain au chocolat gang. We meet on Thursdays. It's Thursday.
+	silvia: [#smirk] Enjoy it. I'm keeping score.
+- Chocolatine
+	silvia: [#grin] FINALLY, someone with taste.
+	ian: [#annoyed] Get out of my courtyard.
+	$ set choco = "choco"
+	silvia: [#smile] Welcome. We have no snacks. Only being right.
+	ian: [#sad] Since when are you from the south-west?
+- I just want my AirPod
+	ian: Haven't seen it. This debate matters more.
+	silvia: Ask Anisha, SM14. Anisha sees everything in there.
+think: It's never really about the pastry with those two.
+think: Anyway. Rue Pasteur, through the passage.
+
+# A thought once he is up (bark trigger, a few seconds into play in the amphi)
+~ c1.think_amphi
+think: My notebook's still open on Dijkstra. Shortest path to my AirPod: unknown.
+
+# Ishita, lost in the passage (main trigger near her, chapters.json ishita_passage): for once Mano knows the way
+~ c1.ishita
+ishita: [#smile] Sorry, hi! Do you know where SM14 is?
+ishita: The map says "here". The map is lying.
+mano: SM14? KB1. The white building across the street.
+mano: In, up the stairs, 1st floor, to the left. Big room. Many tired people.
+think: Look at me, giving directions. Toma would cry.
+ishita: [#grin] Perfect. You're going there too, right?
+ishita: You walk like someone who lost something.
+mano: ...An AirPod. The right one. How do you know?
+ishita: [#smirk] Anisha warned me about you. "Iconic. Not in a good way." [slot]
+ishita: I'm Ishita. New this year. Anisha said "meet me in SM14". [slot]
+mano: Mano. Come on, it's on my way. Everything's on my way tonight.
+ishita: [#smile] Lead the way, guide.
+$ set ishita_met
+$ follow ishita
+$ clue "Ishita, new this year, was lost in the passage. She's walking with me to SM14. Anisha told her about me, apparently."
+
+# Thoughts on the way to SM14 with Ishita behind him (bark triggers)
+~ c1.think_street
+think: Someone walking behind me on purpose. Weird, nice weird.
+think: KB1 gets all the gold. The courtyard gets the shade.
+
+~ c1.think_stairs
+think: Still there. Bold of her, trusting my directions.
+
+# Arriving in SM14 with Ishita (main trigger, chapters.json ishita_sm14): she lends Mano her disposable camera
+~ c1.ishita_sm14
+ishita: [#grin] SM14. You actually knew the way.
+mano: I sleep in Amphi 4 a lot. I know every way out.
+think: First time I've walked anyone anywhere.
+ishita: Okay, I owe you. And you can help me, actually.
+ishita: Photo club challenge. Ten photos of campus life, tonight. [slot]
+ishita: A disposable. No screen, no retakes. You see them developed. [slot]
+ishita: You know the campus. Take it.
+$ set camera
+$ toast "Ishita's camera" camera
+mano: Me? I lose things. It's kind of my whole evening.
+ishita: [#smirk] Then don't lose this one. I want it back at 23:00.
+ishita: On the steps. Toma's thing.
+mano: Toma's thing?
+ishita: [#shock] You don't know? You're the playlist, apparently.
+think: Everybody knows what I promised. Except me.
+ishita: [#smile] Go. Anisha's waving at you. Or drowning.
+$ unfollow ishita
+$ stage ishita sm14_ishita walk=true
+$ clue "Ishita lent me her disposable camera: ten photos of campus life tonight. Back to her at 23:00, on the steps."
+$ clue "Toma's thing at 23:00 on the steps: I'm \"the playlist\", apparently."
+
+# Anisha asks for help (talk.anisha the first time)
+~ c1.anisha
+anisha: [#shock] Mano! The moulinette is failing ALL my exercises and the deadline is 23:42.
+ishita: [#smile] Hi Anisha! I found him in the passage. [if camera]
+anisha: [#grin] Ishita! You made it. Sit anywhere. Not that chair, it bites. [if camera]
+mano: Have you seen my AirPod? White, just one, slightly chewed-
+anisha: [#smirk] Help me fix my code first, then I'll tell you what I saw. Deal?
+$ set anisha_asked
+anisha: Three bugs. You just have to point at the broken line each time.
+- Deal
+	$ minigame moulinette sit_at=pcSeat win=c1.anisha_ok lose=c1.anisha_fail with=anisha
+- Later
+	anisha: [#annoyed] The deadline does not do "later", Mano.
+
+# Back after a "Later"
+~ c1.anisha_retry
+anisha: [#tired] You're back. Good. The moulinette is still being mean.
+anisha: Three bugs. Point at the broken line each time.
+- Let's fix it
+	$ minigame moulinette sit_at=pcSeat win=c1.anisha_ok lose=c1.anisha_fail with=anisha
+- Later
+	anisha: [#annoyed] 23:42, Mano. The clock does not care about "later".
+
+# The moulinette passes (the minigame's exit is a cut: the light goes on to late_gold and the clock to 18:15 under it)
+~ c1.anisha_ok
+$ time late_gold fade=0.5
+$ clock 18:15
+anisha: [#grin] The moulinette says OK?! You're a legend.
+think: Somehow it's 18:15. Debugging eats time, and daylight.
+anisha: [#smile] Sorry. I left the lecture early just to stare at that.
+anisha: Can I say something weird? [slot]
+anisha: This year, every deadline feels like the whole year. [slot]
+anisha: Like if one exercise fails, I fail. [slot]
+mano: [#smile] It said OK. You said OK. That's two OKs.
+anisha: [#grin] ...Two OKs. Okay. Never tell the moulinette I said that. [slot]
+ishita: [#grin] Two OKs. I'm writing that down. [if camera]
+anisha: Okay, your AirPod.
+anisha: Karim from the BDE was flyering the lecture.
+anisha: Before I left, he picked up something white by your seat.
+anisha: [#annoyed] He was showing it off. "Free AirPod lol."
+mano: [#annoyed] KARIM.
+anisha: [#smile] Take this for the coffee machine. You look like you need one.
+$ set ines = true
+$ add coins 1
+$ sfx coin
+$ toast "+1 €" coin
+$ clue "Anisha saw Karim (BDE) pick up a white earbud near my seat. The Under is down the ramp in the corner of cour Pasteur."
+$ stage acu sm14_acu now=true
+acu: [#smirk] Inès. Is that a croissant? In SM14?
+ines: [#annoyed] ...It's a chocolatine.
+acu: Confiscated. Sealed water bottles only. Whatever it's called.
+think: Rest in peace, little croissant. Or chocolatine, or whatever.
+anisha: [#sad] He's been hunting snacks since 9:00. Nobody is safe.
+$ set croissant
+think: Karim, then. The Under, down the ramp in the corner of cour Pasteur.
+$ set c1_done
+$ chapter 2
+
+~ c1.anisha_fail
+anisha: [#sad] The moulinette gave me -42. AGAIN.
+anisha: One more try?
+- Retry
+	$ minigame moulinette sit_at=pcSeat win=c1.anisha_ok lose=c1.anisha_fail with=anisha
+- Later
+	anisha: [#sad] I'll be here. Crying. Quietly.

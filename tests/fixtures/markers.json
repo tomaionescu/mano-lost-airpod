@@ -1,0 +1,1259 @@
+{
+ "anchors": {
+  "babyfoot": {
+   "pos": [
+    15.0,
+    -3.6,
+    46.0
+   ],
+   "yaw": 0.0
+  },
+  "babyfootSpot": {
+   "pos": [
+    15.0,
+    -3.6,
+    46.85
+   ],
+   "yaw": -180.0
+  },
+  "coffee": {
+   "pos": [
+    -11.056,
+    0.0,
+    47.532
+   ],
+   "yaw": 132.6
+  },
+  "lostfound": {
+   "pos": [
+    -3.2,
+    1.1,
+    -23.25
+   ],
+   "yaw": 0.0
+  },
+  "pcSeat": {
+   "pos": [
+    -10.8,
+    3.6,
+    -19.98
+   ],
+   "yaw": -180.0
+  }
+ },
+ "cams": {
+  "title": {
+   "pos": [
+    25.0,
+    7.0,
+    37.0
+   ],
+   "yaw": 52.3
+  }
+ },
+ "ducks": {
+  "amphi": {
+   "pos": [
+    15.4,
+    -2.325,
+    6.9
+   ]
+  },
+  "cafe": {
+   "pos": [
+    -7.793,
+    1.17,
+    48.201
+   ]
+  },
+  "car": {
+   "pos": [
+    -26.2,
+    1.575,
+    1.6
+   ]
+  },
+  "intl": {
+   "pos": [
+    -15.0,
+    0.835,
+    -23.15
+   ]
+  },
+  "ramp": {
+   "pos": [
+    28.1,
+    -3.525,
+    38.85
+   ]
+  },
+  "sm15": {
+   "pos": [
+    6.55,
+    4.435,
+    -23.45
+   ]
+  },
+  "steps": {
+   "pos": [
+    -9.322,
+    0.495,
+    26.24
+   ]
+  },
+  "under": {
+   "pos": [
+    12.0,
+    -1.725,
+    51.62
+   ]
+  }
+ },
+ "npcs": {
+  "acu": {
+   "extras": {
+    "color": "#e74c3c",
+    "model": "npc_acu",
+    "name": "ACU Leo",
+    "path": [
+     [
+      -14.0,
+      3.6,
+      -14.0
+     ],
+     [
+      6.0,
+      3.6,
+      -14.0
+     ]
+    ],
+    "sit": false,
+    "sleep": false,
+    "yaw": 1.5707963267949
+   },
+   "pos": [
+    -14.0,
+    3.6,
+    -14.0
+   ],
+   "yaw": 90.0
+  },
+  "anisha": {
+   "extras": {
+    "color": "#3fbf8a",
+    "model": "friend_anisha",
+    "name": "Anisha",
+    "range": 2.0,
+    "sit": true,
+    "sleep": false,
+    "yaw": 3.14159265358979
+   },
+   "pos": [
+    -12.25,
+    3.6,
+    -20.1
+   ],
+   "yaw": -180.0
+  },
+  "chloe": {
+   "extras": {
+    "color": "#16a085",
+    "model": "npc_chloe",
+    "name": "Chloe (BDE)",
+    "sit": true,
+    "sleep": false,
+    "yaw": 1.5707963267949
+   },
+   "pos": [
+    4.62,
+    -3.6,
+    43.1
+   ],
+   "yaw": 90.0
+  },
+  "crowd_00": {
+   "extras": {
+    "crowd": true,
+    "model": "npc_crowd3",
+    "sit": false,
+    "talk": true,
+    "yaw": -2.0
+   },
+   "pos": [
+    16.2,
+    0.0,
+    26.7
+   ],
+   "yaw": -114.6
+  },
+  "crowd_01": {
+   "extras": {
+    "crowd": true,
+    "model": "npc_crowd4",
+    "sit": false,
+    "talk": true,
+    "yaw": 2.5
+   },
+   "pos": [
+    17.6,
+    0.0,
+    26.0
+   ],
+   "yaw": 143.2
+  },
+  "crowd_02": {
+   "extras": {
+    "crowd": true,
+    "model": "npc_crowd8",
+    "sit": false,
+    "talk": true,
+    "yaw": 3.7
+   },
+   "pos": [
+    17.3,
+    0.0,
+    27.6
+   ],
+   "yaw": -148.0
+  },
+  "crowd_03": {
+   "extras": {
+    "crowd": true,
+    "model": "npc_crowd2",
+    "sit": false,
+    "talk": true,
+    "yaw": 0.7
+   },
+   "pos": [
+    13.0,
+    0.0,
+    20.2
+   ],
+   "yaw": 40.1
+  },
+  "crowd_04": {
+   "extras": {
+    "crowd": true,
+    "model": "npc_crowd1",
+    "sit": false,
+    "talk": true,
+    "yaw": -2.4
+   },
+   "pos": [
+    14.0,
+    0.0,
+    20.9
+   ],
+   "yaw": -137.5
+  },
+  "crowd_05": {
+   "extras": {
+    "crowd": true,
+    "model": "npc_crowd5",
+    "sit": true,
+    "talk": true,
+    "yaw": 2.69159265358979
+   },
+   "pos": [
+    -19.9,
+    0.0,
+    -8.072
+   ],
+   "yaw": 154.2
+  },
+  "crowd_06": {
+   "extras": {
+    "crowd": true,
+    "model": "npc_crowd3",
+    "sit": true,
+    "talk": false,
+    "yaw": 3.59159265358979
+   },
+   "pos": [
+    -19.1,
+    0.0,
+    -8.072
+   ],
+   "yaw": -154.2
+  },
+  "crowd_07": {
+   "extras": {
+    "crowd": true,
+    "model": "npc_crowd4",
+    "sit": true,
+    "talk": true,
+    "yaw": 2.96954256741331
+   },
+   "pos": [
+    -13.572,
+    0.02,
+    37.329
+   ],
+   "yaw": 170.1
+  },
+  "crowd_08": {
+   "extras": {
+    "crowd": true,
+    "model": "npc_crowd8",
+    "sit": true,
+    "talk": false,
+    "yaw": 2.31384694117177
+   },
+   "pos": [
+    -12.629,
+    0.02,
+    42.731
+   ],
+   "yaw": 132.6
+  },
+  "crowd_09": {
+   "extras": {
+    "crowd": true,
+    "model": "npc_crowd6",
+    "sit": true,
+    "talk": true,
+    "yaw": -1.48344133865956
+   },
+   "pos": [
+    -6.747,
+    0.02,
+    43.281
+   ],
+   "yaw": -85.0
+  },
+  "crowd_10": {
+   "extras": {
+    "crowd": true,
+    "model": "npc_crowd7",
+    "sit": true,
+    "talk": false,
+    "yaw": 0.0
+   },
+   "pos": [
+    5.8,
+    -3.6,
+    48.75
+   ],
+   "yaw": 0.0
+  },
+  "crowd_11": {
+   "extras": {
+    "crowd": true,
+    "model": "npc_crowd1",
+    "sit": true,
+    "talk": true,
+    "yaw": 3.14159265358979
+   },
+   "pos": [
+    8.2,
+    -3.6,
+    50.25
+   ],
+   "yaw": -180.0
+  },
+  "crowd_12": {
+   "extras": {
+    "crowd": true,
+    "model": "npc_crowd2",
+    "sit": true,
+    "talk": false,
+    "yaw": 0.0
+   },
+   "pos": [
+    21.5,
+    -3.6,
+    48.75
+   ],
+   "yaw": 0.0
+  },
+  "crowd_13": {
+   "extras": {
+    "crowd": true,
+    "model": "npc_crowd8",
+    "sit": false,
+    "talk": true,
+    "yaw": 0.3
+   },
+   "pos": [
+    14.2,
+    -3.6,
+    44.4
+   ],
+   "yaw": 17.2
+  },
+  "crowd_14": {
+   "extras": {
+    "crowd": true,
+    "model": "npc_crowd3",
+    "sit": true,
+    "talk": false,
+    "yaw": 3.14159265358979
+   },
+   "pos": [
+    -1.15,
+    3.6,
+    -20.1
+   ],
+   "yaw": -180.0
+  },
+  "crowd_15": {
+   "extras": {
+    "crowd": true,
+    "model": "npc_crowd5",
+    "sit": true,
+    "talk": false,
+    "yaw": 3.14159265358979
+   },
+   "pos": [
+    4.65,
+    3.6,
+    -23.1
+   ],
+   "yaw": -180.0
+  },
+  "crowd_16": {
+   "extras": {
+    "crowd": true,
+    "model": "npc_crowd4",
+    "sit": true,
+    "talk": false,
+    "yaw": 3.14159265358979
+   },
+   "pos": [
+    -15.15,
+    3.6,
+    -17.3
+   ],
+   "yaw": -180.0
+  },
+  "crowd_17": {
+   "extras": {
+    "crowd": true,
+    "model": "npc_crowd6",
+    "sit": true,
+    "talk": false,
+    "yaw": 3.14159265358979
+   },
+   "pos": [
+    13.0,
+    -1.2,
+    13.085
+   ],
+   "yaw": -180.0
+  },
+  "crowd_18": {
+   "extras": {
+    "crowd": true,
+    "model": "npc_crowd7",
+    "sit": true,
+    "talk": false,
+    "yaw": 3.14159265358979
+   },
+   "pos": [
+    22.6,
+    -0.6,
+    14.985
+   ],
+   "yaw": -180.0
+  },
+  "ian": {
+   "extras": {
+    "color": "#b38a5e",
+    "model": "friend_ian",
+    "name": "Ian",
+    "range": 2.2,
+    "sit": false,
+    "sleep": false,
+    "yaw": 1.5707963267949
+   },
+   "pos": [
+    5.0,
+    0.0,
+    28.0
+   ],
+   "yaw": 90.0
+  },
+  "ines": {
+   "extras": {
+    "color": "#e84393",
+    "model": "npc_ines",
+    "name": "Ines",
+    "sit": true,
+    "sleep": false,
+    "yaw": 3.14159265358979
+   },
+   "pos": [
+    -7.9,
+    3.6,
+    -23.1
+   ],
+   "yaw": -180.0
+  },
+  "karim": {
+   "extras": {
+    "color": "#e8b923",
+    "model": "npc_karim",
+    "name": "Karim (BDE)",
+    "range": 2.2,
+    "sit": false,
+    "sleep": false,
+    "yaw": 0.0
+   },
+   "pos": [
+    15.0,
+    -3.6,
+    45.1
+   ],
+   "yaw": 0.0
+  },
+  "madame": {
+   "extras": {
+    "color": "#6c5ce7",
+    "model": "npc_madame",
+    "name": "Mme Dupont",
+    "sit": false,
+    "sleep": false,
+    "when": "!coffeeGiven",
+    "yaw": 0.10902789471345
+   },
+   "pos": [
+    -11.286,
+    0.02,
+    45.435
+   ],
+   "yaw": 6.2
+  },
+  "madame2": {
+   "extras": {
+    "color": "#6c5ce7",
+    "model": "npc_madame",
+    "name": "Mme Dupont",
+    "range": 2.4,
+    "sit": false,
+    "sleep": false,
+    "when": "coffeeGiven",
+    "yaw": 0.0
+   },
+   "pos": [
+    -3.4,
+    0.0,
+    -24.25
+   ],
+   "yaw": 0.0
+  },
+  "prof": {
+   "extras": {
+    "color": "#a0826d",
+    "model": "npc_prof",
+    "name": "M. Bernard",
+    "range": 2.6,
+    "sit": false,
+    "sleep": false,
+    "yaw": 0.0
+   },
+   "pos": [
+    18.2,
+    -2.4,
+    7.4
+   ],
+   "yaw": 0.0
+  },
+  "silvia": {
+   "extras": {
+    "color": "#e7a07a",
+    "model": "friend_silvia",
+    "name": "Silvia",
+    "range": 2.2,
+    "sit": false,
+    "sleep": false,
+    "yaw": -1.5707963267949
+   },
+   "pos": [
+    7.0,
+    0.0,
+    28.0
+   ],
+   "yaw": -90.0
+  },
+  "sleeper": {
+   "extras": {
+    "color": "#e67e22",
+    "model": "npc_lucas",
+    "name": "Sleepy SUP",
+    "no_look": true,
+    "sit": true,
+    "sleep": true,
+    "yaw": 3.14159265358979
+   },
+   "pos": [
+    24.5,
+    -1.5,
+    12.135
+   ],
+   "yaw": -180.0
+  },
+  "student2": {
+   "extras": {
+    "color": "#27ae60",
+    "model": "npc_student2",
+    "name": "Piscine survivor",
+    "sit": true,
+    "sleep": false,
+    "yaw": 3.14159265358979
+   },
+   "pos": [
+    1.75,
+    3.6,
+    -17.3
+   ],
+   "yaw": -180.0
+  },
+  "student3": {
+   "extras": {
+    "color": "#8e44ad",
+    "model": "npc_student3",
+    "name": "SPE student",
+    "sit": true,
+    "sleep": false,
+    "yaw": 2.31384694117177
+   },
+   "pos": [
+    -11.096,
+    0.02,
+    39.965
+   ],
+   "yaw": 132.6
+  },
+  "theo": {
+   "extras": {
+    "color": "#16a085",
+    "model": "npc_student2",
+    "name": "Theo",
+    "sit": true,
+    "sleep": false,
+    "yaw": 0.74156660567181
+   },
+   "pos": [
+    -4.539,
+    0.81,
+    20.232
+   ],
+   "yaw": 42.5
+  },
+  "toma": {
+   "extras": {
+    "color": "#2f5d9f",
+    "model": "npc_toma",
+    "name": "Toma",
+    "range": 2.2,
+    "sit": true,
+    "sleep": false,
+    "yaw": 3.14159265358979
+   },
+   "pos": [
+    17.55,
+    -0.9,
+    14.035
+   ],
+   "yaw": -180.0
+  },
+  "waiting": {
+   "extras": {
+    "color": "#95a5a6",
+    "model": "npc_theo",
+    "name": "Waiting student",
+    "sit": true,
+    "sleep": false,
+    "yaw": 3.14159265358979
+   },
+   "pos": [
+    -7.0,
+    0.0,
+    -8.2
+   ],
+   "yaw": -180.0
+  },
+  "yanis": {
+   "extras": {
+    "color": "#5d6d7e",
+    "model": "npc_yanis",
+    "name": "Yanis",
+    "path": [
+     [
+      10.0,
+      0.0,
+      20.0
+     ],
+     [
+      22.0,
+      0.0,
+      27.0
+     ],
+     [
+      16.0,
+      0.0,
+      33.0
+     ],
+     [
+      4.0,
+      0.0,
+      31.0
+     ],
+     [
+      2.2,
+      0.0,
+      27.5
+     ]
+    ],
+    "sit": false,
+    "sleep": false,
+    "yaw": 0.0
+   },
+   "pos": [
+    10.0,
+    0.0,
+    20.0
+   ],
+   "yaw": 0.0
+  }
+ },
+ "paths": {
+  "crowd00": [
+   [
+    4.0,
+    0.0,
+    17.0
+   ],
+   [
+    12.0,
+    0.0,
+    22.0
+   ],
+   [
+    20.0,
+    0.0,
+    23.5
+   ],
+   [
+    19.0,
+    0.0,
+    32.0
+   ],
+   [
+    9.0,
+    0.0,
+    34.0
+   ],
+   [
+    2.0,
+    0.0,
+    27.0
+   ]
+  ],
+  "crowd01": [
+   [
+    19.0,
+    0.0,
+    32.0
+   ],
+   [
+    9.0,
+    0.0,
+    34.0
+   ],
+   [
+    2.0,
+    0.0,
+    27.0
+   ],
+   [
+    4.0,
+    0.0,
+    17.0
+   ],
+   [
+    12.0,
+    0.0,
+    22.0
+   ],
+   [
+    20.0,
+    0.0,
+    23.5
+   ]
+  ],
+  "crowd02": [
+   [
+    3.15,
+    0.0,
+    15.0
+   ],
+   [
+    3.15,
+    0.1,
+    4.4
+   ],
+   [
+    -12.0,
+    0.1,
+    4.4
+   ],
+   [
+    -30.0,
+    0.1,
+    4.4
+   ]
+  ],
+  "crowd03": [
+   [
+    -30.0,
+    0.1,
+    -3.9
+   ],
+   [
+    -12.0,
+    0.1,
+    -3.9
+   ],
+   [
+    18.0,
+    0.1,
+    -3.9
+   ]
+  ],
+  "crowd04": [
+   [
+    -21.0,
+    0.0,
+    -10.0
+   ],
+   [
+    -12.0,
+    0.0,
+    -10.0
+   ],
+   [
+    8.0,
+    0.0,
+    -10.0
+   ],
+   [
+    16.0,
+    0.0,
+    -10.0
+   ]
+  ]
+ },
+ "portals": {
+  "amphi|court": [
+   [
+    16.0,
+    0.0,
+    17.6
+   ],
+   [
+    16.0,
+    0.0,
+    19.6
+   ]
+  ],
+  "court|cafe": [
+   [
+    -6.694,
+    0.0,
+    37.278
+   ],
+   [
+    -8.903,
+    0.0,
+    39.308
+   ]
+  ],
+  "court|passage": [
+   [
+    3.1,
+    0.0,
+    15.6
+   ],
+   [
+    3.2,
+    0.0,
+    13.4
+   ]
+  ],
+  "court|under": [
+   [
+    11.0,
+    0.0,
+    37.7
+   ],
+   [
+    26.6,
+    -3.6,
+    37.8
+   ],
+   [
+    27.0,
+    -3.6,
+    40.6
+   ]
+  ],
+  "passage|street": [
+   [
+    3.35,
+    0.0,
+    8.0
+   ],
+   [
+    3.35,
+    0.1,
+    4.6
+   ]
+  ],
+  "street|volt_gf": [
+   [
+    9.3,
+    0.1,
+    -4.4
+   ],
+   [
+    9.3,
+    0.0,
+    -7.0
+   ]
+  ],
+  "volt_f1|sm14": [
+   [
+    -11.0,
+    3.6,
+    -14.4
+   ],
+   [
+    -11.0,
+    3.6,
+    -17.2
+   ]
+  ],
+  "volt_f1|sm15": [
+   [
+    2.0,
+    3.6,
+    -14.4
+   ],
+   [
+    2.0,
+    3.6,
+    -17.2
+   ]
+  ],
+  "volt_gf|volt_f1": [
+   [
+    11.75,
+    0.0,
+    -11.9
+   ],
+   [
+    11.75,
+    3.6,
+    -19.6
+   ],
+   [
+    9.3,
+    3.6,
+    -17.5
+   ],
+   [
+    9.3,
+    3.6,
+    -14.0
+   ]
+  ]
+ },
+ "source": "res://assets/levels/campus.glb",
+ "spawn": [
+  18.75,
+  -0.76,
+  14.0
+ ],
+ "spots": {
+  "coffee": {
+   "label": "Coffee machine",
+   "pos": [
+    -10.43,
+    0.0,
+    46.957
+   ],
+   "range": 1.6
+  },
+  "coin_planter": {
+   "label": "Planter",
+   "pos": [
+    14.0,
+    0.0,
+    33.0
+   ],
+   "range": 1.7
+  },
+  "coin_sofa": {
+   "label": "Sofa",
+   "pos": [
+    4.9,
+    -3.6,
+    42.5
+   ],
+   "range": 1.5
+  },
+  "elevator": {
+   "label": "Elevator",
+   "pos": [
+    7.1,
+    0.0,
+    -24.8
+   ],
+   "range": 1.7
+  },
+  "gate": {
+   "label": "Gate to rue Roger Salengro",
+   "pos": [
+    2.0,
+    0.0,
+    49.6
+   ],
+   "range": 2.0
+  },
+  "logo": {
+   "label": "EPITA wall",
+   "pos": [
+    -21.0,
+    0.0,
+    -10.5
+   ],
+   "range": 2.2
+  },
+  "lostbox": {
+   "label": "Lost & found box",
+   "pos": [
+    -1.5,
+    0.0,
+    -22.6
+   ],
+   "range": 1.6
+  },
+  "north_door": {
+   "label": "Rue Voltaire doors",
+   "pos": [
+    -3.3,
+    0.0,
+    -32.0
+   ],
+   "range": 2.4
+  },
+  "rules": {
+   "label": "Read the poster",
+   "pos": [
+    -6.0,
+    3.6,
+    -14.8
+   ],
+   "range": 1.8
+  },
+  "sign": {
+   "label": "Read the note on the desk",
+   "pos": [
+    -3.6,
+    0.0,
+    -22.6
+   ],
+   "range": 1.8
+  },
+  "slide": {
+   "label": "Read the slide",
+   "pos": [
+    18.75,
+    -2.4,
+    8.9
+   ],
+   "range": 2.4
+  },
+  "stickers": {
+   "label": "Sticker column",
+   "pos": [
+    9.0,
+    -3.6,
+    46.6
+   ],
+   "range": 1.6
+  },
+  "velib": {
+   "label": "Look at the bike rack",
+   "pos": [
+    14.9,
+    0.1,
+    3.75
+   ],
+   "range": 2.0
+  },
+  "vending": {
+   "label": "Vending machines",
+   "pos": [
+    -17.607,
+    0.0,
+    39.293
+   ],
+   "range": 1.6
+  }
+ },
+ "version": 1,
+ "zones": {
+  "amphi": {
+   "half": [
+    9.25,
+    2.0,
+    6.2
+   ],
+   "label": "Amphi 4",
+   "pos": [
+    18.75,
+    -1.0,
+    12.2
+   ],
+   "sub": "cour Pasteur  -  east building",
+   "surface": "carpet"
+  },
+  "cafe": {
+   "half": [
+    8.351,
+    1.75,
+    4.6
+   ],
+   "label": "Cafeteria",
+   "pos": [
+    -11.022,
+    1.25,
+    41.731
+   ],
+   "sub": "X building  -  cour Pasteur",
+   "surface": "tile"
+  },
+  "court": {
+   "half": [
+    23.5,
+    4.8,
+    18.3
+   ],
+   "label": "Cour Pasteur",
+   "pos": [
+    10.0,
+    3.2,
+    32.3
+   ],
+   "sub": "EPITA Paris  -  KB campus",
+   "surface": "concrete"
+  },
+  "passage": {
+   "half": [
+    3.35,
+    2.35,
+    4.05
+   ],
+   "label": "Cour Pasteur",
+   "pos": [
+    3.35,
+    1.85,
+    10.25
+   ],
+   "sub": "passage couvert  -  24 rue Pasteur",
+   "surface": "concrete"
+  },
+  "sm14": {
+   "half": [
+    7.0,
+    2.4,
+    5.0
+   ],
+   "label": "SM14",
+   "pos": [
+    -11.0,
+    4.8,
+    -21.0
+   ],
+   "sub": "Batiment Voltaire  -  1st floor",
+   "surface": "carpet"
+  },
+  "sm15": {
+   "half": [
+    6.0,
+    2.4,
+    5.0
+   ],
+   "label": "SM15",
+   "pos": [
+    2.0,
+    4.8,
+    -21.0
+   ],
+   "sub": "Batiment Voltaire  -  1st floor",
+   "surface": "carpet"
+  },
+  "street": {
+   "half": [
+    47.25,
+    3.5,
+    13.75
+   ],
+   "label": "Rue Pasteur",
+   "pos": [
+    -0.75,
+    2.5,
+    0.25
+   ],
+   "sub": "Le Kremlin-Bicetre",
+   "surface": "concrete"
+  },
+  "under": {
+   "half": [
+    13.5,
+    1.4,
+    8.15
+   ],
+   "label": "The Under",
+   "pos": [
+    15.2,
+    -3.0,
+    44.15
+   ],
+   "sub": "BDE  -  basement of cour Pasteur",
+   "surface": "rubber"
+  },
+  "volt_f1": {
+   "half": [
+    15.5,
+    2.4,
+    7.0
+   ],
+   "label": "Batiment Voltaire",
+   "pos": [
+    -2.5,
+    4.8,
+    -19.0
+   ],
+   "sub": "1st floor",
+   "surface": "tile"
+  },
+  "volt_gf": {
+   "half": [
+    25.85,
+    1.45,
+    14.35
+   ],
+   "label": "Batiment Voltaire",
+   "pos": [
+    -3.45,
+    0.95,
+    -19.35
+   ],
+   "sub": "ground floor  -  accueil",
+   "surface": "tile"
+  }
+ }
+}

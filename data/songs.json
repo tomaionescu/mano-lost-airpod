@@ -1,0 +1,13 @@
+{
+ "version": 1,
+ "doc": "The tracks on disk (res://assets/audio/music/<stem>.ogg) as Mano's phone and the credits name them: title and artist, as assets/audio/CREDITS.md credits them. The sit-downs, the playlist and the finale use only these six (docs/DESIGN.md §9). `playlist` is the three songs Toma's playlist pick offers in chapter 3 (c3.playlist_pick); `heard` is false for cues that are not songs anyone would put on a playlist (the phone's Music list leaves them out).",
+ "songs": {
+  "title": {"title": "Morning", "artist": "Kevin MacLeod"},
+  "explore": {"title": "Almost Bliss", "artist": "Kevin MacLeod"},
+  "explore_dusk": {"title": "Study And Relax", "artist": "Kevin MacLeod"},
+  "tension": {"title": "Sneaky Snitch", "artist": "Kevin MacLeod", "heard": false},
+  "under_party": {"title": "Raving Energy", "artist": "Kevin MacLeod"},
+  "ending": {"title": "Evening", "artist": "Kevin MacLeod"}
+ },
+ "playlist": ["ending", "explore", "title"]
+}

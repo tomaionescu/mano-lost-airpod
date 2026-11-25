@@ -1,0 +1,183 @@
+# Chapter 4 "Sauce Samouraï" (21:00-23:40, night): data/chapters.json chapter 4, docs/DESIGN.md §3.5.
+# V2-26:
+#  - rue Pasteur's east end at 21:00: Cristina and Joaquin; "You're C.?" / "You're M.?"; the proof (the left one, the
+#    same M, the same chewed stem); Joaquin's orders (scripts/minigames/kebab.gd); Cristina's pocket is empty;
+#  - the finder now says the Under, 20:31; back there during the BDE's sound check, Cristina following;
+#  - the sound search (scripts/minigames/findmy.gd): the AirPod is in the sofa; found; ten seconds of stereo;
+#    Cristina's sincere beat;
+#  - Anisha's SOS lands on top of the music: Mano puts both AirPods in the case (the turn);
+#  - "1, 2, 3, ACU!" (scripts/minigames/soleil.gd): the kebab past ACU Léo into SM14; a cut to 23:05; the night
+#    moulinette (moulinette.gd, night=true), OK at 23:38; Anisha's sincere beat; "The steps. Now.";
+#  - back at the steps (the KB1 stairs sit-down on the way, optional), `$ chapter 5`.
+# The kebab itself is never shown. [slot]: a line written in a friend's own voice, which the friend reviewed.
+# Pronouns: Mano he, Ishita she, Toma they; everyone else by name.
+
+# Rue Pasteur's east end, 21:00 (the chapter's start cue, with Cristina; Joaquin beside her)
+~ c4.meet
+think: 21:00. Joaquin. And someone with C.'s ink on her hand.
+joaquin: [#neutral] 21:00. You're early. I've updated the model. [slot]
+mano: [#smile] You're C.?
+cristina: [#grin] You're M.? [slot]
+mano: The AirPod guy. Yes. Hi. Sorry. Hi.
+cristina: [#smile] Hi! Cristina. Toma's friend. I've chased you since six. [slot]
+$ set met_cristina
+cristina: [#smile] "M is me. Thank you so much." I believed you. [if reply_cristina == "sorry"] [slot]
+cristina: [#smirk] You promised to chew the other one. I'm watching. [if reply_cristina == "joke"] [slot]
+cristina: You never answered. I came anyway. I'm stubborn. [if reply_cristina == ""] [slot]
+cristina: Proof first, though. The other one, please. [slot]
+think: The left one. M scratched on it, chewed stem. Not my proudest proof.
+mano: Exhibit A. One M. Some teeth marks.
+cristina: [#grin] They match. Okay, it's definitely yours. [slot]
+joaquin: Before the handover: orders. Toma wants food on the steps. [slot]
+joaquin: [#smirk] I'm the captain. You're the memory. Cristina's the witness. [slot]
+cristina: [#shock] I'm the witness?
+joaquin: Every kebab needs a witness. [slot]
+think: The kebab is round the corner. Joaquin is already walking.
+$ minigame kebab win=c4.kebab_done lose=c4.kebab_done with=joaquin
+
+# Joaquin's orders again (talk.joaquin while they are not in: a Continue in the middle of them)
+~ c4.orders_again
+joaquin: [#neutral] Orders. From the top. You're still the memory. [slot]
+$ minigame kebab win=c4.kebab_done lose=c4.kebab_done with=joaquin
+
+~ c4.kebab_done
+think: [#tired] Eight kebabs. One bag. My arms are a restaurant now.
+if kebab_score >= kebab_total
+	joaquin: [#grin] Every order right. I'm framing the receipt. [slot]
+else
+	joaquin: [#neutral] {{kebab_score}} out of {{kebab_total}}. The rest is a surprise. [slot]
+	cristina: [#smirk] I witnessed everything. I'm saying nothing. [slot]
+$ set kebab_done
+joaquin: Can I say something? I don't really do group things. [slot]
+joaquin: This one's loud. And it's okay. I checked. [slot]
+joaquin: [#smile] I'm glad I came. Don't make it weird. [slot]
+mano: [#smile] Too late. It's weird. Welcome.
+$ set joaquin_beat
+cristina: [#smile] Okay. The handover. Finally. [slot]
+think: Her jacket pocket. The left one. Then the right one. Then the left one again.
+cristina: [#shock] It was RIGHT HERE.
+cristina: [#shock] I had it in the Under. On the sofa, waiting for you. [slot]
+mano: [#shock] The finder. The finder app.
+$ phone finder under "20:31"
+$ phone open find
+mano: [#shock] "Last seen: the Under, 20:31."
+cristina: [#sad] 20:31. I was on the sofa, with the tape. I'm so sorry. [slot]
+joaquin: [#neutral] Statistically, it's in the sofa. Sofas eat things. [slot]
+joaquin: I'll take the food to the steps. You two, go. [slot]
+think: Except Anisha's kebab. That one stays in my bag.
+mano: Third time in the Under tonight. It's basically my flat.
+$ set pocket_empty
+$ clock 21:20
+$ follow cristina
+$ clue "Cristina had my AirPod in the Under at 20:31, on the old sofa. It's not lost. It's in a sofa."
+
+# The Under, during the BDE's sound check (main trigger inside its door, Cristina beside Mano)
+~ c4.search
+think: The sound check. Thump. Thump. Karim, on the mic: "un, deux. Un, deux."
+cristina: [#smile] Your phone can make it ring. Find, then "Play sound". [slot]
+mano: Ten per cent. Five rings, maybe. Then it dies.
+cristina: Ring it between the thumps. And listen. [slot]
+$ set searching
+$ minigame findmy win=c4.found lose=c4.found with=cristina
+
+# Talking to Cristina again while the search is on (a Continue in the middle of it, say): the search again
+~ c4.search_again
+cristina: [#smile] Between the thumps. It's here somewhere. [slot]
+$ minigame findmy win=c4.found lose=c4.found with=cristina
+
+# The sofa (with Cristina): found; stereo; her sincere beat; Anisha's SOS; the case
+~ c4.found
+$ place mano findmy_mano
+$ place cristina findmy_cristina
+$ shot findmy_sofa
+think: [#shock] Between the cushions, next to the fossilised chip. White. M. Chewed.
+mano: [#grin] FOUND IT. Found it found it found it.
+cristina: [#grin] YES. Finally! The sofa gives things back! [slot]
+$ set found
+$ set searching = false
+$ shot clear
+$ give_airpod
+$ sfx fanfare
+$ banner "Stereo" "two ears. for once."
+$ song explore 8
+think: Both ears. There's a whole guitar in this song I've never heard.
+cristina: Can I say why I kept chasing you? It's a bit silly. [slot]
+cristina: I lost one once. Nobody ever found it. [slot]
+cristina: [#sad] I didn't want that to happen to anyone else. That's all. [slot]
+mano: You chased a stranger's chewed AirPod all evening.
+cristina: [#smile] You're not a stranger now. You're M. [slot]
+cristina: [#grin] Also, the teeth marks were very distinctive. [slot]
+$ set cristina_beat
+$ toast "Cristina will remember that." tick
+$ clock 21:47
+$ phone flood sos
+think: [#shock] My phone. Anisha.
+$ phone open anisha
+mano: [#shock] "KO. Exercise five. Deadline 23:42. Starving. Help."
+think: Music in both ears. Or a friend in SM14, starving, with a deadline.
+mano: [#smile] ...Okay. Case.
+$ airpods case
+think: Click. Both in the case. The world's back, all of it.
+$ set anisha_sos
+cristina: [#smile] Go. I'll tell the steps you're coming. [slot]
+$ unfollow cristina
+$ clue "Both AirPods in the case. Anisha: KO, starving, deadline 23:42. Her kebab is in my bag."
+
+# SM14, ACU Léo on night patrol (main trigger at SM14's door: Mano and Léo on their marks)
+~ c4.acu
+$ shot soleil_wide
+think: SM14. ACU Léo, on night patrol. And the rule: no food in the computer rooms.
+acu: [#smirk] I can smell a kebab from the corridor. I'm a professional.
+think: He counts, I move. He turns, I freeze. Like the playground game.
+think: Un, deux, trois... ACU.
+$ minigame soleil win=c4.smuggled lose=c4.smuggled with=anisha
+
+# At Anisha's desk, the kebab delivered (with Anisha)
+~ c4.smuggled
+$ set smuggled
+anisha: [#shock] Is that a kebab? In SM14? Past Léo?
+mano: [#smile] Galette, harissa, frites. Toma ordered it for you.
+anisha: [#smile] You're my favourite person in this building. Right now. [slot]
+anisha: [#tired] Exercise five still says KO. Help me? One last time? [slot]
+- Sit down and help
+	think: One function. Coding style, this time. This could take a while.
+	$ time late fade=1.4
+	$ clock 23:05
+	think: 23:05. An hour of debugging. Mercifully, off camera.
+	anisha: [#tired] Last run. Coding style. If it's KO, I'm moving to the Under. [slot]
+	$ minigame moulinette sit_at=pcSeat night=true win=c4.mouli_ok lose=c4.mouli_ok with=anisha
+
+~ c4.mouli_ok
+$ clock 23:38
+think: 23:38. MOULINETTE: OK.
+anisha: [#shock] OK. It says OK. Four minutes early. [slot]
+anisha: [#grin] I'm never doing that again. [slot]
+think: She's doing that again.
+anisha: Can I say something? Not about code. [slot]
+anisha: Deadline nights used to be me and a screen. [slot]
+anisha: Tonight someone smuggled a kebab past the ACU. [slot]
+anisha: [#smile] For someone with one ear in, you showed up. [slot]
+mano: Tonight it's zero ears. They're both in the case.
+anisha: [#grin] Best zero ever. [slot]
+$ set anisha_beat
+$ set mouli_night
+$ toast "Anisha will remember that." tick
+$ phone flood late
+anisha: [#smirk] The steps. Now. Toma's going to kill us. Go, I'll push and run. [slot]
+$ clue "MOULINETTE: OK at 23:38. Now the steps, before Toma kills us."
+
+# Back at the steps (main trigger once the moulinette is OK): the chapter 5 card
+~ c4.end
+think: The steps. Fairy lights, a bag of kebabs, and Toma checking the time.
+$ set c4_done
+$ chapter 5
+
+# Thoughts on the way (bark triggers)
+~ c4.think_court
+think: Fairy lights above, and the bass coming up through the ground.
+
+~ c4.think_street
+think: A kebab in a bag, at 22:00, on rue Pasteur. I smell like a decision.
+
+~ c4.think_late
+think: 23:40. The steps are right there. So is everyone.

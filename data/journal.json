@@ -1,0 +1,55 @@
+{
+ "version": 1,
+ "doc": "Mano's journal (V2-08; Menus.show_journal). `dijkstra`: the half-finished notes on the first page, `margin`: the line in its margin. `people`: one kind line per friend in Mano's voice, the first whose `when` holds (they change over the night); each was reviewed by that friend, like a [slot] line. `duck_tips`: the duck page once all twelve are found (docs/DESIGN.md §3.8). `side`: the four side stories, each shown once `seen` holds, ticked once `done` holds.",
+ "dijkstra": ["Dijkstra. dist[s] = 0, every other dist = +inf", "while the queue isn't empty:", "   u = the closest one not done", "   for each v next to u: relax(u, v)  if dist[u] + w < dist[v]"],
+ "margin": "17:42, woke up. ONE AirPod.",
+ "people": {
+  "toma": [
+   {"when": "c5_done", "text": "Planned a whole night for the new ones. Shared the steps with all of us."},
+   {"when": "promise_known", "text": "Asked me for one song for the steps. I forgot. Not held against me."},
+   {"when": "toma", "text": "Woke me up in Amphi 4. Again. Sent me to Anisha."}
+  ],
+  "anisha": [
+   {"when": "mouli_night", "text": "OK at 23:38. Four minutes early. Never again (next week)."},
+   {"when": "ines", "text": "Sees everything. Beat the moulinette with me. Gave me a euro."},
+   {"when": "true", "text": "In SM14. Sees everything, apparently."}
+  ],
+  "ian": [
+   {"when": "summit_done", "text": "Same pastry as Silvia now. Writing his half of the report. Probably."},
+   {"when": "choco != \"\"", "text": "Team pain au chocolat. Went to war for it, politely."},
+   {"when": "true", "text": "Outside Amphi 4, arguing about a pastry."}
+  ],
+  "silvia": [
+   {"when": "summit_done", "text": "Made up with Ian over one pastry. They split everything now."},
+   {"when": "choco != \"\"", "text": "Team chocolatine. Undefeated in arguments."},
+   {"when": "true", "text": "Outside Amphi 4, winning an argument about a pastry."}
+  ],
+  "ishita": [
+   {"when": "tour_count >= 3", "text": "New this year. Lent me her camera. Liked my tour, somehow."},
+   {"when": "camera", "text": "New this year. Lent me her disposable camera: ten photos of campus life."},
+   {"when": "true", "text": "New this year. Lost in the passage, looking for SM14."}
+  ],
+  "joaquin": [
+   {"when": "kebab_done", "text": "Captain of the kebab orders. Called me the memory. Fair."},
+   {"when": "joaquin_met", "text": "New this year. Lost to Karim four times. Calls it data."}
+  ],
+  "cristina": [
+   {"when": "found", "text": "Kept my AirPod safe for hours, then helped me find it again."},
+   {"when": "cristina_texted", "text": "C. Took my AirPod out of a box to give it back to me."}
+  ]
+ },
+ "duck_tips": [
+  "Explain the bug to the duck, line by line. The duck never interrupts.",
+  "If the duck looks confused, so is your code.",
+  "Print first, panic later.",
+  "-42 is a grade, not a personality.",
+  "The bug is never where you're looking. Same as AirPods.",
+  "Sleep is a debugging tool. Ask the SUP in Amphi 4."
+ ],
+ "side": [
+  {"id": "waiting", "title": "Back in 5 min", "seen": "sign or side_waiting", "done": "side_waiting", "note": "The student waiting for the accueil since 9:00.", "done_note": "Served at 18:52. Nine hours and fifty-two minutes."},
+  {"id": "survivor", "title": "Is the sun still yellow?", "seen": "survivor_out or survivor_sun", "done": "survivor_sun", "note": "The piscine survivor in SM14 hasn't seen the sun since 8:00.", "done_note": "Orange, at 18:55, on rue Pasteur's axis. He allowed it."},
+  {"id": "sup", "title": "Segmentation fault", "seen": "sup_clue", "done": "sup_awake", "fail": "chapter >= 3 and not sup_awake", "note": "The SUP in Amphi 4 has a soutenance at 19:00. Coffee, or something loud.", "done_note": "Woken in time for his soutenance.", "fail_note": "Slept through it. Core dumped."},
+  {"id": "ducks", "title": "The duck whisperer", "seen": "whisperer_met", "done": "duck_zero", "note": "Twelve golden ducks, hidden since September.", "done_note": "All twelve. Duck zero squeaks in C."}
+ ]
+}

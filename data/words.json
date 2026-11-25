@@ -1,0 +1,16 @@
+{
+ "version": 1,
+ "doc": "Names that appear in several lines, kept in one place so that a change reaches every line. In dialogue: {{word.<key>}}.",
+ "words": {
+  "kebab_name": "",
+  "kebab_place": "the kebab on the corner",
+  "chat_steps": "the steps, 23:00",
+  "chat_class": "promo chat",
+  "signup_event": "the Halloween party",
+  "party": "the BDE party in the Under",
+  "cristina_errand": "BDE errands with Chloé",
+  "cafe_closes": "20:00",
+  "last_metro": "00:34",
+  "night_mouli": "23:38"
+ }
+}

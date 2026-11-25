@@ -1,0 +1,31 @@
+# Idle life (V2-31, docs/DESIGN.md §4.7): after 20 s standing still Mano looks around or checks his
+# phone, and sometimes thinks something (main._idle_beat plays one of these as a bark; it never stops play).
+# idle.look goes with the look-round, idle.phone with a glance at the phone once it is charged, idle.phone_dead
+# with the black screen before chapter 3.
+
+~ idle.look
+if chapter == 0 or chapter == 5
+	% think: All of them here. Don't make it weird, Mano.
+	% think: The fairy lights hum. Or that's me.
+elif night()
+	% think: Campus at night. Quieter. Kinder, somehow.
+	% think: The windows up there are still lit. Somebody's still debugging.
+	% think: I could stand here a while. I won't. But I could.
+else
+	% think: Where was I going? Right. The AirPod.
+	% think: Golden hour on campus. Everyone looks like a film.
+	% think: Nobody's looking. Good. Standing still is allowed.
+	% think: One AirPod in. The left side of the world has a soundtrack.
+
+~ idle.phone
+if found
+	% think: No new messages. Everyone's here.
+	% think: Both AirPods, one phone, zero excuses.
+else
+	% think: No new messages. Suspicious.
+	% think: Find still says what it said. Patience.
+	% think: The steps group chat is typing. It's always typing.
+
+~ idle.phone_dead
+% think: Black screen. Still dead. Still my fault.
+% think: I keep checking a dead phone. Muscle memory.

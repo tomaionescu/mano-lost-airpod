@@ -1,0 +1,120 @@
+# Hotspots: what Story.use(spot) plays (cue use.<spot>, or use._default). The spots are SPOT_<id> markers in the
+# level, or entries in data/world.json "spots". Ported from v1, with every line put in Mano's own
+# head (V2-10): `think` (first person, his pen); only stage sounds (*clunk*) stay on the narrator.
+# A cue made only of thoughts (no choice, no minigame) plays as barks: Mano keeps walking while it shows
+# (DialogueData.is_think_only, main.interact). The old v1 texts are in tests/fixtures/v1_rewrites.json.
+
+~ use.velib
+if night()
+	think: The bike rack under the street lamp. Still every tyre flat. Loyal.
+else
+	think: A bike rack. Every bike on it has a flat tyre. Consistent, at least.
+
+~ use.logo
+think: EPITA. École pour l'informatique et les techniques avancées.
+think: Also: my second home, apparently. [if not night()]
+think: At night it's just home. Don't tell my parents. [if night()]
+
+~ use.elevator
+think: EN PANNE. The sticker is so old it has its own sticker.
+
+~ use.north_door
+think: The rue Voltaire doors, and right behind them the périphérique. Not today.
+
+~ use.rules
+think: "No food in the computer rooms. Sealed water bottles only."
+think: Someone has drawn a sad croissant. I feel seen.
+
+~ use.slide
+think: Algorithmique - plus courts chemins. "QCM vendredi 9h".
+think: Tomorrow, 9:00. I did not read that email. [if not night()]
+think: The projector's off, the slide burnt in. Tomorrow, 9:00. Still true. [if night()]
+
+~ use.gate
+if clock_after("18:00")
+	think: The gate to rue Roger Salengro. Locked since 18:00, on the dot.
+else
+	think: The gate to rue Roger Salengro. Locked after 18:00, so: soon.
+
+~ use.vending
+if night()
+	think: The vending machine hums in the dark. Still 1.50 euros. Still no.
+else
+	think: Chips: 1.50 euros for 30 grams. My wallet says no.
+
+~ use.stickers
+think: A column covered in stickers: LSE, ACU, GCC, a cat...
+think: ...and one that just says "SEGV". Same. [if not night()]
+think: ...and "SEGV", glowing a bit under the party lights. Still same. [if night()]
+
+~ use.coffee
+if coffee_given and chapter == 2 and not spare_coffee and not sup_awake
+	think: The machine hums. It owes me one.
+	- Press the button anyway
+		$ sfx machine_clunk
+		nar: *clunk*
+		think: A free coffee. Guilt, probably. For someone who needs it more.
+		$ set spare_coffee
+		$ toast "A spare coffee" coffee
+	- Leave it
+		think: Some debts are better left unpaid.
+elif spare_coffee
+	think: One coffee in my hand already. Someone in Amphi 4 needs it more.
+elif coffee or coffee_given
+	think: The coffee machine hums. Smugly.
+elif paid
+	think: My 2 euros are still stuck inside. Time to shake it again.
+	$ minigame coffee win=c2.coffee_ok lose=c2.coffee_fail
+elif coins < 2
+	think: COFFEE: 2 euros, and I have {{coins}}. The machine judges me silently.
+else
+	think: COFFEE: 2 euros. Buy one?
+	- Buy (2 euros)
+		$ add coins -2
+		$ set paid = true
+		$ sfx coin
+		nar: *clunk*
+		think: ...nothing comes out. The machine is stuck!
+		$ minigame coffee win=c2.coffee_ok lose=c2.coffee_fail
+	- No
+		mano: My wallet says no.
+
+~ use.sign
+if sign
+	think: "BACK IN 5 MIN." Still. Since 9:00.
+else
+	think: A sticky note on the desk: "BACK IN 5 MIN." It is dated 9:00.
+	think: That was over nine hours ago. Long five minutes.
+	$ set sign = true
+	$ clue "Mme Dupont has been \"back in 5 min\" since 9:00. Probably in the cafeteria, in the X building, on cour Pasteur."
+
+~ use.lostbox
+if lf_twist
+	think: Five strangers' AirPods and one empty slot. The empty one's mine.
+else
+	think: LOST & FOUND, locked. Only Mme Dupont has the key.
+
+~ use.coin_planter
+if got_planter
+	think: Just soil and a birch leaf.
+else
+	think: Something shiny in the Gally crate... 1 euro! A bit muddy, still counts.
+	$ coin planter
+
+~ use.coin_sofa
+if got_sofa
+	think: Only crumbs left. The chip is staring at me.
+else
+	think: Between the sofa cushions... 1 euro! And a fossilised chip.
+	think: I keep the euro. The chip keeps the sofa.
+	$ coin sofa
+
+~ use._default
+think: ...
+
+# The side story "Segmentation fault" (side.dlg): the BDE's babyfoot air horn on the bar, chapter 2 (world.json spot horn)
+~ use.horn
+think: The BDE's babyfoot air horn, left on the bar. "For goals only."
+think: Waking a SUP before his soutenance is a goal.
+$ set horn
+$ toast "An air horn" babyfoot

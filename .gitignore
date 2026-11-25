@@ -1,0 +1,13 @@
+# Godot cache
+.godot/
+# local only: screenshots, build intermediates, source photos and scans
+shots/
+tools/out/
+tools/photos/
+tools/scans/
+tools/audio_src/
+tests/out/
+Support/
+.DS_Store
+__pycache__/
+*.blend1

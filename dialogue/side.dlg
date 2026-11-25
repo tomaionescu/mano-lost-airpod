@@ -1,0 +1,109 @@
+# Side stories (V2-31, docs/DESIGN.md §3.9). Four core ones, 2-5 minutes each, all optional:
+#  1. "Back in 5 min": the waiting student in KB1's lobby, there since 9:00, is served once Mme Dupont has her
+#     coffee, and says goodnight in chapter 4 (talk.waiting in people.dlg: side_waiting, waiting_bye).
+#  2. "Is the sun still yellow?": the piscine survivor in SM14 (talk.student2) comes out to see the sun on rue
+#     Pasteur's axis at 18:55 if Mano asks before the twist (survivor_out); he is at the planter wall for the
+#     sunset (c2.sunset: survivor_sun) and in cour Pasteur in chapter 5. Asked too late, or never: "I missed it again."
+#  3. "Segmentation fault (core dumped)": the SUP asleep in Amphi 4 (talk.sleeper) has a soutenance at 19:00. Wake
+#     him in chapter 2 with a spare coffee (the machine owes Mano one once Mme Dupont has hers) or the BDE's
+#     babyfoot air horn (world.json spot horn); in chapter 4 he passed, or he asks "Did I miss it?".
+#  4. "The duck whisperer": the student who hid the twelve golden ducks (talk.whisperer, cour Pasteur): hints from
+#     four ducks, duck zero at twelve.
+# Fictional people only; their new lines are silent text (no voice files).
+
+# ---------------------------------------------------------------- "Is the sun still yellow?"
+~ side.survivor.ask
+student2: [#shock] Outside? Like, outdoors?
+student2: Give me two minutes. I need to push first.
+mano: Rue Pasteur. The planter wall by KB1. Before 18:55.
+student2: [#smile] The planter wall. Before 18:55. Got it.
+$ set survivor_out
+$ clue "The piscine survivor wants to see the sun. Rue Pasteur, KB1's planter wall, before 18:55."
+
+# at the sunset (c2.sunset), when he is there
+~ side.survivor.sunset
+student2: [#shock] It's... still there. The sun.
+student2: Orange, actually. I'll allow it.
+student2: [#smile] Eleven hours in SM14. Worth it for seven minutes.
+think: Two of us at the planter wall, watching a star leave early. Campus life.
+$ set survivor_sun
+
+# ---------------------------------------------------------------- "Segmentation fault (core dumped)"
+~ side.sup.coffee
+think: Coffee, right under his nose. Hot, bitter, free.
+sleeper: [#shock] ...coffee? COFFEE. What time is it?
+mano: Nearly seven.
+sleeper: [#shock] My soutenance is at 19:00! My slides! My life!
+sleeper: [#grin] Thank you, stranger. You smell like a hero.
+$ set spare_coffee = false
+$ set sup_awake
+$ set sup_how = "coffee"
+think: He took the coffee with him. Fair.
+
+~ side.sup.horn
+$ sfx babyfoot_goal 2
+nar: *HOOOONK*
+sleeper: [#shock] I'M AWAKE. I'M PRESENTING. What time is it?
+mano: Nearly seven.
+sleeper: [#shock] My soutenance! 19:00! Why is there a horn?!
+sleeper: [#grin] Never mind. Thank you. Terrifying, but thank you.
+$ set horn = false
+$ set sup_awake
+$ set sup_how = "horn"
+think: The whole of Amphi 4 is awake now. Sorry, Amphi 4.
+
+# chapter 4: the outcome
+~ side.sup.passed
+sleeper: [#grin] You! The coffee one! [if sup_how == "coffee"]
+sleeper: [#grin] You! The horn one! My ears still ring. [if sup_how == "horn"]
+sleeper: [#smile] I passed. Fourteen out of twenty.
+sleeper: The jury said I was "surprisingly awake".
+think: Segmentation fault: fixed. Somebody else's, for once.
+$ set sup_after
+
+~ side.sup.missed
+sleeper: [#tired] ...hm? What time is it?
+mano: Past nine. At night.
+sleeper: [#shock] Did I miss it?
+sleeper: [#sad] I missed it. Core dumped.
+think: Next time: coffee. Or a horn.
+$ set sup_after
+
+# ---------------------------------------------------------------- "The duck whisperer"
+~ talk.whisperer
+if duck_count >= 12 and not duck_zero
+	=> side.ducks.reward
+elif duck_zero
+	% whisperer: [#smile] Twelve. I still can't believe it.
+	% whisperer: [#grin] Duck zero suits you.
+	% whisperer: Next year: thirteen. Don't tell anyone.
+	=> END
+elif duck_count >= 4
+	=> side.ducks.hint
+elif whisperer_met
+	whisperer: [#smirk] {{duck_count}} ducks? Come back at four. Then we talk.
+	=> END
+whisperer: [#smirk] Ducks? What ducks?
+whisperer: ...okay. I hid them. Twelve, golden, since September.
+whisperer: Rubber-duck debugging, campus-wide.
+whisperer: You explain your bug to a duck. A duck you had to find first.
+mano: That's the most EPITA thing I've ever heard.
+whisperer: [#grin] Find four and I'll give you hints.
+whisperer: Find all twelve and you get duck zero.
+$ set whisperer_met
+think: A side quest. In the middle of my side quest.
+
+~ side.ducks.hint
+whisperer: [#smile] {{duck_count}} ducks. Not bad. A hint, then.
+$ duck_hint
+$ add duck_hints 1
+
+~ side.ducks.reward
+whisperer: [#shock] Twelve. You found all twelve.
+whisperer: Nobody finds all twelve. I put one on a car.
+mano: It was on the roof. In full view.
+whisperer: [#grin] Here. Duck zero. The original. It squeaks in C.
+$ set duck_zero
+$ set whisperer_met
+$ toast "Duck zero" duck
+think: My notebook has a duck page now. And I have a duck.

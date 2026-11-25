@@ -1,0 +1,39 @@
+# The sit-downs, "AirPod moments" (V2-14, docs/DESIGN.md §4.1): Mano's thought when he has sat a moment (2.5 s in),
+# shown while the song plays in his one ear. Where each one is, its cameras, its song and its journal line are in
+# data/world.json "sits"; main.begin_sit plays them. Thoughts only (barks): at most two short sentences each.
+# sit_stairs belongs to chapter 4 and sit_final to chapter 5.
+
+~ sit.bay
+think: Rue Pasteur through the glass, all gold.
+think: A low-budget film. Still a film.
+
+~ sit.planter
+think: Seven minutes of sun left. I'm spending them sitting down.
+think: Growth.
+
+~ sit.steps
+think: Everyone's phone lit up at 18:20. Mine was dead.
+think: Story of my night.
+
+~ sit.sofa
+think: This sofa has seen more of the BDE than the BDE has.
+
+~ sit.stairs
+think: Both AirPods in the case. The music's coming out of my phone, tiny.
+think: Still counts.
+
+~ sit.final
+think: One day this will just be "that school I went to".
+think: Tonight it's the whole world.
+
+# The phone key before chapter 3 (main.open_phone): the dead phone, and a thought
+~ phone.dead
+if phone_charging
+	think: My phone's on the BDE strip, charging. Like I should be.
+else
+	think: Dead since 17:43. Still dead. Very consistent.
+
+# All six sit-downs (V2-30 "moments 6/6"): the extra thought after the sixth (main.end_sit, flags.moments_all)
+~ sit.all
+think: Six times tonight, I sat down and just listened.
+think: Maybe that's the trick. Stop looking, and things come back.

@@ -1,0 +1,824 @@
+[
+ {
+  "key": "acu_83214604ab",
+  "speaker": "acu",
+  "who": [
+   "acu"
+  ],
+  "name": "ACU Léo",
+  "text": "If I find yours, it's mine.",
+  "spoken": "If I find yours, it's mine.",
+  "source": "scripts/story/story.gd"
+ },
+ {
+  "key": "acu_8de2e96bf7",
+  "speaker": "acu",
+  "who": [
+   "acu"
+  ],
+  "name": "ACU Léo",
+  "text": "Piscine rule number one: no AirPods during exams.",
+  "spoken": "Piscine rule number one: no AirPods during exams.",
+  "source": "scripts/story/story.gd"
+ },
+ {
+  "key": "acu_959596b2ee",
+  "speaker": "acu",
+  "who": [
+   "acu"
+  ],
+  "name": "ACU Léo",
+  "text": "Kidding. Mostly.",
+  "spoken": "Kidding. Mostly.",
+  "source": "scripts/story/story.gd"
+ },
+ {
+  "key": "acu_afd99c4b31",
+  "speaker": "acu",
+  "who": [
+   "acu"
+  ],
+  "name": "ACU Léo",
+  "text": "Remember: cheating is -42. Losing AirPods is just sad.",
+  "spoken": "Remember: cheating is minus forty-two. Losing AirPods is just sad.",
+  "source": "scripts/story/story.gd"
+ },
+ {
+  "key": "acu_d3dd869222",
+  "speaker": "acu",
+  "who": [
+   "acu"
+  ],
+  "name": "ACU Léo",
+  "text": "Also, your hoodie has trailing whitespace. Fix it.",
+  "spoken": "Also, your hoodie has trailing whitespace. Fix it.",
+  "source": "scripts/story/story.gd"
+ },
+ {
+  "key": "chloe_8098448fed",
+  "speaker": "chloe",
+  "who": [
+   "chloe"
+  ],
+  "name": "Chloé (BDE)",
+  "text": "WEI registrations are open!",
+  "spoken": "WEI registrations are open!",
+  "source": "scripts/story/story.gd"
+ },
+ {
+  "key": "chloe_91180fadde",
+  "speaker": "chloe",
+  "who": [
+   "chloe"
+  ],
+  "name": "Chloé (BDE)",
+  "text": "Bring a sleeping bag and lower your expectations.",
+  "spoken": "Bring a sleeping bag and lower your expectations.",
+  "source": "scripts/story/story.gd"
+ },
+ {
+  "key": "crowd_f_01da2b3556",
+  "speaker": "crowd_f",
+  "who": [
+   "crowd2",
+   "crowd6",
+   "crowd4",
+   "crowd8"
+  ],
+  "name": "Student",
+  "text": "Sorry, I'm late for a soutenance.",
+  "spoken": "Sorry, I'm late for a soutenance.",
+  "source": "scripts/story/story.gd"
+ },
+ {
+  "key": "crowd_f_5c86a1aa3a",
+  "speaker": "crowd_f",
+  "who": [
+   "crowd2",
+   "crowd4",
+   "crowd6",
+   "crowd8"
+  ],
+  "name": "Student",
+  "text": "Have you seen the new Hackathon poster? Free pizza.",
+  "spoken": "Have you seen the new Hackathon poster? Free pizza.",
+  "source": "scripts/story/story.gd"
+ },
+ {
+  "key": "crowd_f_ab5806e637",
+  "speaker": "crowd_f",
+  "who": [
+   "crowd4",
+   "crowd8",
+   "crowd2",
+   "crowd6"
+  ],
+  "name": "Student",
+  "text": "Bonne chance with... whatever you're doing.",
+  "spoken": "Bonne chance with... whatever you're doing.",
+  "source": "scripts/story/story.gd"
+ },
+ {
+  "key": "crowd_f_bf5868dbf6",
+  "speaker": "crowd_f",
+  "who": [
+   "crowd2",
+   "crowd8",
+   "crowd6",
+   "crowd4"
+  ],
+  "name": "Student",
+  "text": "No, I haven't seen your AirPod. I can barely see my own future.",
+  "spoken": "No, I haven't seen your AirPod. I can barely see my own future.",
+  "source": "scripts/story/story.gd"
+ },
+ {
+  "key": "crowd_f_e6a25a9f4b",
+  "speaker": "crowd_f",
+  "who": [
+   "crowd6",
+   "crowd4",
+   "crowd8",
+   "crowd2"
+  ],
+  "name": "Student",
+  "text": "Is the moulinette down again or is it just me?",
+  "spoken": "Is the moulinette down again or is it just me?",
+  "source": "scripts/story/story.gd"
+ },
+ {
+  "key": "crowd_m_618a307a53",
+  "speaker": "crowd_m",
+  "who": [
+   "crowd3",
+   "crowd7",
+   "crowd1",
+   "crowd5"
+  ],
+  "name": "Student",
+  "text": "Is the moulinette down again or is it just me?",
+  "spoken": "Is the moulinette down again or is it just me?",
+  "source": "scripts/story/story.gd"
+ },
+ {
+  "key": "crowd_m_84cb5a0608",
+  "speaker": "crowd_m",
+  "who": [
+   "crowd3",
+   "crowd5",
+   "crowd7",
+   "crowd1"
+  ],
+  "name": "Student",
+  "text": "Sorry, I'm late for a soutenance.",
+  "spoken": "Sorry, I'm late for a soutenance.",
+  "source": "scripts/story/story.gd"
+ },
+ {
+  "key": "crowd_m_e6becdbd5a",
+  "speaker": "crowd_m",
+  "who": [
+   "crowd1",
+   "crowd5",
+   "crowd3",
+   "crowd7"
+  ],
+  "name": "Student",
+  "text": "Have you seen the new Hackathon poster? Free pizza.",
+  "spoken": "Have you seen the new Hackathon poster? Free pizza.",
+  "source": "scripts/story/story.gd"
+ },
+ {
+  "key": "crowd_m_efbf854a60",
+  "speaker": "crowd_m",
+  "who": [
+   "crowd1",
+   "crowd3",
+   "crowd5",
+   "crowd7"
+  ],
+  "name": "Student",
+  "text": "Bonne chance with... whatever you're doing.",
+  "spoken": "Bonne chance with... whatever you're doing.",
+  "source": "scripts/story/story.gd"
+ },
+ {
+  "key": "crowd_m_f7c024a536",
+  "speaker": "crowd_m",
+  "who": [
+   "crowd5",
+   "crowd7",
+   "crowd3",
+   "crowd1"
+  ],
+  "name": "Student",
+  "text": "No, I haven't seen your AirPod. I can barely see my own future.",
+  "spoken": "No, I haven't seen your AirPod. I can barely see my own future.",
+  "source": "scripts/story/story.gd"
+ },
+ {
+  "key": "ines_b8630586ea",
+  "speaker": "ines",
+  "who": [
+   "ines"
+  ],
+  "name": "Inès",
+  "text": "Shh. The moulinette is thinking.",
+  "spoken": "Shh. The moulinette is thinking.",
+  "source": "scripts/story/story.gd"
+ },
+ {
+  "key": "karim_05e5db88e2",
+  "speaker": "karim",
+  "who": [
+   "karim"
+  ],
+  "name": "Karim (BDE)",
+  "text": "Yo Mano. Want a game of babyfoot?",
+  "spoken": "Yo Mano. Want a game of babyfoot?",
+  "source": "scripts/story/story.gd"
+ },
+ {
+  "key": "karim_13c70b5073",
+  "speaker": "karim",
+  "who": [
+   "karim"
+  ],
+  "name": "Karim (BDE)",
+  "text": "Take? I FOUND it. Finders keepers. BDE rules.",
+  "spoken": "Take? I found it. Finders keepers. B.D.E. rules.",
+  "source": "scripts/story/story.gd"
+ },
+ {
+  "key": "karim_286246b20b",
+  "speaker": "karim",
+  "who": [
+   "karim"
+  ],
+  "name": "Karim (BDE)",
+  "text": "I dropped it at the lost & found, the Voltaire reception.",
+  "spoken": "I dropped it at the lost and found, the Voltaire reception.",
+  "source": "scripts/story/story.gd"
+ },
+ {
+  "key": "karim_2f3c04265c",
+  "speaker": "karim",
+  "who": [
+   "karim"
+  ],
+  "name": "Karim (BDE)",
+  "text": "HAHAHA. BDE champion, baby.",
+  "spoken": "Ha ha ha! B.D.E. champion, baby.",
+  "source": "scripts/story/story.gd"
+ },
+ {
+  "key": "karim_3a4d8665f7",
+  "speaker": "karim",
+  "who": [
+   "karim"
+  ],
+  "name": "Karim (BDE)",
+  "text": "Rematch whenever. I'm emotionally recovering.",
+  "spoken": "Rematch whenever. I'm emotionally recovering.",
+  "source": "scripts/story/story.gd"
+ },
+ {
+  "key": "karim_3c18197266",
+  "speaker": "karim",
+  "who": [
+   "karim"
+  ],
+  "name": "Karim (BDE)",
+  "text": "Fine. Thing is... I don't have it anymore.",
+  "spoken": "Fine. Thing is... I don't have it anymore.",
+  "source": "scripts/story/story.gd"
+ },
+ {
+  "key": "karim_601066e09e",
+  "speaker": "karim",
+  "who": [
+   "karim"
+  ],
+  "name": "Karim (BDE)",
+  "text": "You in?",
+  "spoken": "You in?",
+  "source": "scripts/story/story.gd"
+ },
+ {
+  "key": "karim_88ec19846a",
+  "speaker": "karim",
+  "who": [
+   "karim"
+  ],
+  "name": "Karim (BDE)",
+  "text": "Come back when you've trained, little man.",
+  "spoken": "Come back when you've trained, little man.",
+  "source": "scripts/story/story.gd"
+ },
+ {
+  "key": "karim_958f3897c0",
+  "speaker": "karim",
+  "who": [
+   "karim"
+  ],
+  "name": "Karim (BDE)",
+  "text": "You played for honor, bro.",
+  "spoken": "You played for honor, bro.",
+  "source": "scripts/story/story.gd"
+ },
+ {
+  "key": "karim_9dad9012ee",
+  "speaker": "karim",
+  "who": [
+   "karim"
+  ],
+  "name": "Karim (BDE)",
+  "text": "But I'm a fair man. Beat me at babyfoot. First to 3.",
+  "spoken": "But I'm a fair man. Beat me at babyfoot. First to three.",
+  "source": "scripts/story/story.gd"
+ },
+ {
+  "key": "karim_ab12a0a696",
+  "speaker": "karim",
+  "who": [
+   "karim"
+  ],
+  "name": "Karim (BDE)",
+  "text": "No? Then stop blocking my light.",
+  "spoken": "No? Then stop blocking my light.",
+  "source": "scripts/story/story.gd"
+ },
+ {
+  "key": "karim_e07f524b01",
+  "speaker": "karim",
+  "who": [
+   "karim"
+  ],
+  "name": "Karim (BDE)",
+  "text": "Scared? I get it. I'm very good.",
+  "spoken": "Scared? I get it. I'm very good.",
+  "source": "scripts/story/story.gd"
+ },
+ {
+  "key": "karim_e3a7091ff2",
+  "speaker": "karim",
+  "who": [
+   "karim"
+  ],
+  "name": "Karim (BDE)",
+  "text": "Run it back?",
+  "spoken": "Run it back?",
+  "source": "scripts/story/story.gd"
+ },
+ {
+  "key": "karim_ff8363e507",
+  "speaker": "karim",
+  "who": [
+   "karim"
+  ],
+  "name": "Karim (BDE)",
+  "text": "...WHAT. Nobody beats me at babyfoot.",
+  "spoken": "...What. Nobody beats me at babyfoot.",
+  "source": "scripts/story/story.gd"
+ },
+ {
+  "key": "madame_008fa44033",
+  "speaker": "madame",
+  "who": [
+   "madame2"
+  ],
+  "name": "Mme Dupont",
+  "text": "A 42 sticker? Mano. Have some respect for your school.",
+  "spoken": "A forty-two sticker? Mano. Have some respect for your school.",
+  "source": "scripts/minigames/lostfound.gd"
+ },
+ {
+  "key": "madame_01bb1aa846",
+  "speaker": "madame",
+  "who": [
+   "madame"
+  ],
+  "name": "Mme Dupont",
+  "text": "Don't. Talk. To me.",
+  "spoken": "Don't. Talk. To me.",
+  "source": "scripts/story/story.gd"
+ },
+ {
+  "key": "madame_2d50fdd7f1",
+  "speaker": "madame",
+  "who": [
+   "madame"
+  ],
+  "name": "Mme Dupont",
+  "text": "No coffee, no lost & found. That is the law.",
+  "spoken": "No coffee, no lost and found. That is the law.",
+  "source": "scripts/story/story.gd"
+ },
+ {
+  "key": "madame_372ebf7b3d",
+  "speaker": "madame",
+  "who": [
+   "madame"
+  ],
+  "name": "Mme Dupont",
+  "text": "*sips coffee* Not my problem, sweetie.",
+  "spoken": "Not my problem, sweetie.",
+  "source": "scripts/story/story.gd"
+ },
+ {
+  "key": "madame_390cd578a7",
+  "speaker": "madame",
+  "who": [
+   "madame"
+  ],
+  "name": "Mme Dupont",
+  "text": "Go. Enjoy your music. Let me enjoy my coffee.",
+  "spoken": "Go. Enjoy your music. Let me enjoy my coffee.",
+  "source": "scripts/story/story.gd"
+ },
+ {
+  "key": "madame_48be36e386",
+  "speaker": "madame",
+  "who": [
+   "madame"
+  ],
+  "name": "Mme Dupont",
+  "text": "Find yours. Don't touch the director's.",
+  "spoken": "Find yours. Don't touch the director's.",
+  "source": "scripts/story/story.gd"
+ },
+ {
+  "key": "madame_5187430a40",
+  "speaker": "madame",
+  "who": [
+   "madame"
+  ],
+  "name": "Mme Dupont",
+  "text": "Karim's earbud? Oh, honey. Look at this box.",
+  "spoken": "Karim's earbud? Oh, honey. Look at this box.",
+  "source": "scripts/story/story.gd"
+ },
+ {
+  "key": "madame_52807d1664",
+  "speaker": "madame",
+  "who": [
+   "madame"
+  ],
+  "name": "Mme Dupont",
+  "text": "M scratch, chewed stem... gross. Yes, that one is yours.",
+  "spoken": "Em scratch, chewed stem... gross. Yes, that one is yours.",
+  "source": "scripts/story/story.gd"
+ },
+ {
+  "key": "madame_60c99f761c",
+  "speaker": "madame",
+  "who": [
+   "madame2"
+  ],
+  "name": "Mme Dupont",
+  "text": "That's the director's. Put it DOWN. Slowly.",
+  "spoken": "That's the director's. Put it down. Slowly.",
+  "source": "scripts/minigames/lostfound.gd"
+ },
+ {
+  "key": "madame_6c4ac9d3be",
+  "speaker": "madame",
+  "who": [
+   "madame"
+  ],
+  "name": "Mme Dupont",
+  "text": "You have money. The machine is RIGHT THERE.",
+  "spoken": "You have money. The machine is right there.",
+  "source": "scripts/story/story.gd"
+ },
+ {
+  "key": "madame_6f2292bf27",
+  "speaker": "madame",
+  "who": [
+   "madame2"
+  ],
+  "name": "Mme Dupont",
+  "text": "That's a W, Mano. Did you sleep through the alphabet too?",
+  "spoken": "That's a W, Mano. Did you sleep through the alphabet too?",
+  "source": "scripts/minigames/lostfound.gd"
+ },
+ {
+  "key": "madame_702443ee44",
+  "speaker": "madame",
+  "who": [
+   "madame"
+  ],
+  "name": "Mme Dupont",
+  "text": "Coffee. Then we talk.",
+  "spoken": "Coffee. Then we talk.",
+  "source": "scripts/story/story.gd"
+ },
+ {
+  "key": "madame_7089749e15",
+  "speaker": "madame",
+  "who": [
+   "madame"
+  ],
+  "name": "Mme Dupont",
+  "text": "That's the rule. I just made it.",
+  "spoken": "That's the rule. I just made it.",
+  "source": "scripts/story/story.gd"
+ },
+ {
+  "key": "madame_7d186900c9",
+  "speaker": "madame",
+  "who": [
+   "madame2"
+  ],
+  "name": "Mme Dupont",
+  "text": "...yes. That one. Gross.",
+  "spoken": "...yes. That one. Gross.",
+  "source": "scripts/minigames/lostfound.gd"
+ },
+ {
+  "key": "madame_8ac8ea304f",
+  "speaker": "madame",
+  "who": [
+   "madame"
+  ],
+  "name": "Mme Dupont",
+  "text": "The box opens for people who bring me coffee.",
+  "spoken": "The box opens for people who bring me coffee.",
+  "source": "scripts/story/story.gd"
+ },
+ {
+  "key": "madame_9fe1bf3fd6",
+  "speaker": "madame",
+  "who": [
+   "madame"
+  ],
+  "name": "Mme Dupont",
+  "text": "*sips coffee* Wonderful. Now leave.",
+  "spoken": "Wonderful. Now leave.",
+  "source": "scripts/story/story.gd"
+ },
+ {
+  "key": "madame_a1158dd76d",
+  "speaker": "madame",
+  "who": [
+   "madame"
+  ],
+  "name": "Mme Dupont",
+  "text": "Lost something? Tell me WHO brought it here and maybe I'll look.",
+  "spoken": "Lost something? Tell me who brought it here, and maybe I'll look.",
+  "source": "scripts/story/story.gd"
+ },
+ {
+  "key": "madame_c448ef913c",
+  "speaker": "madame",
+  "who": [
+   "madame"
+  ],
+  "name": "Mme Dupont",
+  "text": "The machine ate my coins and I have NOT had my coffee.",
+  "spoken": "The machine ate my coins and I have not had my coffee.",
+  "source": "scripts/story/story.gd"
+ },
+ {
+  "key": "madame_d302401293",
+  "speaker": "madame",
+  "who": [
+   "madame2"
+  ],
+  "name": "Mme Dupont",
+  "text": "That one belongs to a SPE student who doesn't chew things. Respectable.",
+  "spoken": "That one belongs to a SPE student who doesn't chew things. Respectable.",
+  "source": "scripts/minigames/lostfound.gd"
+ },
+ {
+  "key": "madame_d3e5d0c9f6",
+  "speaker": "madame",
+  "who": [
+   "madame"
+  ],
+  "name": "Mme Dupont",
+  "text": "Students lose about 37 AirPods a week here.",
+  "spoken": "Students lose about thirty-seven AirPods a week here.",
+  "source": "scripts/story/story.gd"
+ },
+ {
+  "key": "madame_d9738b6596",
+  "speaker": "madame",
+  "who": [
+   "madame2"
+  ],
+  "name": "Mme Dupont",
+  "text": "Touch that and the ACUs will give you -42. For life.",
+  "spoken": "Touch that and the ACUs will give you minus forty-two. For life.",
+  "source": "scripts/minigames/lostfound.gd"
+ },
+ {
+  "key": "madame_e2857c7cc8",
+  "speaker": "madame",
+  "who": [
+   "madame"
+  ],
+  "name": "Mme Dupont",
+  "text": "Meet me at the Voltaire reception. Bring your good energy.",
+  "spoken": "Meet me at the Voltaire reception. Bring your good energy.",
+  "source": "scripts/story/story.gd"
+ },
+ {
+  "key": "madame_f4cf1bc19f",
+  "speaker": "madame",
+  "who": [
+   "madame"
+  ],
+  "name": "Mme Dupont",
+  "text": "...You. Are my favourite student.",
+  "spoken": "...You. Are my favourite student.",
+  "source": "scripts/story/story.gd"
+ },
+ {
+  "key": "prof_3ffc9751c6",
+  "speaker": "prof",
+  "who": [
+   "prof"
+  ],
+  "name": "M. Bernard",
+  "text": "Your AirPod? I confiscate phones, not earbuds.",
+  "spoken": "Your AirPod? I confiscate phones, not earbuds.",
+  "source": "scripts/story/story.gd"
+ },
+ {
+  "key": "prof_be7c7ab0da",
+  "speaker": "prof",
+  "who": [
+   "prof"
+  ],
+  "name": "M. Bernard",
+  "text": "Shortest path to it: not my problem.",
+  "spoken": "Shortest path to it: not my problem.",
+  "source": "scripts/story/story.gd"
+ },
+ {
+  "key": "prof_c6838e0c86",
+  "speaker": "prof",
+  "who": [
+   "prof"
+  ],
+  "name": "M. Bernard",
+  "text": "Class is over, Mano. You slept through the whole Dijkstra lecture.",
+  "spoken": "Class is over, Mano. You slept through the whole Dijkstra lecture.",
+  "source": "scripts/story/story.gd"
+ },
+ {
+  "key": "sleeper_84549cbfe7",
+  "speaker": "sleeper",
+  "who": [
+   "sleeper"
+  ],
+  "name": "Sleepy SUP",
+  "text": "zzz... segmentation fault (core dumped)... zzz",
+  "spoken": "Mmh... segmentation fault... core dumped...",
+  "source": "scripts/story/story.gd"
+ },
+ {
+  "key": "student2_18cf4db5c1",
+  "speaker": "student2",
+  "who": [
+   "student2"
+  ],
+  "name": "Piscine survivor",
+  "text": "Is it still yellow?",
+  "spoken": "Is it still yellow?",
+  "source": "scripts/story/story.gd"
+ },
+ {
+  "key": "student2_221ae2557b",
+  "speaker": "student2",
+  "who": [
+   "student2"
+  ],
+  "name": "Piscine survivor",
+  "text": "I've been in SM14 since 8:00.",
+  "spoken": "I've been in S M fourteen since eight.",
+  "source": "scripts/story/story.gd"
+ },
+ {
+  "key": "student2_42b2cad945",
+  "speaker": "student2",
+  "who": [
+   "student2"
+  ],
+  "name": "Piscine survivor",
+  "text": "I have forgotten what the sun looks like.",
+  "spoken": "I have forgotten what the sun looks like.",
+  "source": "scripts/story/story.gd"
+ },
+ {
+  "key": "student3_42fa8c1252",
+  "speaker": "student3",
+  "who": [
+   "student3"
+  ],
+  "name": "SPE student",
+  "text": "The salle machine smells like 72 hours of piscine.",
+  "spoken": "The salle machine smells like seventy-two hours of piscine.",
+  "source": "scripts/story/story.gd"
+ },
+ {
+  "key": "student3_e3c64b7e0f",
+  "speaker": "student3",
+  "who": [
+   "student3"
+  ],
+  "name": "SPE student",
+  "text": "We do our SPE project here.",
+  "spoken": "We do our SPE project here.",
+  "source": "scripts/story/story.gd"
+ },
+ {
+  "key": "theo_b0e4f235b1",
+  "speaker": "theo",
+  "who": [
+   "theo"
+  ],
+  "name": "Théo",
+  "text": "Ian and Silvia have been arguing about pastries for forty minutes.",
+  "spoken": "Ian and Silvia have been arguing about pastries for forty minutes.",
+  "source": "scripts/story/story.gd"
+ },
+ {
+  "key": "theo_d83c59d38f",
+  "speaker": "theo",
+  "who": [
+   "theo"
+  ],
+  "name": "Théo",
+  "text": "Karim keeps bragging about \"a free AirPod\". Weird flex.",
+  "spoken": "Karim keeps bragging about \"a free AirPod\". Weird flex.",
+  "source": "scripts/story/story.gd"
+ },
+ {
+  "key": "theo_e6bc6e155e",
+  "speaker": "theo",
+  "who": [
+   "theo"
+  ],
+  "name": "Théo",
+  "text": "These steps are the best seats on campus. Free shade, free drama.",
+  "spoken": "These steps are the best seats on campus. Free shade, free drama.",
+  "source": "scripts/story/story.gd"
+ },
+ {
+  "key": "waiting_0f32da658f",
+  "speaker": "waiting",
+  "who": [
+   "waiting"
+  ],
+  "name": "Waiting student",
+  "text": "I have been waiting for the accueil since 9:00.",
+  "spoken": "I have been waiting for the accueil since nine.",
+  "source": "scripts/story/story.gd"
+ },
+ {
+  "key": "waiting_45607e77ca",
+  "speaker": "waiting",
+  "who": [
+   "waiting"
+  ],
+  "name": "Waiting student",
+  "text": "The note says five minutes.",
+  "spoken": "The note says five minutes.",
+  "source": "scripts/story/story.gd"
+ },
+ {
+  "key": "yanis_0fac0844ab",
+  "speaker": "yanis",
+  "who": [
+   "yanis"
+  ],
+  "name": "Yanis",
+  "text": "If you see a white earbud on the floor, it's probably mine. Or yours. Or everyone's.",
+  "spoken": "If you see a white earbud on the floor, it's probably mine. Or yours. Or everyone's.",
+  "source": "scripts/story/story.gd"
+ },
+ {
+  "key": "yanis_52fd2df415",
+  "speaker": "yanis",
+  "who": [
+   "yanis"
+  ],
+  "name": "Yanis",
+  "text": "Moulinette results drop at midnight. I am not okay.",
+  "spoken": "Moulinette results drop at midnight. I am not okay.",
+  "source": "scripts/story/story.gd"
+ },
+ {
+  "key": "yanis_d5800b7757",
+  "speaker": "yanis",
+  "who": [
+   "yanis"
+  ],
+  "name": "Yanis",
+  "text": "The ACUs took my sleep schedule and never gave it back.",
+  "spoken": "The ACUs took my sleep schedule and never gave it back.",
+  "source": "scripts/story/story.gd"
+ }
+]

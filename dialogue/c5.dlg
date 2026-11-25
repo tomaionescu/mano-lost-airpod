@@ -1,0 +1,186 @@
+# Chapter 5 "Stereo" (23:41-00:10, late): data/chapters.json chapter 5, docs/DESIGN.md §3.5.
+# V2-27:
+#  - the steps at 23:41: all eight together for the first time tonight, 41 minutes late for Toma's plan, with a
+#    reason; the payoffs of the night, each with an `else` (the pastry summit, the wrong sauces, Ishita's favourite,
+#    Anisha's submission, Cristina's proof, the babyfoot partner, Chloé's sheet, the ducks);
+#  - Toma's toast to the new ones [slot];
+#  - the group photo, the last exposure on Ishita's camera (`$ photo group`, saved to user://film/);
+#  - then play: the optional last sit-down on the steps (world.json sit_final), and "Want one?" to any of the seven
+#    (talk.<friend> in chapter 5: c5.offer_<friend>); each friend's reply is [slot]; flags.given_to;
+#  - c5.share: the playlist song (`$ score @playlist`), "Music in one ear. Them in the other.", the credits
+#    (`$ credits`), then the post-credits at 00:25 (post.credits) and the recap.
+# [slot]: a line written in a friend's own voice, which the friend reviewed.
+# Pronouns: Mano he, Ishita she, Toma they.
+
+# The steps, 23:41 (the chapter's start cue, with Toma)
+~ c5.steps
+$ shot steps_wide
+$ wait 1.4
+think: 23:41. All eight of us on the steps, for the first time tonight.
+toma: [#smirk] Forty-one minutes late. Is there a reason? [slot]
+mano: Several. A kebab, a sofa, an ACU and a moulinette. In that order.
+toma: [#grin] Accepted. Sit. Eat. [slot]
+joaquin: [#neutral] Fifty-eight degrees. Eat faster. [slot]
+$ shot clear
+if summit_done
+	ian: [#smile] One bag of pastries. We split everything now. [slot]
+	silvia: [#grin] Even the name. Pain au chocolatine. Nobody's happy. [slot]
+else
+	ian: [#annoyed] We're still not talking. We're sitting together, though. [slot]
+if "ian" in kebab_misread
+	ian: [#shock] Mano. This is ketchup. I'm eating it anyway. [slot]
+elif "toma" in kebab_misread
+	toma: [#smirk] Mayo. Bold. Wrong. Delicious. [slot]
+elif "joaquin" in kebab_misread
+	joaquin: [#neutral] Harissa. Not samouraï. Interesting data. [slot]
+elif kebab_score < kebab_total
+	joaquin: [#smirk] One order is wrong. I won't say whose. It's Mano's. [slot]
+else
+	joaquin: [#grin] Every sauce right. Mano is the memory now. [slot]
+ishita: [#smile] He showed me his seat in Amphi 4. Historic. [if ishita_fav == "amphi"] [slot]
+ishita: [#smile] He showed me the Under's sofa. Everyone's sat there once. [if ishita_fav == "sofa"] [slot]
+ishita: [#grin] He showed me the SEGV sticker. Ours is next to it now. [if ishita_fav == "stickers"] [slot]
+ishita: [#smirk] He showed me the bike rack. Don't ask. It's perfect. [if ishita_fav == "velib"] [slot]
+ishita: [#grin] He showed me the red vending machine. A love story. [if ishita_fav == "vending"] [slot]
+ishita: [#smile] He showed me KB1's glass. At six, tomorrow, the sun. [if ishita_fav == "bay"] [slot]
+ishita: [#smirk] My tour guide got me lost twice. Ten out of ten. [if ishita_fav == ""] [slot]
+if mouli_night
+	anisha: [#grin] Submitted at 23:38. Four minutes to spare. Never again. [slot]
+	think: She's doing that again next week.
+else
+	anisha: [#tired] Still KO. I came anyway. The kebab helped. [slot]
+cristina: [#smile] The chew marks matched. I'm basically a detective now. [if found] [slot]
+joaquin: Babyfoot: data point seven. We won. Together. [if foot_partner == "joaquin" and foot_losses >= 2] [slot]
+joaquin: Babyfoot: one more data point. We won. Together. [if foot_partner == "joaquin" and foot_losses < 2] [slot]
+ian: [#grin] Team pain au chocolat. Undefeated, after two defeats. [if foot_partner == "ian" and foot_losses >= 2] [slot]
+ian: [#grin] Team pain au chocolat. Undefeated. Mostly. [if foot_partner == "ian" and foot_losses == 1] [slot]
+ian: [#grin] Team pain au chocolat. Undefeated. [if foot_partner == "ian" and foot_losses == 0] [slot]
+silvia: [#grin] Team chocolatine. Karim still wants a rematch. [if foot_partner == "silvia"] [slot]
+joaquin: [#smirk] You beat Karim alone. I've updated the model. [if foot_partner == "solo"] [slot]
+toma: [#smirk] Chloé says you're on her list. Costume optional. [if chloe_signed] [slot]
+mano: I found eight golden ducks tonight. Don't ask. [if merch and not ducks_all]
+mano: I found all twelve golden ducks tonight. Don't ask. [if ducks_all]
+ishita: [#smirk] Is that a metaphor? [if merch] [slot]
+think: Duck zero's in my pocket. It squeaks in C. [if duck_zero]
+think: The SM14 survivor's in the court, telling people the sun was orange. [if survivor_sun]
+=> c5.toast
+
+~ c5.toast
+$ shot steps_wide
+toma: [#smile] Okay, everyone. One second. A toast. With kebabs. [slot]
+toma: To the new ones. Ishita, Cristina, Joaquin. [slot]
+toma: You've got the steps now. And us. That was the plan. [slot]
+toma: [#smile] Now you're stuck with us. Every Thursday. Sorry. [slot]
+ishita: [#grin] Officially ours. Still sounds like a hostage situation. [slot]
+cristina: [#smile] To the steps. [slot]
+joaquin: To the steps. And to samouraï. [slot]
+$ set toast_done
+$ shot clear
+think: Toma planned all of this. Tonight I heard all of it.
+=> c5.photo
+
+~ c5.photo
+ishita: [#grin] Last photo on the disposable. Everyone in. Self-timer. [slot]
+ishita: [#smirk] Mano, in front. You're why we're forty-one minutes late. [slot]
+$ photo group
+think: Click. No screen, no retake. We'll see it in a week.
+ishita: [#smile] Developed in a week. Nobody blinked. Probably. [slot]
+ishita: Six hours ago I didn't know where SM14 was. [slot]
+ishita: Being new is mostly asking for directions and hoping. [slot]
+ishita: [#grin] Tonight someone gave me the good ones. Mostly. [slot]
+$ set ishita_beat
+$ set group_photo
+$ clock 23:52
+$ clue "The group photo: the last one on Ishita's camera. All eight of us."
+think: Two AirPods in the case. Seven friends. One song for the end.
+$ toast "Who gets the other one?" airpod
+
+# "Want one?" (talk.<friend> in chapter 5 once the photo is taken): one AirPod for one friend, the playlist song
+# shared. Choice 0 gives it; each reply is that friend's to write.
+~ c5.offer_toma
+think: The case. Two AirPods. One for Toma?
+- Want one?
+	mano: [#smile] Want one?
+	toma: [#smile] Stereo, together. That was the whole plan, you know. [slot]
+	$ set given_to = "toma"
+	=> c5.share
+- Not yet
+	toma: [#smirk] The song can wait. I can't, but the song can. [slot]
+
+~ c5.offer_anisha
+think: The case. Two AirPods. One for Anisha?
+- Want one?
+	mano: [#smile] Want one?
+	anisha: [#smirk] Only if it's not the chewed one. [slot]
+	anisha: [#grin] ...It's the chewed one. Fine. Give it. [slot]
+	$ set given_to = "anisha"
+	=> c5.share
+- Not yet
+	anisha: [#smile] I just stopped staring at a screen. Take your time. [slot]
+
+~ c5.offer_ian
+think: The case. Two AirPods. One for Ian?
+- Want one?
+	mano: [#smile] Want one?
+	ian: [#shock] Left or right? I need to know if this is political. [slot]
+	ian: [#grin] Right. Good. Correct. Give it. [slot]
+	$ set given_to = "ian"
+	=> c5.share
+- Not yet
+	ian: [#smirk] I'll be here. Eating my ketchup kebab. Or not. [slot]
+
+~ c5.offer_silvia
+think: The case. Two AirPods. One for Silvia?
+- Want one?
+	mano: [#smile] Want one?
+	silvia: [#grin] Yes. Ian, don't say anything. [slot]
+	silvia: [#smile] It's the same song. In two ears. Like the pastry. [slot]
+	$ set given_to = "silvia"
+	=> c5.share
+- Not yet
+	silvia: [#smile] Okay. I'll pretend I wasn't hoping. [slot]
+
+~ c5.offer_ishita
+think: The case. Two AirPods. One for Ishita?
+- Want one?
+	mano: [#smile] Want one?
+	ishita: [#smirk] My first night with you lot and I get the AirPod? [slot]
+	ishita: [#smile] I'm keeping the memory. Not the AirPod. Give it. [slot]
+	$ set given_to = "ishita"
+	=> c5.share
+- Not yet
+	ishita: [#smirk] I'm out of film. I'll remember it anyway. [slot]
+
+~ c5.offer_cristina
+think: The case. Two AirPods. One for Cristina?
+- Want one?
+	mano: [#smile] Want one?
+	cristina: [#shock] Me? I only carried it around all night. [slot]
+	cristina: [#smile] ...I think I've earned one song, actually. [slot]
+	$ set given_to = "cristina"
+	=> c5.share
+- Not yet
+	cristina: [#grin] I'm not chasing it again. Just so you know. [slot]
+
+~ c5.offer_joaquin
+think: The case. Two AirPods. One for Joaquin?
+- Want one?
+	mano: [#smile] Want one?
+	joaquin: [#shock] ...Me? [slot]
+	joaquin: [#smile] Okay. One song. For the data. [slot]
+	$ set given_to = "joaquin"
+	=> c5.share
+- Not yet
+	joaquin: [#neutral] Noted. Waiting is also data. [slot]
+
+# The song shared (the friend Mano gave it to beside him), then the credits
+~ c5.share
+$ score @playlist
+think: "{{song.playlist}}". The one I picked for Toma. One ear each.
+mano: [#smile] Music in one ear. Them in the other.
+$ shot steps_wide
+think: The song on my left. Seven friends on my right.
+think: Best mono of my life.
+$ set c5_done
+$ clock 23:59
+$ credits
